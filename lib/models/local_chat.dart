@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart' show debugPrint, ValueNotifier;
+import 'package:gemini_controls_rfw/data/local_chat_parameters.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:gemini_controls_rfw/backend/api_key.dart';
-import 'package:gemini_controls_rfw/data/local_chat_parameters.dart';
 
 /// An individual chat, with a personality, situation, and chat history.
 class LocalChat {
@@ -17,7 +17,8 @@ class LocalChat {
   /// The personality characteristics associated with this chat.
   String personality;
 
-  /// The situation given to this chat. EG: Personal assistant, coding partner, etc.
+  /// The situation given to this chat. EG: Personal assistant,
+  /// coding partner, etc.
   String situation;
 
   /// A list that holds the history of text only messages.
@@ -26,7 +27,8 @@ class LocalChat {
   /// The chat history of this chat.
   final chatHistoryContent = <Content>[];
 
-  /// Used to prevent a second message from being sent by the user before a response to the previous message has been received.
+  /// Used to prevent a second message from being sent by the user before
+  /// a response to the previous message has been received.
   bool awaitingResponse = false;
 
   /// The index of the widget currently displayed by RFW
@@ -40,15 +42,10 @@ class LocalChat {
   // For text-only input, use the gemini-pro model
   final _model = GenerativeModel(model: 'gemini-pro', apiKey: apiKey);
 
-  /// The first prompt supplied to the model, containing instructions that
-  /// guide all interactions with the user.
-  String initializingPrompt() =>
-      "This is role play. For this interaction you are portraying a person named $name. You are also given a personality, situation, and a message from the user. The personality and situation may change during any given conversation, every new personality or situation will be labeled in this context, use the most recent one. Answer to the name $name, respond to the user's input appropriately considering the personality and situation given, and be sure to use only words in your responses because there is an error if you try to respond with anything else. This means you especially need to show code in plain text instead of in code blocks. The current personality for $name is: $personality. The current situation for $name is: $situation.  We also have added a new feature, allowing your to control Remote Flutter Widgets. The way you do this is by prefixing a widget change with 'RFWEXEC-'. We also have a map of widget config strings, ```<String, String>{'la' : 'import local; widget root = GreenBox(child: Hello(name: 'Bob'),);', 'dee' : 'RFWEXEC import local; widget root = Hello(name: 'Jill');'}``` The way this works is I will say 'RFW as the start of a message that is a command for you to send an RFWEXEC response. When you respond, that response will be processed by logic so it's critical that you send ONLY the needed text to execute the command. IE: If I say 'Show me dee' then I need you to respond with the map value for dee which is: RFWEXEC import local; widget root = Hello(name: 'Jill');. This is the only thing that should be in your response.";
-
   /// The chat needs to be initialized with one message from each side to get
   /// it kicked off. You provide these, but they don't get displayed.
   void initChat() {
-    updateChatHistory(who: 'user', latestMessage: initializingPrompt());
+    updateChatHistory(who: 'user', latestMessage: LocalChatParameters.initializingPrompt);
     updateChatHistory(who: 'model', latestMessage: "Sounds good. I'll do my best.");
   }
 
