@@ -1,0 +1,173 @@
+import 'package:flutter/material.dart' show debugPrint, ValueNotifier;
+import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:gemini_controls_rfw/backend/api_key.dart';
+import 'package:gemini_controls_rfw/data/local_chat_parameters.dart';
+
+/// An individual chat, with a personality, situation, and chat history.
+class LocalChat {
+  LocalChat({
+    required this.name,
+    required this.personality,
+    required this.situation,
+  });
+
+  /// The name associated with this chat.
+  String name;
+
+  /// The personality characteristics associated with this chat.
+  String personality;
+
+  /// The situation given to this chat. EG: Personal assistant, coding partner, etc.
+  String situation;
+
+  /// A list that holds the history of text only messages.
+  final messageHistory = <CustomChatMessage>[];
+
+  /// The chat history of this chat.
+  final chatHistoryContent = <Content>[];
+
+  /// Used to prevent a second message from being sent by the user before a response to the previous message has been received.
+  bool awaitingResponse = false;
+
+  /// The index of the widget currently displayed by RFW
+  final ValueNotifier<String> _currentWidget = ValueNotifier<String>('0');
+  ValueNotifier<String> get currentWidget => _currentWidget;
+
+  // The most recent text response from the model. Used to display the most recent response in the large font, [SelectableText] in the middle of the screen.
+  final ValueNotifier<String> _latestResponseFromModel = ValueNotifier<String>('');
+  ValueNotifier<String> get latestResponseFromModel => _latestResponseFromModel;
+
+  // For text-only input, use the gemini-pro model
+  final _model = GenerativeModel(model: 'gemini-pro', apiKey: apiKey);
+
+  String prompt() =>
+      "This is role play. For this interaction you are portraying a person named $name. You are also given a personality, situation, and a message from the user. The personality and situation may change during any given conversation, every new personality or situation will be labeled in this context, use the most recent one. Answer to the name $name, respond to the user's input appropriately considering the personality and situation given, and be sure to use only words in your responses because there is an error if you try to respond with anything else. This means you especially need to show code in plain text instead of in code blocks. The current personality for $name is: $personality. The current situation for $name is: $situation.  We also have added a new feature, allowing your to control Remote Flutter Widgets. The way you do this is by prefixing a widget change with 'RFWEXEC-'. We also have a map of widget config strings, ```<String, String>{'la' : 'import local; widget root = GreenBox(child: Hello(name: 'Bob'),);', 'dee' : 'RFWEXEC import local; widget root = Hello(name: 'Jill');'}``` The way this works is I will say 'RFW as the start of a message that is a command for you to send an RFWEXEC response. When you respond, that response will be processed by logic so it's critical that you send ONLY the needed text to execute the command. IE: If I say 'Show me dee' then I need you to respond with the map value for dee which is: RFWEXEC import local; widget root = Hello(name: 'Jill');. This is the only thing that should be in your response.";
+
+  /// The chat needs to be initialized with one message from each side to get it kicked off. You provide these, but they don't get displayed.
+  void initChat() {
+    updateChatHistory(who: 'user', latestMessage: prompt());
+    updateChatHistory(who: 'model', latestMessage: "Sounds good. I'll do my best.");
+  }
+
+  // Processes the outgoing and incoming messages.
+  Future<void> processSend({required String prompt}) async {
+    // A message is in progress, prevent another from being sent.
+    awaitingResponse = true;
+
+    // Add the current chat message from the user to the list of the google_generative_ai [Content] objects.
+    updateChatHistory(who: 'user', latestMessage: prompt);
+    // Create a list of [Content] with current active chat history and all messages before it.
+    List<Content> content = chatHistoryContent;
+    // Declare a response object.
+    GenerateContentResponse
+        response; // Send the current list of [Content] (with the last user message) to the AI in the cloud.
+    try {
+      response = await _model.generateContent(content);
+      _processReceive(response: response);
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  void _processReceive({required GenerateContentResponse response}) {
+    // Create a variable for the model's [TextPart] response. This is _not_ the text. It is an object that extends [Part]. The [Content] contains [Part] objects and it does not differentiate between [TextPart] and [DataPart], so we need to cast this as a [TextPart] before we can use it.
+    final resultantTextPart = response.candidates.last.content.parts[0] as TextPart;
+    // Now that it's been cast, the text can be extracted from it.
+    final responseText = resultantTextPart.text;
+    // Processing has finished, allow a new message to be sent.
+    awaitingResponse = false;
+    // Add the response message from the user to the list of the google_generative_ai [Content] objects.
+    updateChatHistory(who: 'model', latestMessage: responseText);
+    // if (responseText.startsWith('CMDACT')) {
+    //   // The response was an action.
+    //   processAction(response.text!);
+    // } else
+      if (responseText.startsWith('RFWEXEC')) {
+      processRFW(responseText);
+    } else {
+      latestResponseFromModel.value = responseText;
+    }
+  }
+
+  /// Process a Remote Flutter Widgets command
+  void processRFW(String response) {
+    final rfwString = response.substring(7, response.length - 1);
+    debugPrint('processRFW called with $rfwString');
+  }
+
+  /// Processes a command action that is not a text message.
+  String? processAction(String response) {
+    String result = '';
+    if (response.startsWith('{')) {
+      // TODO Implement me
+    } else {
+      switch (response) {
+        case 'CMDACT swap widget':
+          if (currentWidget.value == '0') {
+            currentWidget.value = '1';
+          } else {
+            currentWidget.value = '0';
+          }
+        case 'CMDACT animate 300':
+          parametersState.containerWidth = 300.0;
+          result = 'containerWidth 300.0';
+          break;
+        case 'CMDACT animate 100':
+          parametersState.containerWidth = 100.0;
+          result = 'containerWidth 100.0';
+          break;
+        case 'CMDACT box 50':
+          parametersState.cornerRadius = 50.0;
+          result = '_cornerRadius = 50.0';
+          break;
+        case 'CMDACT box 0':
+          parametersState.cornerRadius = 0.0;
+          result = '_cornerRadius = 0';
+          break;
+        case 'CMDACT firstWidget':
+          result = 'firstWidget';
+          break;
+        case 'CMDACT secondWidget':
+          result = 'secondWidget';
+          break;
+        case 'CMDACT thirdWidget':
+          result = 'thirdWidget';
+          break;
+        default:
+          result = response.substring(7, response.length);
+      }
+      if (result.isNotEmpty) {
+        return result;
+      }
+    }
+  }
+
+  /// Update the chat history.
+  void updateChatHistory({required String who, required String latestMessage}) {
+    if (who == 'user') {
+      chatHistoryContent.add(Content.text(latestMessage));
+      messageHistory.add(CustomChatMessage(who: 'user', message: latestMessage));
+    } else {
+      chatHistoryContent.add(
+        Content.model([TextPart(latestMessage)]),
+      );
+      if (latestMessage.length > 5 && latestMessage.substring(0, 6) != 'CMDACT') {
+        messageHistory.add(CustomChatMessage(who: 'model', message: latestMessage));
+      }
+    }
+  }
+}
+
+/// Represents a single message sent by either the user or the AI.
+class CustomChatMessage {
+  CustomChatMessage({
+    required this.who,
+    required this.message,
+  });
+
+  /// Whe the text message was from.
+  String who;
+
+  /// What the text message was.
+  String message;
+}
