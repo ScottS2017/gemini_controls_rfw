@@ -5,8 +5,7 @@ import 'package:gemini_controls_rfw/data/widget_config_values.dart';
 
 /// The collection of [Widget] that can be utilized by the model when
 /// creating its RFW widget.
-class AvailableWidgetLibrary{
-
+class AvailableWidgetLibrary {
   /// A [Map] of widgets with names. The names _must_ correspond to the
   /// names given in the "root = SOME_NAME" part of the config values
   /// defined in [widgets], which is in widget_config_values.dart
@@ -16,16 +15,40 @@ class AvailableWidgetLibrary{
   static WidgetLibrary availableLocalWidgets() {
     return LocalWidgetLibrary(<String, LocalWidgetBuilder>{
       'GreenBox': (BuildContext context, DataSource source) {
-        return ColoredBox(
-          color: const Color(0xFF002211),
-          child: source.child(<Object>['child']),
+        return DecoratedBox(
+          decoration: BoxDecoration(
+            border: Border.all(
+              width: 3.0,
+              color: Colors.grey.shade600,
+            ),
+            borderRadius: BorderRadius.circular(16.0),
+            gradient: const LinearGradient(
+              colors: [
+                Colors.green,
+                Colors.yellow,
+                Colors.red,
+              ],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              stops: [0.0, 0.5, 1.0],
+            ),
+          ),
         );
       },
       'Hello': (BuildContext context, DataSource source) {
-        return Center(
-          child: Text(
-            'Hello, ${source.v<String>(<Object>["name"])}!',
-            style: const TextStyle(color: Colors.blue),
+        return DecoratedBox(
+          decoration: BoxDecoration(
+            border: Border.all(
+              width: 10.0,
+              color: Colors.green.shade600,
+            ),
+            borderRadius: BorderRadius.circular(40.0),
+          ),
+          child: Center(
+            child: Text(
+              'Hello, ${source.v<String>(<Object>["name"])}!',
+              style: TextStyle(color: Colors.grey.shade900, fontWeight: FontWeight.w700),
+            ),
           ),
         );
       },

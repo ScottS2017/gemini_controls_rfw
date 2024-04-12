@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gemini_controls_rfw/data/available_widget_library.dart';
 import 'package:gemini_controls_rfw/data/local_chat_parameters.dart';
 import 'package:gemini_controls_rfw/data/widget_config_values.dart';
@@ -120,22 +121,26 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               verticalMargin16,
               // SECTION: RFW Widget.
-              ValueListenableBuilder(
-                  valueListenable: gemini.currentWidget,
-                  builder: (BuildContext context, String value, _) {
-                    if (currentWidgetValue != gemini.currentWidget.value) {
-                      currentWidgetValue = gemini.currentWidget.value;
-                      _update();
-                    }
-                    return RemoteWidget(
-                      runtime: _runtime,
-                      data: _data,
-                      widget: const FullyQualifiedWidgetName(remoteName, 'root'),
-                      onEvent: (String name, DynamicMap arguments) {
-                        debugPrint('user triggered event "$name" with data: $arguments');
-                      },
-                    );
-                  }),
+              SizedBox(
+                width: 500.0,
+                height: 100.0,
+                child: ValueListenableBuilder(
+                    valueListenable: gemini.currentWidget,
+                    builder: (BuildContext context, String value, _) {
+                      if (currentWidgetValue != gemini.currentWidget.value) {
+                        currentWidgetValue = gemini.currentWidget.value;
+                        _update();
+                      }
+                      return RemoteWidget(
+                        runtime: _runtime,
+                        data: _data,
+                        widget: const FullyQualifiedWidgetName(remoteName, 'root'),
+                        onEvent: (String name, DynamicMap arguments) {
+                          debugPrint('user triggered event "$name" with data: $arguments');
+                        },
+                      );
+                    }),
+              ),
               verticalMargin16,
               // SECTION: Swap RFW Widget Button.
               ElevatedButton(
