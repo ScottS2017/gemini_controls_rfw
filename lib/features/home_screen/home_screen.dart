@@ -119,7 +119,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
               verticalMargin16,
-              verticalMargin16,
               // SECTION: RFW Widget.
               ValueListenableBuilder(
                   valueListenable: gemini.currentWidget,
