@@ -40,16 +40,29 @@ class LocalChat {
   // For text-only input, use the gemini-pro model
   final _model = GenerativeModel(model: 'gemini-pro', apiKey: apiKey);
 
-  String prompt() =>
+  /// The first prompt supplied to the model, containing instructions that
+  /// guide all interactions with the user.
+  String initializingPrompt() =>
       "This is role play. For this interaction you are portraying a person named $name. You are also given a personality, situation, and a message from the user. The personality and situation may change during any given conversation, every new personality or situation will be labeled in this context, use the most recent one. Answer to the name $name, respond to the user's input appropriately considering the personality and situation given, and be sure to use only words in your responses because there is an error if you try to respond with anything else. This means you especially need to show code in plain text instead of in code blocks. The current personality for $name is: $personality. The current situation for $name is: $situation.  We also have added a new feature, allowing your to control Remote Flutter Widgets. The way you do this is by prefixing a widget change with 'RFWEXEC-'. We also have a map of widget config strings, ```<String, String>{'la' : 'import local; widget root = GreenBox(child: Hello(name: 'Bob'),);', 'dee' : 'RFWEXEC import local; widget root = Hello(name: 'Jill');'}``` The way this works is I will say 'RFW as the start of a message that is a command for you to send an RFWEXEC response. When you respond, that response will be processed by logic so it's critical that you send ONLY the needed text to execute the command. IE: If I say 'Show me dee' then I need you to respond with the map value for dee which is: RFWEXEC import local; widget root = Hello(name: 'Jill');. This is the only thing that should be in your response.";
 
-  /// The chat needs to be initialized with one message from each side to get it kicked off. You provide these, but they don't get displayed.
+  /// The chat needs to be initialized with one message from each side to get
+  /// it kicked off. You provide these, but they don't get displayed.
   void initChat() {
-    updateChatHistory(who: 'user', latestMessage: prompt());
+    updateChatHistory(who: 'user', latestMessage: initializingPrompt());
     updateChatHistory(who: 'model', latestMessage: "Sounds good. I'll do my best.");
   }
 
-  // Processes the outgoing and incoming messages.
+  /// Handled changing the current widget on a command from Gemini.
+  // TODO: Refactor this to use a String from Gemini instead of a simplistic swap command.
+  void swapCurrentWidget() {
+    if (_currentWidget.value == '0') {
+      _currentWidget.value = '1';
+    } else {
+      _currentWidget.value = '0';
+    }
+  }
+
+  /// Processes the outgoing messages.
   Future<void> processSend({required String prompt}) async {
     // A message is in progress, prevent another from being sent.
     awaitingResponse = true;
@@ -69,77 +82,30 @@ class LocalChat {
     }
   }
 
+  /// Processes the incoming messages.
   void _processReceive({required GenerateContentResponse response}) {
-    // Create a variable for the model's [TextPart] response. This is _not_ the text. It is an object that extends [Part]. The [Content] contains [Part] objects and it does not differentiate between [TextPart] and [DataPart], so we need to cast this as a [TextPart] before we can use it.
+    // Create a variable for the model's [TextPart] response. This is _not_ the text itself. It is an object that extends [Part]. The [Content] contains [Part] objects and it does not differentiate between [TextPart] and [DataPart], so we need to cast this as a [TextPart] before we can use it.
     final resultantTextPart = response.candidates.last.content.parts[0] as TextPart;
     // Now that it's been cast, the text can be extracted from it.
     final responseText = resultantTextPart.text;
-    // Processing has finished, allow a new message to be sent.
+    // Processing has finished, now it's safe to allow a new message to be sent.
     awaitingResponse = false;
     // Add the response message from the user to the list of the google_generative_ai [Content] objects.
     updateChatHistory(who: 'model', latestMessage: responseText);
-    // if (responseText.startsWith('CMDACT')) {
-    //   // The response was an action.
-    //   processAction(response.text!);
-    // } else
-      if (responseText.startsWith('RFWEXEC')) {
+    // Does the message start with the code for an RFW Command?
+    if (responseText.startsWith('RFWEXEC')) {
       processRFW(responseText);
     } else {
+      // Display this text in the box that shows the latest message from Gemini.
       latestResponseFromModel.value = responseText;
     }
   }
 
   /// Process a Remote Flutter Widgets command
   void processRFW(String response) {
+    // Remove "RFWEXEC: From the front of the text string.
     final rfwString = response.substring(7, response.length - 1);
     debugPrint('processRFW called with $rfwString');
-  }
-
-  /// Processes a command action that is not a text message.
-  String? processAction(String response) {
-    String result = '';
-    if (response.startsWith('{')) {
-      // TODO Implement me
-    } else {
-      switch (response) {
-        case 'CMDACT swap widget':
-          if (currentWidget.value == '0') {
-            currentWidget.value = '1';
-          } else {
-            currentWidget.value = '0';
-          }
-        case 'CMDACT animate 300':
-          parametersState.containerWidth = 300.0;
-          result = 'containerWidth 300.0';
-          break;
-        case 'CMDACT animate 100':
-          parametersState.containerWidth = 100.0;
-          result = 'containerWidth 100.0';
-          break;
-        case 'CMDACT box 50':
-          parametersState.cornerRadius = 50.0;
-          result = '_cornerRadius = 50.0';
-          break;
-        case 'CMDACT box 0':
-          parametersState.cornerRadius = 0.0;
-          result = '_cornerRadius = 0';
-          break;
-        case 'CMDACT firstWidget':
-          result = 'firstWidget';
-          break;
-        case 'CMDACT secondWidget':
-          result = 'secondWidget';
-          break;
-        case 'CMDACT thirdWidget':
-          result = 'thirdWidget';
-          break;
-        default:
-          result = response.substring(7, response.length);
-      }
-      if (result.isNotEmpty) {
-        return result;
-      }
-    }
   }
 
   /// Update the chat history.
@@ -151,9 +117,6 @@ class LocalChat {
       chatHistoryContent.add(
         Content.model([TextPart(latestMessage)]),
       );
-      if (latestMessage.length > 5 && latestMessage.substring(0, 6) != 'CMDACT') {
-        messageHistory.add(CustomChatMessage(who: 'model', message: latestMessage));
-      }
     }
   }
 }
