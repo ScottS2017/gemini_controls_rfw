@@ -34,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   static const LibraryName remoteName = LibraryName(<String>['remote']);
 
   void _handleSubmit() {
+    debugPrint('_handleSubmit() called Home line 37');
     // If we don't have a response from the previous message yet, don't do anything because there will be an error if Gemini gets a List<Content> that contains two messages in a row from either the user or itself.
     if (gemini.awaitingResponse) return;
     setState(() {
@@ -47,6 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   /// Handles changing the widgets.
   void _update() {
+    debugPrint('_update() called HomeScreen line 50');
     _runtime.update(localName, AvailableWidgetLibrary.availableLocalWidgets());
     _runtime.update(remoteName, parseLibraryFile(widgets[gemini.currentWidget.value]!));
     // TODO Implement the ability of the app to use the string provided by Gemini instead of using a map or any other pre-set string that is client-side. Use the following method call:
@@ -162,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
-                  } else if (snapshot.hasData) {
+                  } else if (snapshot.connectionState == ConnectionState.done) {
                     // Section: Most recent message from the model.
                     return Expanded(
                       flex: 3,
@@ -193,7 +195,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     );
                   } else {
-                    return const CircularProgressIndicator();
+                    return const SizedBox(
+                      width: 300.0,
+                      height: 300.0,
+                      child: Placeholder(),
+                    );
+                    // return const CircularProgressIndicator();
                   }
                 },
               ),

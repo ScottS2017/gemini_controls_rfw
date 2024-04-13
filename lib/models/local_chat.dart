@@ -45,8 +45,8 @@ class LocalChat {
   /// The chat needs to be initialized with one message from each side to get
   /// it kicked off. You provide these, but they don't get displayed.
   void initChat() {
-    updateChatHistory(who: 'user', latestMessage: LocalChatParameters.initializingPrompt);
-    updateChatHistory(who: 'model', latestMessage: "Sounds good. I'll do my best.");
+    _updateChatHistory(who: 'user', latestMessage: LocalChatParameters.initializingPrompt);
+    _updateChatHistory(who: 'model', latestMessage: "Sounds good. I'll do my best.");
   }
 
   /// Handled changing the current widget on a command from Gemini.
@@ -61,11 +61,12 @@ class LocalChat {
 
   /// Processes the outgoing messages.
   Future<void> processSend({required String prompt}) async {
+    debugPrint('processSend() called LocalChat line 64');
     // A message is in progress, prevent another from being sent.
     awaitingResponse = true;
 
     // Add the current chat message from the user to the list of the google_generative_ai [Content] objects.
-    updateChatHistory(who: 'user', latestMessage: prompt);
+    _updateChatHistory(who: 'user', latestMessage: prompt);
     // Create a list of [Content] with current active chat history and all messages before it.
     List<Content> content = chatHistoryContent;
     // Declare a response object.
@@ -81,6 +82,7 @@ class LocalChat {
 
   /// Processes the incoming messages.
   void _processReceive({required GenerateContentResponse response}) {
+    debugPrint('_processReceive() called LocalChat line 84');
     // Create a variable for the model's [TextPart] response. This is _not_ the text itself. It is an object that extends [Part]. The [Content] contains [Part] objects and it does not differentiate between [TextPart] and [DataPart], so we need to cast this as a [TextPart] before we can use it.
     final resultantTextPart = response.candidates.last.content.parts[0] as TextPart;
     // Now that it's been cast, the text can be extracted from it.
@@ -88,25 +90,31 @@ class LocalChat {
     // Processing has finished, now it's safe to allow a new message to be sent.
     awaitingResponse = false;
     // Add the response message from the user to the list of the google_generative_ai [Content] objects.
-    updateChatHistory(who: 'model', latestMessage: responseText);
+    _updateChatHistory(who: 'model', latestMessage: responseText);
+    debugPrint('Response was: $responseText');
     // Does the message start with the code for an RFW Command?
     if (responseText.startsWith('RFWEXEC')) {
-      processRFW(responseText);
+      debugPrint('Processed as RFW command');
+      _processRFW(responseText);
     } else {
+      debugPrint('Should be displaying text');
       // Display this text in the box that shows the latest message from Gemini.
-      latestResponseFromModel.value = responseText;
+      _latestResponseFromModel.value = responseText;
     }
   }
 
   /// Process a Remote Flutter Widgets command
-  void processRFW(String response) {
+  void _processRFW(String response) {
+    debugPrint('_processRFW() called LocalChat line 105');
     // Remove "RFWEXEC: From the front of the text string.
-    final rfwString = response.substring(7, response.length - 1);
+    final rfwString = response.substring(8, response.length);
     debugPrint('processRFW called with $rfwString');
+    _currentWidget.value = rfwString;
   }
 
   /// Update the chat history.
-  void updateChatHistory({required String who, required String latestMessage}) {
+  void _updateChatHistory({required String who, required String latestMessage}) {
+    debugPrint('_updateChatHistory() called LocalChat line 112');
     if (who == 'user') {
       chatHistoryContent.add(Content.text(latestMessage));
       messageHistory.add(CustomChatMessage(who: 'user', message: latestMessage));
