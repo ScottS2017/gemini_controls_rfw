@@ -6,6 +6,8 @@ import 'package:gemini_controls_rfw/data/widget_config_values.dart';
 /// The collection of [Widget] that can be utilized by the model when
 /// creating its RFW widget.
 class AvailableWidgetLibrary {
+  /// Creates the base widgets for use with RFW.
+
   /// A [Map] of widgets with names. The names _must_ correspond to the
   /// names given in the "root = SOME_NAME" part of the config values
   /// defined in [widgets], which is in widget_config_values.dart
@@ -14,7 +16,7 @@ class AvailableWidgetLibrary {
   /// [Map], but doing so makes the code easier to understand.
   static WidgetLibrary availableLocalWidgets() {
     return LocalWidgetLibrary(<String, LocalWidgetBuilder>{
-      'GreenBox': (BuildContext context, DataSource source) {
+      'Gradient': (BuildContext context, DataSource source) {
         return DecoratedBox(
           decoration: BoxDecoration(
             border: Border.all(
@@ -35,7 +37,7 @@ class AvailableWidgetLibrary {
           ),
         );
       },
-      'Hello': (BuildContext context, DataSource source) {
+      'HiJill': (BuildContext context, DataSource source) {
         return DecoratedBox(
           decoration: BoxDecoration(
             border: Border.all(

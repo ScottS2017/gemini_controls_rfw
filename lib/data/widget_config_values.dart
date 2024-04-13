@@ -6,13 +6,11 @@ import 'package:gemini_controls_rfw/data/available_widget_library.dart';
 /// Note the names do _not_ need to match the key values in the [widgets]
 /// [Map], but doing so makes the code easier to understand.
 const widgets = <String, String>{
-  'GreenBox' : '''
+  'Gradient' : '''
       import local;
-      widget root = GreenBox(
-        child: Hello(name: "Bob"),
-      );
+      widget root = Gradient();
     ''',
-  'Hello' :
+  'HiJill' :
   '''
       import local;
       widget root = Hello(name: "Jill"

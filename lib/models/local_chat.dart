@@ -32,7 +32,7 @@ class LocalChat {
   bool awaitingResponse = false;
 
   /// The index of the widget currently displayed by RFW
-  final ValueNotifier<String> _currentWidget = ValueNotifier<String>('GreenBox');
+  final ValueNotifier<String> _currentWidget = ValueNotifier<String>('Gradient');
   ValueNotifier<String> get currentWidget => _currentWidget;
 
   // The most recent text response from the model. Used to display the most recent response in the large font, [SelectableText] in the middle of the screen.
@@ -52,10 +52,10 @@ class LocalChat {
   /// Handled changing the current widget on a command from Gemini.
   // TODO: Refactor this to use a String from Gemini instead of a simplistic swap command.
   void swapCurrentWidget() {
-    if (_currentWidget.value == 'GreenBox') {
+    if (_currentWidget.value == 'Gradient') {
       _currentWidget.value = 'Hello';
     } else {
-      _currentWidget.value = 'GreenBox';
+      _currentWidget.value = 'Gradient';
     }
   }
 
