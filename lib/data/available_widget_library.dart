@@ -5,7 +5,7 @@ import 'package:gemini_controls_rfw/data/widget_config_values.dart';
 
 /// The collection of [Widget] that can be utilized by the model when
 /// creating its RFW widget.
-class AvailableWidgetLibrary {
+class AvailableWidgetLibraries {
   /// Creates the base widgets for use with RFW.
 
   /// A [Map] of widgets with names. The names _must_ correspond to the
@@ -14,8 +14,38 @@ class AvailableWidgetLibrary {
   ///
   /// Note the names do _not_ need to match the key values in the [widgets]
   /// [Map], but doing so makes the code easier to understand.
-  static WidgetLibrary availableLocalWidgets() {
+  static WidgetLibrary localWidgetLibrary() {
     return LocalWidgetLibrary(<String, LocalWidgetBuilder>{
+      'TestLibraryWidget': (BuildContext context, DataSource source) {
+        return DecoratedBox(
+          decoration: BoxDecoration(
+            border: Border.all(
+              width: 10.0,
+              color: Colors.green.shade600,
+            ),
+            borderRadius: BorderRadius.circular(40.0),
+          ),
+          child: Center(
+            child: Column(
+              children: [
+
+                Text(
+                  'Test Library Widget',
+                  style: TextStyle(color: Colors.grey.shade900, fontWeight: FontWeight.w700),
+                ),
+                const SizedBox(
+                  height: 100.0,
+                ),
+                Text(
+                  'Test Library Widget',
+                  style: TextStyle(color: Colors.grey.shade900, fontWeight: FontWeight.w700),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+      // --------------------------
       'Gradient': (BuildContext context, DataSource source) {
         return DecoratedBox(
           decoration: BoxDecoration(
@@ -48,7 +78,7 @@ class AvailableWidgetLibrary {
           ),
           child: Center(
             child: Text(
-              'Hello, ${source.v<String>(<Object>["name"])}!',
+              'HiJill, ${source.v<String>(<Object>["name"])}!',
               style: TextStyle(color: Colors.grey.shade900, fontWeight: FontWeight.w700),
             ),
           ),

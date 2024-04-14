@@ -52,11 +52,11 @@ class LocalChat {
   /// Handled changing the current widget on a command from Gemini.
   // TODO: Refactor this to use a String from Gemini instead of a simplistic swap command.
   void swapCurrentWidget() {
-    if (_currentWidget.value == 'Gradient') {
-      _currentWidget.value = 'Hello';
-    } else {
-      _currentWidget.value = 'Gradient';
-    }
+if (_currentWidget.value == 'TestConfig') {
+  _currentWidget.value = 'TestLibraryWidget';
+} else {
+  _currentWidget.value = 'TestConfig';
+}
   }
 
   /// Processes the outgoing messages.
