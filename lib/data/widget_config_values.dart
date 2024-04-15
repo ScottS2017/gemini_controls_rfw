@@ -27,6 +27,10 @@ const widgets = <String, String>{
                 child: Text(
                   text: ["Child 1"],
                   textDirection: "ltr",
+                  style: {
+  'color': 0xFF00FF00, // Green color
+  'fontSize': 24.0,
+  },
                 ),
               ),
             ),
@@ -39,8 +43,7 @@ const widgets = <String, String>{
           child: ColoredBox(
             color: 0xFFFF0000,
           ),
-        ),
-             
+        ),    
       //----
         Container(
           width: 100.0,
@@ -68,7 +71,6 @@ const widgets = <String, String>{
             color: 0xFF00FF00,
           ),
         ),
-             
          //----
         Container(
           width: 100.0,
@@ -96,10 +98,6 @@ const widgets = <String, String>{
             color: 0xFF0000FF,
           ),
         ),
-               
-               
-               
-               
             ],
             ),
         ),
