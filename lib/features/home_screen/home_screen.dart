@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gemini_controls_rfw/data/available_widget_library.dart';
-import 'package:gemini_controls_rfw/data/local_chat_parameters.dart';
 import 'package:gemini_controls_rfw/data/widget_config_values.dart';
 import 'package:gemini_controls_rfw/features/app/app.dart';
 import 'package:gemini_controls_rfw/models/local_chat.dart';
@@ -30,9 +27,10 @@ class _HomeScreenState extends State<HomeScreen> {
   // The future used the the UI's [FutureBuilder].
   Future<void>? _futureResponse;
 
-  static const LibraryName coreName = LibraryName(<String>['core', 'widgets']);
-  static const LibraryName localName = LibraryName(<String>['local']);
-  static const LibraryName remoteName = LibraryName(<String>['remote']);
+  static const LibraryName materialLibraryName = LibraryName(<String>['material', 'widgets']);
+  static const LibraryName coreLibraryName = LibraryName(<String>['core', 'widgets']);
+  static const LibraryName localLibraryName = LibraryName(<String>['local']);
+  static const LibraryName remoteLibraryName = LibraryName(<String>['remote']);
 
   void _handleSubmit() {
     debugPrint('_handleSubmit() called Home line 37');
@@ -50,9 +48,11 @@ class _HomeScreenState extends State<HomeScreen> {
   /// Handles changing the widgets.
   void _update() {
     debugPrint('_update() called HomeScreen line 50');
-    _runtime.update(coreName, createCoreWidgets());
-    _runtime.update(localName, AvailableWidgetLibraries.localWidgetLibrary());
-    _runtime.update(remoteName, parseLibraryFile(widgets[gemini.currentWidget.value]!));
+    _runtime.update(materialLibraryName, createMaterialWidgets());
+    _runtime.update(coreLibraryName, createCoreWidgets());
+    _runtime.update(localLibraryName, AvailableWidgetLibraries.localWidgetLibrary());
+    // _runtime.update(remoteLibraryName, parseLibraryFile(widgets[gemini.currentWidget.value]!));
+    _runtime.update(remoteLibraryName, parseLibraryFile('import core.widgets; widget root = ${gemini.rfwString.value};'));
     // TODO Implement the ability of the app to use the string provided by Gemini instead of using a map or any other pre-set string that is client-side. Use the following method call:
     // _runtime.update(remoteName, parseLibraryFile(NAME_OF_GEMINI_RETURNED_WIDGET_STRING));
   }
@@ -85,45 +85,45 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: [
-              //     // Section: Input field.
-              //     Expanded(
-              //       child: TextField(
-              //         controller: _inputController,
-              //         focusNode: _inputFieldFocusNode,
-              //         onSubmitted: (_) => _handleSubmit(),
-              //         decoration: const InputDecoration(
-              //           border: OutlineInputBorder(
-              //               borderSide: BorderSide(color: Colors.grey, width: 1)),
-              //           floatingLabelBehavior: FloatingLabelBehavior.always,
-              //           labelText: 'Me:',
-              //           labelStyle: TextStyle(
-              //             color: Colors.black,
-              //             fontSize: 16.0,
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //     horizontalMargin16,
-              //     // SECTION: Reset Button.
-              //     ElevatedButton(
-              //       onPressed: () {
-              //         gemini.chatHistoryContent
-              //             .removeRange(1, gemini.chatHistoryContent.length - 1);
-              //         gemini.messageHistory.removeRange(1, gemini.messageHistory.length - 1);
-              //       },
-              //       child: const SizedBox(
-              //         height: 50.0,
-              //         width: 150.0,
-              //         child: Center(
-              //           child: Text('Reset the Context'),
-              //         ),
-              //       ),
-              //     ),
-              //   ],
-              // ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Section: Input field.
+                  Expanded(
+                    child: TextField(
+                      controller: _inputController,
+                      focusNode: _inputFieldFocusNode,
+                      onSubmitted: (_) => _handleSubmit(),
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey, width: 1)),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        labelText: 'Me:',
+                        labelStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                  horizontalMargin16,
+                  // SECTION: Reset Button.
+                  ElevatedButton(
+                    onPressed: () {
+                      gemini.chatHistoryContent
+                          .removeRange(1, gemini.chatHistoryContent.length - 1);
+                      gemini.messageHistory.removeRange(1, gemini.messageHistory.length - 1);
+                    },
+                    child: const SizedBox(
+                      height: 50.0,
+                      width: 150.0,
+                      child: Center(
+                        child: Text('Reset the Context'),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               verticalMargin16,
               // SECTION: Swap RFW Widget Button.
               ElevatedButton(
@@ -142,16 +142,16 @@ class _HomeScreenState extends State<HomeScreen> {
               // SECTION: RFW Widget.
               Flexible(
                 child: ValueListenableBuilder(
-                    valueListenable: gemini.currentWidget,
+                    valueListenable: gemini.rfwString,
                     builder: (BuildContext context, String value, _) {
-                      if (currentWidgetValue != gemini.currentWidget.value) {
-                        currentWidgetValue = gemini.currentWidget.value;
+                      if (currentWidgetValue != gemini.rfwString.value) {
+                        currentWidgetValue = gemini.rfwString.value;
                         _update();
                       }
                       return RemoteWidget(
                         runtime: _runtime,
                         data: _data,
-                        widget: const FullyQualifiedWidgetName(remoteName, 'root'),
+                        widget: const FullyQualifiedWidgetName(remoteLibraryName, 'root'),
                         onEvent: (String name, DynamicMap arguments) {
                           debugPrint('user triggered event "$name" with data: $arguments');
                         },
@@ -160,51 +160,51 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               verticalMargin16,
               // SECTION: FutureBuilder.
-              // FutureBuilder<void>(
-              //   future: _futureResponse,
-              //   builder: (BuildContext context, AsyncSnapshot snapshot) {
-              //     if (snapshot.hasError) {
-              //       return Text('Error: ${snapshot.error}');
-              //     } else if (snapshot.connectionState == ConnectionState.done) {
-              //       // Section: Most recent message from the model.
-              //       return Expanded(
-              //         flex: 3,
-              //         child: DecoratedBox(
-              //           decoration: BoxDecoration(
-              //             border: Border.all(
-              //               width: 1,
-              //               color: Colors.grey,
-              //             ),
-              //             borderRadius: BorderRadius.circular(4.0),
-              //           ),
-              //           child: Padding(
-              //             padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-              //             child: SingleChildScrollView(
-              //               child: ValueListenableBuilder<String>(
-              //                   valueListenable: gemini.latestResponseFromModel,
-              //                   builder: (BuildContext context, String value, _) {
-              //                     return SelectableText(
-              //                       gemini.latestResponseFromModel.value ?? '',
-              //                       maxLines: 1000,
-              //                       style: const TextStyle(
-              //                         fontSize: 18.0,
-              //                       ),
-              //                     );
-              //                   }),
-              //             ),
-              //           ),
-              //         ),
-              //       );
-              //     } else {
-              //       return const SizedBox(
-              //         width: 300.0,
-              //         height: 300.0,
-              //         child: Placeholder(),
-              //       );
-              //       // return const CircularProgressIndicator();
-              //     }
-              //   },
-              // ),
+              FutureBuilder<void>(
+                future: _futureResponse,
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else if (snapshot.connectionState == ConnectionState.done) {
+                    // Section: Most recent message from the model.
+                    return Expanded(
+                      flex: 3,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 1,
+                            color: Colors.grey,
+                          ),
+                          borderRadius: BorderRadius.circular(4.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                          child: SingleChildScrollView(
+                            child: ValueListenableBuilder<String>(
+                                valueListenable: gemini.latestResponseFromModel,
+                                builder: (BuildContext context, String value, _) {
+                                  return SelectableText(
+                                    gemini.latestResponseFromModel.value ?? '',
+                                    maxLines: 1000,
+                                    style: const TextStyle(
+                                      fontSize: 18.0,
+                                    ),
+                                  );
+                                }),
+                          ),
+                        ),
+                      ),
+                    );
+                  } else {
+                    return const SizedBox(
+                      width: 300.0,
+                      height: 300.0,
+                      child: Placeholder(),
+                    );
+                    // return const CircularProgressIndicator();
+                  }
+                },
+              ),
             ],
           ),
         ),

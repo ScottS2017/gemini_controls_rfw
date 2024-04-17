@@ -5,6 +5,11 @@ import 'package:gemini_controls_rfw/data/available_widget_library.dart';
 
 /// Note the names do _not_ need to match the key values in the [widgets]
 /// [Map], but doing so makes the code easier to understand.
+
+void handleElevatedButtonClick() {
+  print("Elevated Button Clicked!");
+}
+
 const widgets = <String, String>{
   'TestConfig': '''
   import core.widgets;
@@ -14,55 +19,23 @@ const widgets = <String, String>{
         child: Center(
           child: Column(
             children: [
-              Container(
-          width: 100.0,
-          height: 100.0,
-          color: 0xFFFFEEFF,
-          child: Center(
+        Center(
             child: Container(
-              width: 50.0,
-              height: 50.0,
-              color: 0xFFFFFF00,
-              child: Center(
-                child: Text(
-                  text: ["Child 1"],
-                  textDirection: "ltr",
-                  style: {
-  'color': 0xFF00FF00, // Green color
-  'fontSize': 24.0,
-  },
-                ),
-              ),
-            ),
-          ),
-        ),
-        //----
-        SizedBox(
-          width: 100.0,
-          height: 4.0,
-          child: ColoredBox(
-            color: 0xFFFF0000,
-          ),
-        ),    
-      //----
-        Container(
-          width: 100.0,
-          height: 100.0,
-          color: 0xFFFFEEFF,
-          child: Center(
-            child: Container(
-              width: 50.0,
+              width: 100.0,
               height: 50.0,
               color: 0xFFFFFF00,
               child: Center(
                 child: Text(
                   text: ["Child 2"],
                   textDirection: "ltr",
+                  style: {
+                    'color': 0xFF00FF00, // Green color
+                    'fontSize': 24.0,
+                  },
                 ),
               ),
             ),
           ),
-        ),
         //----
         SizedBox(
           width: 100.0,
@@ -71,37 +44,10 @@ const widgets = <String, String>{
             color: 0xFF00FF00,
           ),
         ),
-         //----
-        Container(
-          width: 100.0,
-          height: 100.0,
-          color: 0xFFFFEEFF,
-          child: Center(
-            child: Container(
-              width: 50.0,
-              height: 50.0,
-              color: 0xFFFFFF00,
-              child: Center(
-                child: Text(
-                  text: ["Child 3"],
-                  textDirection: "ltr",
-                ),
-              ),
-            ),
-          ),
-        ),
-        //----
-        SizedBox(
-          width: 100.0,
-          height: 4.0,
-          child: ColoredBox(
-            color: 0xFF0000FF,
-          ),
-        ),
-            ],
-            ),
-        ),
-      );
+      ],
+    ),
+  ),
+);
     ''',
   'TestLibraryWidget': '''
       import local;

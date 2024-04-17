@@ -31,6 +31,9 @@ class LocalChat {
   /// a response to the previous message has been received.
   bool awaitingResponse = false;
 
+  final ValueNotifier<String> _rfwString = ValueNotifier<String>('SizedBox(width: 100.0,height: 50.0,child: ColoredBox(color: 0xFF00BBBB,),)');
+  ValueNotifier<String> get rfwString => _rfwString;
+
   /// The index of the widget currently displayed by RFW
   final ValueNotifier<String> _currentWidget = ValueNotifier<String>('Gradient');
   ValueNotifier<String> get currentWidget => _currentWidget;
@@ -93,7 +96,9 @@ if (_currentWidget.value == 'TestConfig') {
     _updateChatHistory(who: 'model', latestMessage: responseText);
     debugPrint('Response was: $responseText');
     // Does the message start with the code for an RFW Command?
-    if (responseText.startsWith('RFWEXEC')) {
+    if (responseText.startsWith('RFWEXEC:')) {
+      // TODO remove this to prevent the code from showing in the text box.
+      _latestResponseFromModel.value = responseText;
       debugPrint('Processed as RFW command');
       _processRFW(responseText);
     } else {
@@ -107,9 +112,9 @@ if (_currentWidget.value == 'TestConfig') {
   void _processRFW(String response) {
     debugPrint('_processRFW() called LocalChat line 105');
     // Remove "RFWEXEC: From the front of the text string.
-    final rfwString = response.substring(8, response.length);
-    debugPrint('processRFW called with $rfwString');
-    _currentWidget.value = rfwString;
+    final newString = response.substring(8, response.length);
+    debugPrint('processRFW called with $newString');
+    _rfwString.value = newString;
   }
 
   /// Update the chat history.
