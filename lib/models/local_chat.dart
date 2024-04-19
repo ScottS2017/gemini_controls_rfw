@@ -48,7 +48,7 @@ class LocalChat {
   /// The chat needs to be initialized with one message from each side to get
   /// it kicked off. You provide these, but they don't get displayed.
   void initChat() {
-    _updateChatHistory(who: 'user', latestMessage: LocalChatParameters.initializingPrompt);
+    _updateChatHistory(who: 'user', latestMessage: LocalChatParameters.initializingPrompt + LocalChatParameters.coreWidgetsDocs + LocalChatParameters.selectedClassesSourceCode);
     _updateChatHistory(who: 'model', latestMessage: "Sounds good. I'll do my best.");
   }
 

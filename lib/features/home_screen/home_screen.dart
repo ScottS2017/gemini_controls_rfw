@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:gemini_controls_rfw/data/available_widget_library.dart';
 import 'package:gemini_controls_rfw/data/widget_config_values.dart';
 import 'package:gemini_controls_rfw/features/app/app.dart';
@@ -140,25 +141,23 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               verticalMargin16,
               // SECTION: RFW Widget.
-              Flexible(
-                child: ValueListenableBuilder(
-                    valueListenable: gemini.rfwString,
-                    builder: (BuildContext context, String value, _) {
-                      if (currentWidgetValue != gemini.rfwString.value) {
-                        currentWidgetValue = gemini.rfwString.value;
-                        _update();
-                      }
-                      return RemoteWidget(
-                        runtime: _runtime,
-                        data: _data,
-                        widget: const FullyQualifiedWidgetName(remoteLibraryName, 'root'),
-                        onEvent: (String name, DynamicMap arguments) {
-                          debugPrint('user triggered event "$name" with data: $arguments');
-                        },
-                      );
-                    }),
-              ),
-              verticalMargin16,
+              ValueListenableBuilder(
+                  valueListenable: gemini.rfwString,
+                  builder: (BuildContext context, String value, _) {
+                    if (currentWidgetValue != gemini.rfwString.value) {
+                      currentWidgetValue = gemini.rfwString.value;
+                      _update();
+                    }
+                    return RemoteWidget(
+                      runtime: _runtime,
+                      data: _data,
+                      widget: const FullyQualifiedWidgetName(remoteLibraryName, 'root'),
+                      onEvent: (String name, DynamicMap arguments) {
+                        debugPrint('user triggered event "$name" with data: $arguments');
+                      },
+                    );
+                  }),
+              const Spacer(),
               // SECTION: FutureBuilder.
               FutureBuilder<void>(
                 future: _futureResponse,
@@ -167,8 +166,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     return Text('Error: ${snapshot.error}');
                   } else if (snapshot.connectionState == ConnectionState.done) {
                     // Section: Most recent message from the model.
-                    return Expanded(
-                      flex: 3,
+                    return SizedBox(
+                      width: double.infinity,
+                      height: 200.0,
                       child: DecoratedBox(
                         decoration: BoxDecoration(
                           border: Border.all(
@@ -197,8 +197,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   } else {
                     return const SizedBox(
-                      width: 300.0,
-                      height: 300.0,
+                        width: double.infinity,
+                        height: 200.0,
                       child: Placeholder(),
                     );
                     // return const CircularProgressIndicator();
