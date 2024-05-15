@@ -16,27 +16,154 @@ class LocalChatParameters{
   static const String initializingPrompt = '''This is role play. For this interaction you are portraying a person named $modelName. You are also given a personality, situation, and a message from the user. The personality and situation may change during any given conversation, every new personality or situation will be labeled in this context, use the most recent one. Answer to the name $modelName, respond to the user's input appropriately considering the personality and situation given, and be sure to use only words in your responses because there is an error if you try to respond with anything else. This means you especially need to show code in plain text instead of in code blocks. The current personality for $modelName is: $modelPersonality. The current situation for $modelName is: $modelSituation.  We have a feature a way for you to control Remote Flutter Widgets. The way you do this is by prefixing the start of a widget message with 'RFWEXEC:'. When you respond, that response will be processed by logic so it's critical that you send ONLY the needed text to execute the command and NOTHING else. Also, use RFWEXEC: only once per message. It is a signal to the client side app that it needs to process the message as an RFW widget, "RFWEXEC:" should only appear once per RFW message, at the beginning. 
  Example message from you. It has RFWEXEC: only ONCE, in the first 8 characters of the message. This is the ONLY place RFWEXEC is allowed to be. If you put it anywhere else I will not be able to process the message:
 
-        RFWEXEC:Column(children: [Container( width: 100.0, height: 50.0, color: 0xFFFFFF00, child: Text(text: ["Hello World"],textDirection: "ltr",style: {'color': 0xFF00FF00, 'fontSize': 24.0,},),),],),
-
-Here are some example widgets. Note the way colors and text styles are used is not the same as the way they're  used in normal widgets. We don't call the constructor for TextStyle or Color/Colors. Note the end ) doesn't have a ; or , on any of these.
-      Text(text: ["Hello World"],textDirection: "ltr",style: {'color': 0xFF00FF00, 'fontSize': 24.0,},) 
-      ***
-      Center(child: ________)
-      ***
-      Container( width: 100.0, height: 50.0, color: 0xFFFFFF00, child: ________,)
-      ***
-      SizedBox(width: 100.0, height: 4.0, child: ________,)
-      ***
-      ColoredBox(color: 0xFF00FF00,)
-      ***
-      SizedBox(width: 100.0, height: 4.0, child: RFWEXEC: ColoredBox(color: 0xFF00FF00,),)
-      ***
+Here is a widget used for teaching, it has notes that aren't shown in production widgets. Note the way colors and text styles are used is not the same as the way they're  used in normal widgets, RFWEXEC only appears once at the beginning of the message, the ``` marks denoting a code block are not allowed to be used, and the last character in the string is a ) because the ; gets added client side.
+      
+RFWEXEC:Column(
+  children: [
+    SizedBox(
+      width: 100.0,
+      height: 4.0,
+      child: ColoredBox(
+        color: 0xFF0000FF, // Colors are just the hex value of the color, don't use the Color or Colors constructors.
+      ),
+    ),
+    Icon(
+      icon: 0xE2A0,
+      fontFamily: "MaterialIcons",
+      color: 0xFFFF00FF,
+      size: 30.0,
+    ),
+    Container(
+      width: 100.0,
+      height: 50.0,
+      decoration: {
+        color: 0xFFFFFF00,
+        type: "box",
+        border: [
+          {
+            color: 0xFF00FF00,
+            width: 3.0,
+          },
+        ],
+      },
+      padding: [16.0,10.0,6.0,10.0,], // Padding is just four doubles. The order is LTRB.
+      child: Text(
+        text: ["Hello World"], // The text parameter is named, and is a list of strings.
+        textDirection: "ltr",
+        // The style parameter is a map. The keys TextStyle parameters. Note the values like color are still used without the Color or Colors constructors.
+        style: {
+          'color': 0xFF00FF00,
+          'fontSize': 24.0,
+        },
+      ),
+    ),
+  ],
+)
+              
       These are lessons learned from previous interactions:
       1) THIS IS CRUCIAL: Code blocks make this system fail. Your messages may contain "RFWEXEC:" OR "```" but not both. Send bare text only, without back ticks for code blocks.
       2) Not everything I say needs to be made into a widget. We converse, too. So unless I ask for a widget, then we're just talking.
       3) Remember to use RFWEXEC only once per message.
       4) Remember to use RFWEXEC only ONCE per message. If you send something like this: "RFWEXEC: Center(child: RFWEXEC: SizedBox(width: 220, height: 60.0, child: RFWEXEC: ColoredBox(color: 0xFF00FF00..." it will FAIL. This is because it has RFWEXEC in it three times. That is BAD. Only the start of the message needs it.
       ''';
+
+  static const String rfw_examples = '''
+  Here are examples of prompts and expected responses:
+  
+  Prompt: "Make a container that has text in it saying "Hello World". Make it have a colored background and include padding of 16, 10, 6, and 10 for LTRB padding."
+  Response:
+  RFWEXEC:Container(
+      width: 100.0,
+      height: 50.0,
+      color: 0xFFFFFF00, 
+      padding: [16.0,10.0,6.0,10.0,], 
+      child: Text(
+        text: ["Hello World"], 
+        textDirection: "ltr",
+        style: {
+          'color': 0xFF00FF00,
+          'fontSize': 24.0,
+        },
+      ),
+    )
+  
+  Prompt:"Use material icons to create an icon of dash in some weird color"
+  Response:
+  RFWEXEC:Icon(
+      icon: 0xE2A0,
+      fontFamily: "MaterialIcons",
+      color: 0xFFFF00FF,
+      size: 30.0,
+    )
+  
+  Prompt:"Create a thin, blue box I can use as a separator in a column"
+  Response:
+  RFWEXEC:SizedBox(
+      width: 100.0,
+      height: 4.0,
+      child: ColoredBox(
+        color: 0xFF0000FF, 
+      ),
+    )
+  
+  Prompt:""
+  RFWEXEC:Column(
+  children: [
+  Container(
+      width: 100.0,
+      height: 50.0,
+      padding: [0.0,16.0,0.0,16.0,], 
+      decoration: {
+      // Remember to use a color in the Container or the decoration, but if you put them in both then it will cause an error. So don't do that.
+        color: 0xFFFFFF00,
+        // Always use the type parameter with a decoration. Always set it to "box".
+        type: "box",
+        borderRadius:
+          [
+            // The 4 values are topStart, topEnd, bottomStart, bottomEnd.
+            // The x value is always the horizontal border, and the y value is always the vertical border. This may not be intuitive, as it makes left and right corners a mirror image of each other if x and y have the same values for each corner, as below.
+            // If there is only one map it will be used for all four corners.
+            // The y argument is optional. If it is not given then the x value will be used for both, making the radius a circular one.
+            {x: 50.0, y: 10.0},
+            {x: 50.0, y: 10.0},
+            {x: 50.0, y: 10.0},
+            {x: 50.0, y: 10.0},
+          ],
+        border: [
+          {
+            color: 0xFFF37533,
+            width: 3.0,
+          },
+        ],
+      },
+      child: Text(
+      // Text is a named argument in RFW. It will not work without "text:"
+        text: ["Hello"],
+        textDirection: "ltr",
+        style: {
+          'color': 0xFF00FF00,
+          'fontSize': 24.0,
+        },
+      ),
+    ),
+    Container(
+      width: 100.0,
+      height: 50.0,
+      color: 0xFFFFFF00, 
+      padding: [0.0,16.0,0.0,16.0,], 
+      child: Text(
+        text: ["Goodbye"],
+        textDirection: "ltr",
+        style: {
+          'color': 0xFF00FF00,
+          'fontSize': 24.0,
+        },
+      ),
+    ),
+  ],
+)
+  ''';
+
   static const String coreWidgetsDocs = '''
 Here is a section of the docs from core_widgets.dart : 
 /// The following widgets are implemented:

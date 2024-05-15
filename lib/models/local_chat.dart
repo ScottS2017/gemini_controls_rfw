@@ -31,7 +31,89 @@ class LocalChat {
   /// a response to the previous message has been received.
   bool awaitingResponse = false;
 
-  final ValueNotifier<String> _rfwString = ValueNotifier<String>('SizedBox(width: 100.0,height: 50.0,child: ColoredBox(color: 0xFF00BBBB,),)');
+  /// This is the widget tree shown on app initialization.
+  final ValueNotifier<String> _rfwString = ValueNotifier<String>('''
+  Center(
+    child: Column(
+  children: [
+  Container(
+  width: 200.0,
+  height: 200.0,
+  decoration: {
+  type: "box",
+    color: 0xFFFF7700,
+    border: [
+      {
+        color: 0xFFFF00FF,
+        width: 5.0,
+      },
+    ],
+    borderRadius:
+          [
+            {x: 20.0, y: 20.0},
+            {x: 20.0, y: 20.0},
+            {x: 20.0, y: 20.0},
+            {x: 20.0, y: 20.0},
+          ],
+  },
+),
+SizedBox(height: 16.0,),
+    SizedBox(
+      width: 100.0,
+      height: 4.0,
+      child: ColoredBox(
+      // Colors are just the hex value of the color, don't use the Color or Colors constructors.
+        color: 0xFF0000FF, 
+      ),
+    ),
+    Icon(
+    // Icons are passed in with their #, not an Icon constructor.
+      icon: 0xE2A0,
+      // Don't forget the family.
+      fontFamily: "MaterialIcons",
+      color: 0xFFFF00FF,
+      size: 30.0,
+    ),
+    // FYI: You write Container but what actually gets used is an AnimatedContainer.
+    Container(
+      width: 300.0,
+      height: 250.0,
+      decoration: {
+        color: 0xFFFFFF00,
+        // New parameter.
+        type: "box",
+        borderRadius:
+          [
+            // The 4 values are topStart, topEnd, bottomStart, bottomEnd.
+            // The x value is always the horizontal border, and the y value is always the vertical border. This may not be intuitive, as it makes left and right corners a mirror image of each other if x and y have the same values for each corner, as below.
+            // If there is only one map it will be used for all four corners.
+            // The y argument is optional. If it is not given then the x value will be used for both, making the radius a circular one.
+            {x: 50.0, y: 10.0},
+            {x: 50.0, y: 10.0},
+            {x: 50.0, y: 10.0},
+            {x: 50.0, y: 10.0},
+          ],
+        border: [
+          {
+            color: 0xFFF37533,
+            width: 3.0,
+          },
+        ],
+      },
+      padding: [16.0,10.0,6.0,10.0,], // Padding is just four doubles. The order is LTRB.
+      child: Text(
+        text: ["Hello World"], // The text parameter is named, and is a list of strings.
+        textDirection: "ltr",
+        // The style parameter is a map. The keys TextStyle parameters. Note the values like color are still used without the Color or Colors constructors.
+        style: {
+          'color': 0xFF00FF00,
+          'fontSize': 24.0,
+        },
+      ),
+    ),
+  ],
+)
+  )''');
   ValueNotifier<String> get rfwString => _rfwString;
 
   /// The index of the widget currently displayed by RFW
@@ -48,7 +130,7 @@ class LocalChat {
   /// The chat needs to be initialized with one message from each side to get
   /// it kicked off. You provide these, but they don't get displayed.
   void initChat() {
-    _updateChatHistory(who: 'user', latestMessage: LocalChatParameters.initializingPrompt + LocalChatParameters.coreWidgetsDocs + LocalChatParameters.selectedClassesSourceCode);
+    _updateChatHistory(who: 'user', latestMessage: LocalChatParameters.initializingPrompt + LocalChatParameters.rfw_examples + LocalChatParameters.coreWidgetsDocs + LocalChatParameters.selectedClassesSourceCode);
     _updateChatHistory(who: 'model', latestMessage: "Sounds good. I'll do my best.");
   }
 
@@ -138,7 +220,7 @@ class CustomChatMessage {
     required this.message,
   });
 
-  /// Whe the text message was from.
+  /// Who the text message was from.
   String who;
 
   /// What the text message was.

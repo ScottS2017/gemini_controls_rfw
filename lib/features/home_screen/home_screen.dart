@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:gemini_controls_rfw/data/available_widget_library.dart';
 import 'package:gemini_controls_rfw/data/widget_config_values.dart';
 import 'package:gemini_controls_rfw/features/app/app.dart';
+import 'package:gemini_controls_rfw/features/test_screen/test_screen.dart';
 import 'package:gemini_controls_rfw/models/local_chat.dart';
 import 'package:gemini_controls_rfw/utils/spacing_constants.dart';
 import 'package:rfw/formats.dart' show parseLibraryFile;
@@ -53,7 +54,8 @@ class _HomeScreenState extends State<HomeScreen> {
     _runtime.update(coreLibraryName, createCoreWidgets());
     _runtime.update(localLibraryName, AvailableWidgetLibraries.localWidgetLibrary());
     // _runtime.update(remoteLibraryName, parseLibraryFile(widgets[gemini.currentWidget.value]!));
-    _runtime.update(remoteLibraryName, parseLibraryFile('import core.widgets; widget root = ${gemini.rfwString.value};'));
+    _runtime.update(remoteLibraryName,
+        parseLibraryFile('import core.widgets; widget root = ${gemini.rfwString.value};'));
     // TODO Implement the ability of the app to use the string provided by Gemini instead of using a map or any other pre-set string that is client-side. Use the following method call:
     // _runtime.update(remoteName, parseLibraryFile(NAME_OF_GEMINI_RETURNED_WIDGET_STRING));
   }
@@ -123,21 +125,25 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                ],
-              ),
-              verticalMargin16,
-              // SECTION: Swap RFW Widget Button.
-              ElevatedButton(
-                onPressed: () {
-                  gemini.swapCurrentWidget();
-                },
-                child: const SizedBox(
-                  height: 50.0,
-                  width: 150.0,
-                  child: Center(
-                    child: Text('Swap the RFW Widget'),
+                  horizontalMargin8,
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TestScreen(),
+                        ),
+                      );
+                    },
+                    child: const SizedBox(
+                      height: 50.0,
+                      width: 100.0,
+                      child: Center(
+                        child: Text('Test Screen'),
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
               verticalMargin16,
               // SECTION: RFW Widget.
@@ -148,13 +154,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       currentWidgetValue = gemini.rfwString.value;
                       _update();
                     }
-                    return RemoteWidget(
-                      runtime: _runtime,
-                      data: _data,
-                      widget: const FullyQualifiedWidgetName(remoteLibraryName, 'root'),
-                      onEvent: (String name, DynamicMap arguments) {
-                        debugPrint('user triggered event "$name" with data: $arguments');
-                      },
+                    return Center(
+                      child: RemoteWidget(
+                        runtime: _runtime,
+                        data: _data,
+                        widget: const FullyQualifiedWidgetName(remoteLibraryName, 'root'),
+                        onEvent: (String name, DynamicMap arguments) {
+                          debugPrint('user triggered event "$name" with data: $arguments');
+                        },
+                      ),
                     );
                   }),
               const Spacer(),
@@ -197,8 +205,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   } else {
                     return const SizedBox(
-                        width: double.infinity,
-                        height: 200.0,
+                      width: double.infinity,
+                      height: 200.0,
                       child: Placeholder(),
                     );
                     // return const CircularProgressIndicator();
