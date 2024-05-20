@@ -68,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _runtime.update(materialLibraryName, createMaterialWidgets());
     _runtime.update(coreLibraryName, createCoreWidgets());
     _runtime.update(remoteLibraryName,
-        parseLibraryFile('import core.widgets; widget root = ${_gemini.rfwString.value};'));
+        parseLibraryFile('import core.widgets; widget root = ${_geminiService.rfwString.value};'));
   }
 
   /// Used with hot reloads/restarts. This function has no effect in production.
@@ -151,10 +151,10 @@ class _HomeScreenState extends State<HomeScreen> {
               verticalMargin16,
               // SECTION: RFW Widget.
               ValueListenableBuilder(
-                  valueListenable: _gemini.rfwString,
+                  valueListenable: _geminiService.rfwString,
                   builder: (BuildContext context, String value, _) {
-                    if (currentWidgetValue != _gemini.rfwString.value) {
-                      currentWidgetValue = _gemini.rfwString.value;
+                    if (currentWidgetValue != _geminiService.rfwString.value) {
+                      currentWidgetValue = _geminiService.rfwString.value;
                       _update();
                     }
                     return Center(

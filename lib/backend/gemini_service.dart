@@ -1,9 +1,15 @@
-import 'package:flutter/foundation.dart' show debugPrint;
+import 'package:flutter/foundation.dart' show ValueNotifier, debugPrint;
+import 'package:gemini_controls_rfw/data/local_chat_parameters.dart';
 import 'package:gemini_controls_rfw/models/local_chat.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
 /// Handles communication with Gemini and processes results.
 class GeminiService {
+
+  /// This is the widget tree shown on app initialization.
+final ValueNotifier<String> _rfwString = ValueNotifier<String>(LocalChatParameters.initialRfwString);
+  ValueNotifier<String> get rfwString => _rfwString;
+
   /// Processes submission.
   // TODO: Decide if this is needed. It can be tested, but without any other functionality it may be able to be refactored out.
   Future<void> handleSubmit({
@@ -55,7 +61,7 @@ class GeminiService {
     // Does the message start with the code for an RFW Command?
     if (responseText.startsWith('RFWEXEC:')) {
       debugPrint('Processed as RFW command');
-      processRFW(gemini: gemini, response: responseText);
+      processRFW(gemini: gemini,  response: responseText);
     } else {
       debugPrint('Should be displaying text');
       // Display this text in the box that shows the latest message from Gemini.
@@ -72,10 +78,6 @@ class GeminiService {
     // Remove "RFWEXEC: From the front of the text string.
     final newString = response.substring(8, response.length);
     debugPrint('processRFW called with $newString');
-    gemini.rfwString.value = newString;
+    rfwString.value = newString;
   }
-
-
-
-
 }
