@@ -55,11 +55,27 @@ class GeminiService {
     // Does the message start with the code for an RFW Command?
     if (responseText.startsWith('RFWEXEC:')) {
       debugPrint('Processed as RFW command');
-      gemini.processRFW(responseText);
+      processRFW(gemini: gemini, response: responseText);
     } else {
       debugPrint('Should be displaying text');
       // Display this text in the box that shows the latest message from Gemini.
       gemini.latestResponseFromModel.value = responseText;
     }
   }
+
+  /// Process a Remote Flutter Widgets command
+  void processRFW({
+    required LocalChat gemini,
+    required String response,
+  }) {
+    debugPrint('_processRFW() called LocalChat line 105');
+    // Remove "RFWEXEC: From the front of the text string.
+    final newString = response.substring(8, response.length);
+    debugPrint('processRFW called with $newString');
+    gemini.rfwString.value = newString;
+  }
+
+
+
+
 }

@@ -149,15 +149,6 @@ SizedBox(height: 16.0,),
     }
   }
 
-  /// Process a Remote Flutter Widgets command
-  void processRFW(String response) {
-    debugPrint('_processRFW() called LocalChat line 105');
-    // Remove "RFWEXEC: From the front of the text string.
-    final newString = response.substring(8, response.length);
-    debugPrint('processRFW called with $newString');
-    _rfwString.value = newString;
-  }
-
   /// Update the chat history.
   void updateChatHistory({required String who, required String latestMessage}) {
     debugPrint('_updateChatHistory() called LocalChat line 185');
