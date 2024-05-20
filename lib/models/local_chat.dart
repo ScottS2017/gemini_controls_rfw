@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart' show debugPrint, ValueNotifier;
 import 'package:gemini_controls_rfw/data/local_chat_parameters.dart';
+import 'package:gemini_controls_rfw/models/custom_chat_message.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:gemini_controls_rfw/backend/api_key.dart';
 
@@ -116,10 +117,6 @@ SizedBox(height: 16.0,),
   )''');
   ValueNotifier<String> get rfwString => _rfwString;
 
-  /// The index of the widget currently displayed by RFW
-  final ValueNotifier<String> _currentWidget = ValueNotifier<String>('Gradient');
-  ValueNotifier<String> get currentWidget => _currentWidget;
-
   // The most recent text response from the model. Used to display the most recent response in the large font, [SelectableText] in the middle of the screen.
   final ValueNotifier<String> _latestResponseFromModel = ValueNotifier<String>('');
   ValueNotifier<String> get latestResponseFromModel => _latestResponseFromModel;
@@ -139,16 +136,6 @@ SizedBox(height: 16.0,),
     updateChatHistory(who: 'model', latestMessage: "Sounds good. I'll do my best.");
   }
 
-  /// Handled changing the current widget on a command from Gemini.
-  // TODO: Refactor this to use a String from Gemini instead of a simplistic swap command.
-  void swapCurrentWidget() {
-    if (_currentWidget.value == 'TestConfig') {
-      _currentWidget.value = 'TestLibraryWidget';
-    } else {
-      _currentWidget.value = 'TestConfig';
-    }
-  }
-
   /// Update the chat history.
   void updateChatHistory({required String who, required String latestMessage}) {
     debugPrint('_updateChatHistory() called LocalChat line 185');
@@ -161,18 +148,4 @@ SizedBox(height: 16.0,),
       );
     }
   }
-}
-
-/// Represents a single message sent by either the user or the AI.
-class CustomChatMessage {
-  CustomChatMessage({
-    required this.who,
-    required this.message,
-  });
-
-  /// Who the text message was from.
-  String who;
-
-  /// What the text message was.
-  String message;
 }
