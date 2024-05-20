@@ -125,13 +125,13 @@ SizedBox(height: 16.0,),
   ValueNotifier<String> get latestResponseFromModel => _latestResponseFromModel;
 
   // For text-only input, use the gemini-pro model
-  final _model = GenerativeModel(model: 'gemini-pro', apiKey: apiKey);
+  final model = GenerativeModel(model: 'gemini-pro', apiKey: apiKey);
 
   /// The chat needs to be initialized with one message from each side to get
   /// it kicked off. You provide these, but they don't get displayed.
   void initChat() {
-    _updateChatHistory(who: 'user', latestMessage: LocalChatParameters.initializingPrompt + LocalChatParameters.rfw_examples + LocalChatParameters.coreWidgetsDocs + LocalChatParameters.selectedClassesSourceCode);
-    _updateChatHistory(who: 'model', latestMessage: "Sounds good. I'll do my best.");
+    updateChatHistory(who: 'user', latestMessage: LocalChatParameters.initializingPrompt + LocalChatParameters.rfw_examples + LocalChatParameters.coreWidgetsDocs + LocalChatParameters.selectedClassesSourceCode);
+    updateChatHistory(who: 'model', latestMessage: "Sounds good. I'll do my best.");
   }
 
   /// Handled changing the current widget on a command from Gemini.
@@ -144,30 +144,11 @@ if (_currentWidget.value == 'TestConfig') {
 }
   }
 
-  /// Processes the outgoing messages.
-  Future<void> processSend({required String prompt}) async {
-    debugPrint('processSend() called LocalChat line 64');
-    // A message is in progress, prevent another from being sent.
-    awaitingResponse = true;
 
-    // Add the current chat message from the user to the list of the google_generative_ai [Content] objects.
-    _updateChatHistory(who: 'user', latestMessage: prompt);
-    // Create a list of [Content] with current active chat history and all messages before it.
-    List<Content> content = chatHistoryContent;
-    // Declare a response object.
-    GenerateContentResponse
-        response; // Send the current list of [Content] (with the last user message) to the AI in the cloud.
-    try {
-      response = await _model.generateContent(content);
-      _processReceive(response: response);
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  }
 
   /// Processes the incoming messages.
-  void _processReceive({required GenerateContentResponse response}) {
-    debugPrint('_processReceive() called LocalChat line 84');
+  void processReceive({required GenerateContentResponse response}) {
+    debugPrint('_processReceive() called LocalChat line 151');
     // Create a variable for the model's [TextPart] response. This is _not_ the text itself. It is an object that extends [Part]. The [Content] contains [Part] objects and it does not differentiate between [TextPart] and [DataPart], so we need to cast this as a [TextPart] before we can use it.
     final resultantTextPart = response.candidates.last.content.parts[0] as TextPart;
     // Now that it's been cast, the text can be extracted from it.
@@ -175,12 +156,10 @@ if (_currentWidget.value == 'TestConfig') {
     // Processing has finished, now it's safe to allow a new message to be sent.
     awaitingResponse = false;
     // Add the response message from the user to the list of the google_generative_ai [Content] objects.
-    _updateChatHistory(who: 'model', latestMessage: responseText);
+    updateChatHistory(who: 'model', latestMessage: responseText);
     debugPrint('Response was: $responseText');
     // Does the message start with the code for an RFW Command?
     if (responseText.startsWith('RFWEXEC:')) {
-      // TODO remove this to prevent the code from showing in the text box.
-      _latestResponseFromModel.value = responseText;
       debugPrint('Processed as RFW command');
       _processRFW(responseText);
     } else {
@@ -200,8 +179,8 @@ if (_currentWidget.value == 'TestConfig') {
   }
 
   /// Update the chat history.
-  void _updateChatHistory({required String who, required String latestMessage}) {
-    debugPrint('_updateChatHistory() called LocalChat line 112');
+  void updateChatHistory({required String who, required String latestMessage}) {
+    debugPrint('_updateChatHistory() called LocalChat line 185');
     if (who == 'user') {
       chatHistoryContent.add(Content.text(latestMessage));
       messageHistory.add(CustomChatMessage(who: 'user', message: latestMessage));

@@ -18,7 +18,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   /// Contains the logic that builds and maintains Remote Flutter Widgets.
   final Runtime _runtime = Runtime();
 
@@ -26,7 +25,10 @@ class _HomeScreenState extends State<HomeScreen> {
   final DynamicContent _data = DynamicContent();
 
   /// An individual chat, with a personality, situation, and chat history.
-  late LocalChat gemini;
+  late LocalChat _gemini;
+
+  /// The [GeminiService] singleton provided via the context.
+  late GeminiService _geminiService;
 
   final _inputController = TextEditingController();
   final _inputFieldFocusNode = FocusNode();
@@ -48,24 +50,25 @@ class _HomeScreenState extends State<HomeScreen> {
   /// The widget library of local custom widgets.
   static const LibraryName remoteLibraryName = LibraryName(<String>['remote']);
 
-  // Sends the input to [GeminiService] and updates the [FutureBuilder]'s future.
-  void _handleSubmit() {
-    // SECTION _handleSubmit() refactor complete.
-    setState(() {
-      // Process the prompt and use the return for the [FutureBuilder] in the widget tree.
-      _futureResponse = GeminiService.handleSubmit(userInput: _inputController.text, gemini: gemini);
-      // Set focus back to the input field for the next input, then clear the text.
-      _inputFieldFocusNode.requestFocus();
-      _inputController.clear();
-    });
-  }
+   // Sends the input to [GeminiService] and updates the [FutureBuilder]'s future.
+   void _handleSubmit() {
+     // SECTION _handleSubmit() refactor complete.
+     setState(() {
+       // Process the prompt and use the return for the [FutureBuilder] in the widget tree.
+       _futureResponse =
+           _geminiService.handleSubmit(userInput: _inputController.text, gemini: _gemini, geminiService: _geminiService);
+       // Set focus back to the input field for the next input, then clear the text.
+       _inputFieldFocusNode.requestFocus();
+       _inputController.clear();
+     });
+   }
 
   // Handles changing the widgets.
   void _update() {
     _runtime.update(materialLibraryName, createMaterialWidgets());
     _runtime.update(coreLibraryName, createCoreWidgets());
     _runtime.update(remoteLibraryName,
-        parseLibraryFile('import core.widgets; widget root = ${gemini.rfwString.value};'));
+        parseLibraryFile('import core.widgets; widget root = ${_gemini.rfwString.value};'));
   }
 
   /// Used with hot reloads/restarts. This function has no effect in production.
@@ -79,8 +82,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    gemini = App.providedLocalChatOf(context);
-    gemini.initChat();
+    _gemini = App.providedLocalChatOf(context);
+    _geminiService = App.providedGeminiServiceOf(context);
+    _gemini.initChat();
   }
 
   @override
@@ -106,8 +110,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       controller: _inputController,
                       focusNode: _inputFieldFocusNode,
                       onSubmitted: (_) {
-                        if (gemini.awaitingResponse) return;
-                        _handleSubmit();
+                        if (_gemini.awaitingResponse) return;
+                        _handleSubmit(
+
+                        );
                       },
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(
@@ -125,29 +131,30 @@ class _HomeScreenState extends State<HomeScreen> {
                   // SECTION: Reset Context Button.
                   ElevatedButton(
                     onPressed: () {
-                      gemini.chatHistoryContent
-                          .removeRange(1, gemini.chatHistoryContent.length - 1);
-                      gemini.messageHistory.removeRange(1, gemini.messageHistory.length - 1);
+                      _gemini.chatHistoryContent
+                          .removeRange(1, _gemini.chatHistoryContent.length - 1);
+                      _gemini.messageHistory.removeRange(1, _gemini.messageHistory.length - 1);
                     },
                     child: const SizedBox(
                       height: 50.0,
                       width: 80.0,
                       child: Center(
-                        child: Text('Reset the Context',
-                        textAlign: TextAlign.center,),
+                        child: Text(
+                          'Reset the Context',
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                   ),
-
                 ],
               ),
               verticalMargin16,
               // SECTION: RFW Widget.
               ValueListenableBuilder(
-                  valueListenable: gemini.rfwString,
+                  valueListenable: _gemini.rfwString,
                   builder: (BuildContext context, String value, _) {
-                    if (currentWidgetValue != gemini.rfwString.value) {
-                      currentWidgetValue = gemini.rfwString.value;
+                    if (currentWidgetValue != _gemini.rfwString.value) {
+                      currentWidgetValue = _gemini.rfwString.value;
                       _update();
                     }
                     return Center(
@@ -186,10 +193,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: SingleChildScrollView(
                             // Rebuilds on an updated response from the model.
                             child: ValueListenableBuilder<String>(
-                                valueListenable: gemini.latestResponseFromModel,
+                                valueListenable: _gemini.latestResponseFromModel,
                                 builder: (BuildContext context, String value, _) {
                                   return SelectableText(
-                                    gemini.latestResponseFromModel.value ?? '',
+                                    _gemini.latestResponseFromModel.value ?? '',
                                     maxLines: 1000,
                                     style: const TextStyle(
                                       fontSize: 18.0,

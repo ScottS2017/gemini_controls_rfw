@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gemini_controls_rfw/backend/gemini_service.dart';
 import 'package:gemini_controls_rfw/data/local_chat_parameters.dart';
 import 'package:gemini_controls_rfw/features/home_screen/home_screen.dart';
 import 'package:gemini_controls_rfw/models/local_chat.dart';
@@ -16,6 +17,11 @@ class App extends StatefulWidget {
     return state._providedLocalChat;
   }
 
+  static GeminiService providedGeminiServiceOf(BuildContext context) {
+    final AppState state = context.findAncestorStateOfType<AppState>()!;
+    return state._providedGeminiServiceOf;
+  }
+
   @override
   AppState createState() => AppState();
 }
@@ -27,10 +33,13 @@ class AppState extends State<App> {
   /// [widget.providedLocalChatOf].
   late LocalChat _providedLocalChat;
 
+  late GeminiService _providedGeminiServiceOf;
+
   /// Initializes the widget.
   @override
   void initState() {
     super.initState();
+    _providedGeminiServiceOf = GeminiService();
     _providedLocalChat =  LocalChat(
       name: LocalChatParameters.modelName,
       personality: LocalChatParameters.modelPersonality,
