@@ -7,7 +7,6 @@ class GeminiService {
   /// Processes submission.
   // TODO: Decide if this is needed. It can be tested, but without any other functionality it may be able to be refactored out.
   Future<void> handleSubmit({
-    // SECTION new handleSubmit working.
     required String userInput,
     required LocalChat gemini,
     required GeminiService geminiService,
@@ -30,13 +29,37 @@ class GeminiService {
     // Create a list of [Content] with current active chat history and all messages before it.
     List<Content> content = gemini.chatHistoryContent;
     // Declare a response object.
-    GenerateContentResponse
-        response; // Send the current list of [Content] (with the last user message) to the AI in the cloud.
+    GenerateContentResponse response;
     try {
       response = await gemini.model.generateContent(content);
-      gemini.processReceive(response: response);
+      processReceive(gemini: gemini, response: response);
     } catch (e) {
       debugPrint(e.toString());
+    }
+  }
+
+  /// Processes the incoming messages.
+  void processReceive({
+    required LocalChat gemini,
+    required GenerateContentResponse response,
+  }) {
+    debugPrint('_processReceive() called LocalChat line 151');
+    // Create a variable for the model's [TextPart] response. This is _not_ the text itself. It is an object that extends [Part]. The [Content] contains [Part] objects and it does not differentiate between [TextPart] and [DataPart], so we need to cast this as a [TextPart] before we can use it.
+    final resultantTextPart = response.candidates.last.content.parts[0] as TextPart;
+    // Now that it's been cast, the text can be extracted from it.
+    final responseText = resultantTextPart.text;
+
+    // Add the response message from the user to the list of the google_generative_ai [Content] objects.
+    gemini.updateChatHistory(who: 'model', latestMessage: responseText);
+    debugPrint('Response was: $responseText');
+    // Does the message start with the code for an RFW Command?
+    if (responseText.startsWith('RFWEXEC:')) {
+      debugPrint('Processed as RFW command');
+      gemini.processRFW(responseText);
+    } else {
+      debugPrint('Should be displaying text');
+      // Display this text in the box that shows the latest message from Gemini.
+      gemini.latestResponseFromModel.value = responseText;
     }
   }
 }

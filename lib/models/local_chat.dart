@@ -130,47 +130,27 @@ SizedBox(height: 16.0,),
   /// The chat needs to be initialized with one message from each side to get
   /// it kicked off. You provide these, but they don't get displayed.
   void initChat() {
-    updateChatHistory(who: 'user', latestMessage: LocalChatParameters.initializingPrompt + LocalChatParameters.rfw_examples + LocalChatParameters.coreWidgetsDocs + LocalChatParameters.selectedClassesSourceCode);
+    updateChatHistory(
+        who: 'user',
+        latestMessage: LocalChatParameters.initializingPrompt +
+            LocalChatParameters.rfw_examples +
+            LocalChatParameters.coreWidgetsDocs +
+            LocalChatParameters.selectedClassesSourceCode);
     updateChatHistory(who: 'model', latestMessage: "Sounds good. I'll do my best.");
   }
 
   /// Handled changing the current widget on a command from Gemini.
   // TODO: Refactor this to use a String from Gemini instead of a simplistic swap command.
   void swapCurrentWidget() {
-if (_currentWidget.value == 'TestConfig') {
-  _currentWidget.value = 'TestLibraryWidget';
-} else {
-  _currentWidget.value = 'TestConfig';
-}
-  }
-
-
-
-  /// Processes the incoming messages.
-  void processReceive({required GenerateContentResponse response}) {
-    debugPrint('_processReceive() called LocalChat line 151');
-    // Create a variable for the model's [TextPart] response. This is _not_ the text itself. It is an object that extends [Part]. The [Content] contains [Part] objects and it does not differentiate between [TextPart] and [DataPart], so we need to cast this as a [TextPart] before we can use it.
-    final resultantTextPart = response.candidates.last.content.parts[0] as TextPart;
-    // Now that it's been cast, the text can be extracted from it.
-    final responseText = resultantTextPart.text;
-    // Processing has finished, now it's safe to allow a new message to be sent.
-    awaitingResponse = false;
-    // Add the response message from the user to the list of the google_generative_ai [Content] objects.
-    updateChatHistory(who: 'model', latestMessage: responseText);
-    debugPrint('Response was: $responseText');
-    // Does the message start with the code for an RFW Command?
-    if (responseText.startsWith('RFWEXEC:')) {
-      debugPrint('Processed as RFW command');
-      _processRFW(responseText);
+    if (_currentWidget.value == 'TestConfig') {
+      _currentWidget.value = 'TestLibraryWidget';
     } else {
-      debugPrint('Should be displaying text');
-      // Display this text in the box that shows the latest message from Gemini.
-      _latestResponseFromModel.value = responseText;
+      _currentWidget.value = 'TestConfig';
     }
   }
 
   /// Process a Remote Flutter Widgets command
-  void _processRFW(String response) {
+  void processRFW(String response) {
     debugPrint('_processRFW() called LocalChat line 105');
     // Remove "RFWEXEC: From the front of the text string.
     final newString = response.substring(8, response.length);

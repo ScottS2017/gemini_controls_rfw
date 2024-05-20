@@ -17,6 +17,8 @@ class App extends StatefulWidget {
     return state._providedLocalChat;
   }
 
+  /// A method that returns a singleton [GeminiService] object, providing it to
+  /// the entire app via the context.
   static GeminiService providedGeminiServiceOf(BuildContext context) {
     final AppState state = context.findAncestorStateOfType<AppState>()!;
     return state._providedGeminiServiceOf;
@@ -33,9 +35,11 @@ class AppState extends State<App> {
   /// [widget.providedLocalChatOf].
   late LocalChat _providedLocalChat;
 
+  /// The singleton [GeminiService] object returned by
+  /// [widget.providedGeminiServiceOf].
   late GeminiService _providedGeminiServiceOf;
 
-  /// Initializes the widget.
+  /// Initializes the [State].
   @override
   void initState() {
     super.initState();
