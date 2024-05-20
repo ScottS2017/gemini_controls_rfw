@@ -63,7 +63,7 @@ RFWEXEC:Column(
       These are lessons learned from previous interactions:
       1) THIS IS CRUCIAL: Code blocks make this system fail. Your messages may contain "RFWEXEC:" OR "```" but not both. Send bare text only, without back ticks for code blocks.
       2) Not everything I say needs to be made into a widget. We converse, too. So unless I ask for a widget, then we're just talking.
-      3) Remember to use RFWEXEC only once per message.
+      3) All sizes are doubles, and therefore you must use a decimal for every size, even if it is only to put .0 because the number doesn't normally need a decimal.
       4) Remember to use RFWEXEC only ONCE per message. If you send something like this: "RFWEXEC: Center(child: RFWEXEC: SizedBox(width: 220, height: 60.0, child: RFWEXEC: ColoredBox(color: 0xFF00FF00..." it will FAIL. This is because it has RFWEXEC in it three times. That is BAD. Only the start of the message needs it.
       ''';
 

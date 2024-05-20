@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:gemini_controls_rfw/backend/gemini_service.dart';
 import 'package:gemini_controls_rfw/data/available_widget_library.dart';
 import 'package:gemini_controls_rfw/data/widget_config_values.dart';
 import 'package:gemini_controls_rfw/features/app/app.dart';
@@ -35,12 +36,10 @@ class _HomeScreenState extends State<HomeScreen> {
   static const LibraryName remoteLibraryName = LibraryName(<String>['remote']);
 
   void _handleSubmit() {
-    debugPrint('_handleSubmit() called Home line 37');
-    // If we don't have a response from the previous message yet, don't do anything because there will be an error if Gemini gets a List<Content> that contains two messages in a row from either the user or itself.
-    if (gemini.awaitingResponse) return;
     setState(() {
       // Process the prompt, then change the value of [_futureResponse], which triggers the [FutureBuilder].
-      _futureResponse = gemini.processSend(prompt: _inputController.text);
+      // SECTION DONE TO HERE.
+      _futureResponse = GeminiService.handleSubmit(userInput: _inputController.text, gemini: gemini);
       _inputController.clear();
       // Set focus back to input field.
       _inputFieldFocusNode.requestFocus();
@@ -49,15 +48,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   /// Handles changing the widgets.
   void _update() {
-    debugPrint('_update() called HomeScreen line 50');
     _runtime.update(materialLibraryName, createMaterialWidgets());
     _runtime.update(coreLibraryName, createCoreWidgets());
     _runtime.update(localLibraryName, AvailableWidgetLibraries.localWidgetLibrary());
     // _runtime.update(remoteLibraryName, parseLibraryFile(widgets[gemini.currentWidget.value]!));
     _runtime.update(remoteLibraryName,
         parseLibraryFile('import core.widgets; widget root = ${gemini.rfwString.value};'));
-    // TODO Implement the ability of the app to use the string provided by Gemini instead of using a map or any other pre-set string that is client-side. Use the following method call:
-    // _runtime.update(remoteName, parseLibraryFile(NAME_OF_GEMINI_RETURNED_WIDGET_STRING));
   }
 
   /// Used with hot reloads/restarts. This function has no effect in production.
@@ -96,7 +92,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: TextField(
                       controller: _inputController,
                       focusNode: _inputFieldFocusNode,
-                      onSubmitted: (_) => _handleSubmit(),
+                      onSubmitted: (_) {
+                        if (gemini.awaitingResponse) return;
+                        _handleSubmit();
+                      },
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.grey, width: 1)),
