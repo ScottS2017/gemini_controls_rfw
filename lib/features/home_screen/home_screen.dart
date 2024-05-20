@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:gemini_controls_rfw/backend/gemini_service.dart';
 import 'package:gemini_controls_rfw/data/available_widget_library.dart';
-import 'package:gemini_controls_rfw/data/widget_config_values.dart';
 import 'package:gemini_controls_rfw/features/app/app.dart';
 import 'package:gemini_controls_rfw/features/test_screen/test_screen.dart';
 import 'package:gemini_controls_rfw/models/local_chat.dart';
@@ -10,8 +8,11 @@ import 'package:rfw/formats.dart' show parseLibraryFile;
 import 'package:rfw/rfw.dart';
 import 'package:flutter/material.dart';
 
+/// The main screen of the app.
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.title});
+
+  /// Title string for use in the [AppBar].
   final String title;
 
   @override
@@ -19,9 +20,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  /// Contains the logic that builds and maintains Remote Flutter Widgets.
   final Runtime _runtime = Runtime();
+
+  /// Configuration data from the remote widgets.
   final DynamicContent _data = DynamicContent();
+
+  /// An individual chat, with a personality, situation, and chat history.
   late LocalChat gemini;
+
   final _inputController = TextEditingController();
   final _inputFieldFocusNode = FocusNode();
   // FIXME currentWidgetValue is a workaround for the ValueListenableBuilder not rebuilding. Fix me.
@@ -30,23 +38,31 @@ class _HomeScreenState extends State<HomeScreen> {
   // The future used the the UI's [FutureBuilder].
   Future<void>? _futureResponse;
 
+  /// The widget library of material widgets.
   static const LibraryName materialLibraryName = LibraryName(<String>['material', 'widgets']);
+
+  /// The widget library of core widgets.
   static const LibraryName coreLibraryName = LibraryName(<String>['core', 'widgets']);
+
+  /// The widget library of local custom widgets.
   static const LibraryName localLibraryName = LibraryName(<String>['local']);
+
+  /// The widget library of local custom widgets.
   static const LibraryName remoteLibraryName = LibraryName(<String>['remote']);
 
+  // Sends the input to [GeminiService] and updates the [FutureBuilder]'s future.
   void _handleSubmit() {
+    // SECTION _handleSubmit() refactor complete.
     setState(() {
-      // Process the prompt, then change the value of [_futureResponse], which triggers the [FutureBuilder].
-      // SECTION DONE TO HERE.
+      // Process the prompt and use the return for the [FutureBuilder] in the widget tree.
       _futureResponse = GeminiService.handleSubmit(userInput: _inputController.text, gemini: gemini);
-      _inputController.clear();
-      // Set focus back to input field.
+      // Set focus back to the input field for the next input, then clear the text.
       _inputFieldFocusNode.requestFocus();
+      _inputController.clear();
     });
   }
 
-  /// Handles changing the widgets.
+  // Handles changing the widgets.
   void _update() {
     _runtime.update(materialLibraryName, createMaterialWidgets());
     _runtime.update(coreLibraryName, createCoreWidgets());
@@ -63,6 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _update();
   }
 
+  /// Initializes this widget's [State].
   @override
   void initState() {
     super.initState();
@@ -87,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Section: Input field.
+                  // SECTION: Text Input.
                   Expanded(
                     child: TextField(
                       controller: _inputController,
@@ -109,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   horizontalMargin16,
-                  // SECTION: Reset Button.
+                  // SECTION: Reset Context Button.
                   ElevatedButton(
                     onPressed: () {
                       gemini.chatHistoryContent
@@ -125,6 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   horizontalMargin8,
+                  // SECTION: Navigates to a test screen for development.
                   ElevatedButton(
                     onPressed: () {
                       Navigator.push(
@@ -187,6 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
                           child: SingleChildScrollView(
+                            // Rebuilds on an updated response from the model.
                             child: ValueListenableBuilder<String>(
                                 valueListenable: gemini.latestResponseFromModel,
                                 builder: (BuildContext context, String value, _) {
@@ -203,12 +222,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     );
                   } else {
+                    // TODO: Replace placeholder with something permanent.
                     return const SizedBox(
                       width: double.infinity,
                       height: 200.0,
                       child: Placeholder(),
                     );
-                    // return const CircularProgressIndicator();
                   }
                 },
               ),
