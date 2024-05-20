@@ -1,11 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/material.dart' show runApp;
 import 'package:gemini_controls_rfw/features/app/app.dart';
 
 void main() {
   runApp(
-    const ProviderScope(
-      child: App(),
-    ),
+    const App(),
   );
 }
