@@ -67,9 +67,11 @@ RFWEXEC:Column(
       4) Remember to use RFWEXEC only ONCE per message. If you send something like this: "RFWEXEC: Center(child: RFWEXEC: SizedBox(width: 220, height: 60.0, child: RFWEXEC: ColoredBox(color: 0xFF00FF00..." it will FAIL. This is because it has RFWEXEC in it three times. That is BAD. Only the start of the message needs it.
       ''';
 
+  /// Examples of select RFW widgets for Gemini to use.
   static const String rfw_examples = '''
   Here are examples of prompts and expected responses:
   
+  Example 1:
   Prompt: "Make a container that has text in it saying "Hello World". Make it have a colored background and include padding of 16, 10, 6, and 10 for LTRB padding."
   Response:
   RFWEXEC:Container(
@@ -87,6 +89,7 @@ RFWEXEC:Column(
       ),
     )
   
+  Example 2:
   Prompt:"Use material icons to create an icon of dash in some weird color"
   Response:
   RFWEXEC:Icon(
@@ -96,6 +99,7 @@ RFWEXEC:Column(
       size: 30.0,
     )
   
+  Example 3:
   Prompt:"Create a thin, blue box I can use as a separator in a column"
   Response:
   RFWEXEC:SizedBox(
@@ -106,6 +110,7 @@ RFWEXEC:Column(
       ),
     )
   
+  Example 4:
   Prompt:""
   RFWEXEC:Column(
   children: [
@@ -164,6 +169,7 @@ RFWEXEC:Column(
 )
   ''';
 
+  /// Selected parts of the docs from core_widgets.dart
   static const String coreWidgetsDocs = '''
 Here is a section of the docs from core_widgets.dart : 
 /// The following widgets are implemented:
@@ -372,6 +378,8 @@ Here is a section of the docs from core_widgets.dart :
 /// curve for widgets in the library that use the animated variants. If absent,
 /// a default of 200ms and [Curves.fastOutSlowIn] is used.
 ''';
+
+  /// Examples of RFW material widgets for Gemini to use.
   static const String selectedClassesSourceCode = '''
   This is also from core_widgets.dart . This is the RFW source code for a few commonly used classes. Note that color, icons and text styles are used differently than in regular flutter code:
   

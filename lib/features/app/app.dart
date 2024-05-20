@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:gemini_controls_rfw/data/local_chat_parameters.dart';
 import 'package:gemini_controls_rfw/features/home_screen/home_screen.dart';
 import 'package:gemini_controls_rfw/models/local_chat.dart';
-import 'package:rfw/formats.dart' show parseLibraryFile;
-import 'package:rfw/rfw.dart';
 
 /// The foundation widget for the app. It also exposes certain items via the
 /// app's [BuildContext] using [findAncestorStateOfType]. Each of those
 /// items will have a corresponding "Of" method, IE: [providedLocalChatOf].
 class App extends StatefulWidget {
   const App({super.key});
+
+  /// A method that returns a singleton [LocalChat] object, providing it to
+  /// the entire app via the context.
   static LocalChat providedLocalChatOf(BuildContext context) {
     final AppState state = context.findAncestorStateOfType<AppState>()!;
     return state._providedLocalChat;
@@ -22,10 +23,11 @@ class App extends StatefulWidget {
 /// The [State] object for [AppState].
 class AppState extends State<App> {
 
-  /// Used as part of exposing a singleton [LocalChat] object via
-  /// [BuildContext].
+  /// The singleton [LocalChat] object returned by
+  /// [widget.providedLocalChatOf].
   late LocalChat _providedLocalChat;
 
+  /// Initializes the widget.
   @override
   void initState() {
     super.initState();
