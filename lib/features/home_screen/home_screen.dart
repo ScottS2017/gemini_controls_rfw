@@ -1,7 +1,5 @@
 import 'package:gemini_controls_rfw/backend/gemini_service.dart';
-import 'package:gemini_controls_rfw/data/available_widget_library.dart';
 import 'package:gemini_controls_rfw/features/app/app.dart';
-import 'package:gemini_controls_rfw/features/test_screen/test_screen.dart';
 import 'package:gemini_controls_rfw/models/local_chat.dart';
 import 'package:gemini_controls_rfw/utils/spacing_constants.dart';
 import 'package:rfw/formats.dart' show parseLibraryFile;
@@ -66,8 +64,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void _update() {
     _runtime.update(materialLibraryName, createMaterialWidgets());
     _runtime.update(coreLibraryName, createCoreWidgets());
-    _runtime.update(localLibraryName, AvailableWidgetLibraries.localWidgetLibrary());
-    // _runtime.update(remoteLibraryName, parseLibraryFile(widgets[gemini.currentWidget.value]!));
     _runtime.update(remoteLibraryName,
         parseLibraryFile('import core.widgets; widget root = ${gemini.rfwString.value};'));
   }
@@ -135,31 +131,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     child: const SizedBox(
                       height: 50.0,
-                      width: 150.0,
+                      width: 80.0,
                       child: Center(
-                        child: Text('Reset the Context'),
+                        child: Text('Reset the Context',
+                        textAlign: TextAlign.center,),
                       ),
                     ),
                   ),
-                  horizontalMargin8,
-                  // SECTION: Navigates to a test screen for development.
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => TestScreen(),
-                        ),
-                      );
-                    },
-                    child: const SizedBox(
-                      height: 50.0,
-                      width: 100.0,
-                      child: Center(
-                        child: Text('Test Screen'),
-                      ),
-                    ),
-                  ),
+
                 ],
               ),
               verticalMargin16,
