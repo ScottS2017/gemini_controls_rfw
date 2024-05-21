@@ -30,7 +30,6 @@ class App extends StatefulWidget {
 
 /// The [State] object for [AppState].
 class AppState extends State<App> {
-
   /// The singleton [LocalChat] object returned by
   /// [widget.providedLocalChatOf].
   late LocalChat _providedLocalChat;
@@ -44,7 +43,7 @@ class AppState extends State<App> {
   void initState() {
     super.initState();
     _providedGeminiServiceOf = GeminiService();
-    _providedLocalChat =  LocalChat(
+    _providedLocalChat = LocalChat(
       name: LocalChatParameters.modelName,
       personality: LocalChatParameters.modelPersonality,
       situation: LocalChatParameters.modelSituation,
@@ -54,13 +53,16 @@ class AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Gemini Controls RFW',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
+      title: 'Gemini Controls RFW',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.deepPurple,
         ),
-        home: const HomeScreen(title: 'Gemini Controls RFW'),
-
+        useMaterial3: true,
+      ),
+      home: const HomeScreen(
+        title: 'Gemini Controls RFW',
+      ),
     );
   }
 }

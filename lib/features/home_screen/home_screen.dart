@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final _inputController = TextEditingController();
   final _inputFieldFocusNode = FocusNode();
-  // FIXME currentWidgetValue is a workaround for the ValueListenableBuilder not rebuilding. Fix me.
+  // FIXME currentWidgetValue is a workaround for the ValueListenableBuilder not rebuilding.
   String currentWidgetValue = '';
 
   // The future used the the UI's [FutureBuilder].
@@ -50,18 +50,17 @@ class _HomeScreenState extends State<HomeScreen> {
   /// The widget library of local custom widgets.
   static const LibraryName remoteLibraryName = LibraryName(<String>['remote']);
 
-   // Sends the input to [GeminiService] and updates the [FutureBuilder]'s future.
-   void _handleSubmit() {
-     // SECTION _handleSubmit() refactor complete.
-     setState(() {
-       // Process the prompt and use the return for the [FutureBuilder] in the widget tree.
-       _futureResponse =
-           _geminiService.handleSubmit(userInput: _inputController.text, gemini: _gemini, geminiService: _geminiService);
-       // Set focus back to the input field for the next input, then clear the text.
-       _inputFieldFocusNode.requestFocus();
-       _inputController.clear();
-     });
-   }
+  // Sends the input to [GeminiService] and updates [_futureResponse].
+  void _handleSubmit() {
+    setState(() {
+      // Process the prompt.
+      _futureResponse = _geminiService.handleSubmit(
+          userInput: _inputController.text, gemini: _gemini, geminiService: _geminiService);
+      // Set focus back to the input field for the next input, then clear the text.
+      _inputFieldFocusNode.requestFocus();
+      _inputController.clear();
+    });
+  }
 
   // Handles changing the widgets.
   void _update() {
@@ -110,10 +109,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       controller: _inputController,
                       focusNode: _inputFieldFocusNode,
                       onSubmitted: (_) {
-                        if (_gemini.awaitingResponse) return;
-                        _handleSubmit(
-
-                        );
+                        if (_geminiService.awaitingResponse) return;
+                        _handleSubmit();
                       },
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(
@@ -151,6 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
               verticalMargin16,
               // SECTION: RFW Widget.
               ValueListenableBuilder(
+                // When [rfwString] changes, check to see if it's different than before and run update if it is.
                   valueListenable: _geminiService.rfwString,
                   builder: (BuildContext context, String value, _) {
                     if (currentWidgetValue != _geminiService.rfwString.value) {
@@ -163,20 +161,19 @@ class _HomeScreenState extends State<HomeScreen> {
                         data: _data,
                         widget: const FullyQualifiedWidgetName(remoteLibraryName, 'root'),
                         onEvent: (String name, DynamicMap arguments) {
-                          debugPrint('user triggered event "$name" with data: $arguments');
+                          debugPrint('User triggered event "$name" with data: $arguments');
                         },
                       ),
                     );
                   }),
               const Spacer(),
-              // SECTION: FutureBuilder.
               FutureBuilder<void>(
                 future: _futureResponse,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else if (snapshot.connectionState == ConnectionState.done) {
-                    // Section: Most recent message from the model.
+                    // SECTION: The most recent message from the model, displayed in selectable text.
                     return SizedBox(
                       width: double.infinity,
                       height: 200.0,
@@ -193,10 +190,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: SingleChildScrollView(
                             // Rebuilds on an updated response from the model.
                             child: ValueListenableBuilder<String>(
-                                valueListenable: _gemini.latestResponseFromModel,
+                                valueListenable: _geminiService.latestResponseFromModel,
                                 builder: (BuildContext context, String value, _) {
                                   return SelectableText(
-                                    _gemini.latestResponseFromModel.value ?? '',
+                                    _geminiService.latestResponseFromModel.value ?? '',
                                     maxLines: 1000,
                                     style: const TextStyle(
                                       fontSize: 18.0,

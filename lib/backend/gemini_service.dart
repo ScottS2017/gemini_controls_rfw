@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart' show ValueNotifier, debugPrint;
+import 'package:gemini_controls_rfw/backend/api_key.dart';
 import 'package:gemini_controls_rfw/data/local_chat_parameters.dart';
 import 'package:gemini_controls_rfw/models/local_chat.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
@@ -6,8 +7,20 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 /// Handles communication with Gemini and processes results.
 class GeminiService {
 
+  /// Used to prevent a second message from being sent by the user before
+  /// a response to the previous message has been received.
+  bool awaitingResponse = false;
+
+  /// The most recent text response from the model. Used to display the most recent response in the large font, [SelectableText] in the middle of the screen.
+  final ValueNotifier<String> _latestResponseFromModel = ValueNotifier<String>('');
+  ValueNotifier<String> get latestResponseFromModel => _latestResponseFromModel;
+
+  /// An instance of the gemini-pro model.
+  final model = GenerativeModel(model: 'gemini-pro', apiKey: apiKey);
+
   /// This is the widget tree shown on app initialization.
-final ValueNotifier<String> _rfwString = ValueNotifier<String>(LocalChatParameters.initialRfwString);
+  final ValueNotifier<String> _rfwString =
+      ValueNotifier<String>(LocalChatParameters.initialRfwString);
   ValueNotifier<String> get rfwString => _rfwString;
 
   /// Processes submission.
@@ -17,10 +30,10 @@ final ValueNotifier<String> _rfwString = ValueNotifier<String>(LocalChatParamete
     required LocalChat gemini,
     required GeminiService geminiService,
   }) {
-    gemini.awaitingResponse = true;
+    awaitingResponse = true;
     Future<void>? result;
     result = processSend(gemini: gemini, prompt: userInput, geminiService: geminiService);
-    gemini.awaitingResponse = false;
+    awaitingResponse = false;
     return result;
   }
 
@@ -37,7 +50,7 @@ final ValueNotifier<String> _rfwString = ValueNotifier<String>(LocalChatParamete
     // Declare a response object.
     GenerateContentResponse response;
     try {
-      response = await gemini.model.generateContent(content);
+      response = await model.generateContent(content);
       processReceive(gemini: gemini, response: response);
     } catch (e) {
       debugPrint(e.toString());
@@ -61,11 +74,11 @@ final ValueNotifier<String> _rfwString = ValueNotifier<String>(LocalChatParamete
     // Does the message start with the code for an RFW Command?
     if (responseText.startsWith('RFWEXEC:')) {
       debugPrint('Processed as RFW command');
-      processRFW(gemini: gemini,  response: responseText);
+      processRFW(gemini: gemini, response: responseText);
     } else {
       debugPrint('Should be displaying text');
       // Display this text in the box that shows the latest message from Gemini.
-      gemini.latestResponseFromModel.value = responseText;
+      latestResponseFromModel.value = responseText;
     }
   }
 

@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart' show debugPrint, ValueNotifier;
 import 'package:gemini_controls_rfw/data/local_chat_parameters.dart';
 import 'package:gemini_controls_rfw/models/custom_chat_message.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
-import 'package:gemini_controls_rfw/backend/api_key.dart';
 
 /// An individual chat, with a personality, situation, and chat history.
 class LocalChat {
@@ -28,17 +26,6 @@ class LocalChat {
   /// The chat history of this chat.
   final chatHistoryContent = <Content>[];
 
-  /// Used to prevent a second message from being sent by the user before
-  /// a response to the previous message has been received.
-  bool awaitingResponse = false;
-
-  // The most recent text response from the model. Used to display the most recent response in the large font, [SelectableText] in the middle of the screen.
-  final ValueNotifier<String> _latestResponseFromModel = ValueNotifier<String>('');
-  ValueNotifier<String> get latestResponseFromModel => _latestResponseFromModel;
-
-  // For text-only input, use the gemini-pro model
-  final model = GenerativeModel(model: 'gemini-pro', apiKey: apiKey);
-
   /// The chat needs to be initialized with one message from each side to get
   /// it kicked off. You provide these, but they don't get displayed.
   void initChat() {
@@ -53,7 +40,6 @@ class LocalChat {
 
   /// Update the chat history.
   void updateChatHistory({required String who, required String latestMessage}) {
-    debugPrint('_updateChatHistory() called LocalChat line 185');
     if (who == 'user') {
       chatHistoryContent.add(Content.text(latestMessage));
       messageHistory.add(CustomChatMessage(who: 'user', message: latestMessage));
