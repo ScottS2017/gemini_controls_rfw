@@ -1,4 +1,6 @@
 import 'package:gemini_controls_rfw/data/local_chat_parameters.dart';
+import 'package:gemini_controls_rfw/data/rfw_core_widgets.dart';
+import 'package:gemini_controls_rfw/data/rfw_rules.dart';
 import 'package:gemini_controls_rfw/models/custom_chat_message.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
@@ -34,7 +36,8 @@ class LocalChat {
         latestMessage: LocalChatParameters.initializingPrompt +
             LocalChatParameters.rfw_examples +
             LocalChatParameters.coreWidgetsDocs +
-            LocalChatParameters.selectedClassesSourceCode);
+            LocalChatParameters.selectedClassesSourceCode +
+            RfwCoreWidgets.availableCoreWidgets + RfwRules.allRules() + RfwCoreWidgets.allCoreWidgets());
     updateChatHistory(who: 'model', latestMessage: "Sounds good. I'll do my best.");
   }
 

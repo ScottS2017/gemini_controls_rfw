@@ -20,7 +20,7 @@ class GeminiService {
 
   /// This is the widget tree shown on app initialization.
   final ValueNotifier<String> _rfwString =
-      ValueNotifier<String>(LocalChatParameters.initialRfwString);
+      ValueNotifier<String>(LocalChatParameters.initializingRfwWidget);
   ValueNotifier<String> get rfwString => _rfwString;
 
   /// Processes submission.
@@ -72,7 +72,7 @@ class GeminiService {
     gemini.updateChatHistory(who: 'model', latestMessage: responseText);
     debugPrint('Response was: $responseText');
     // Does the message start with the code for an RFW Command?
-    if (responseText.startsWith('RFWEXEC:')) {
+    if (responseText.contains('RFWEXEC')) {
       debugPrint('Processed as RFW command');
       processRFW(gemini: gemini, response: responseText);
     } else {
@@ -87,10 +87,19 @@ class GeminiService {
     required LocalChat gemini,
     required String response,
   }) {
-    debugPrint('_processRFW() called LocalChat line 105');
     // Remove "RFWEXEC: From the front of the text string.
-    final newString = response.substring(8, response.length);
-    debugPrint('processRFW called with $newString');
-    rfwString.value = newString;
+    // FIXME erroring if a good widget is sent.  Out of range error.
+    var result = '';
+    final execLocation = response.indexOf('RFWEXEC');
+    final cutOutTo = execLocation + 8;
+    final frontTrimmed = response.replaceRange(0, cutOutTo, '');
+    if(frontTrimmed.contains('```')) {
+      final ticksLocation = frontTrimmed.indexOf('```');
+      result = frontTrimmed.replaceRange(ticksLocation, frontTrimmed.length, '');
+    } else {
+      result = frontTrimmed;
+    }
+    debugPrint('processRFW called with\n$result');
+    rfwString.value = result;
   }
 }

@@ -12,7 +12,7 @@ class LocalChatParameters{
   static const String modelSituation = 'Jill is helping the user build a Flutter app that allows Gemini to control RFW Widgets remotely.';
 
   /// The widgets shown on startup.
-  static const initialRfwString = '''
+  static const initializingRfwWidget = '''
   Center(
     child: Column(
   children: [
@@ -38,13 +38,15 @@ class LocalChatParameters{
   },
 ),
 SizedBox(height: 16.0,),
-    SizedBox(
-      width: 100.0,
-      height: 4.0,
-      child: ColoredBox(
-      // Colors are just the hex value of the color, don't use the Color or Colors constructors.
-        color: 0xFF0000FF, 
-      ),
+    Container(
+      width: 512.0,
+      height: 308.0,
+      decoration: {
+        type: "box",
+        image: {
+            source: "https://media-be.chewy.com/wp-content/uploads/2021/06/14090727/AmericanPitBullTerrier-FeaturedImage-1024x615.jpg"
+          },
+        },
     ),
     Icon(
     // Icons are passed in with their #, not an Icon constructor.
@@ -68,10 +70,10 @@ SizedBox(height: 16.0,),
             // The x value is always the horizontal border, and the y value is always the vertical border. This may not be intuitive, as it makes left and right corners a mirror image of each other if x and y have the same values for each corner, as below.
             // If there is only one map it will be used for all four corners.
             // The y argument is optional. If it is not given then the x value will be used for both, making the radius a circular one.
-            {x: 50.0, y: 10.0},
-            {x: 50.0, y: 10.0},
-            {x: 50.0, y: 10.0},
-            {x: 50.0, y: 10.0},
+            {x: 10.0, y: 10.0},
+            {x: 20.0, y: 80.0},
+            {x: 90.0, y: 30.0},
+            {x: 100.0, y: 100.0},
           ],
         border: [
           {
@@ -83,6 +85,7 @@ SizedBox(height: 16.0,),
       padding: [16.0,10.0,6.0,10.0,], // Padding is just four doubles. The order is LTRB.
       child: Text(
         text: ["Hello World"], // The text parameter is named, and is a list of strings.
+        textAlign: "center",
         textDirection: "ltr",
         // The style parameter is a map. The keys TextStyle parameters. Note the values like color are still used without the Color or Colors constructors.
         style: {
