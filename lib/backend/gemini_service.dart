@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart' show ValueNotifier, debugPrint;
 import 'package:gemini_controls_rfw/backend/api_key.dart';
+import 'package:gemini_controls_rfw/data/initial_widget.dart';
 import 'package:gemini_controls_rfw/data/local_chat_parameters.dart';
 import 'package:gemini_controls_rfw/models/local_chat.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
@@ -20,7 +21,7 @@ class GeminiService {
 
   /// This is the widget tree shown on app initialization.
   final ValueNotifier<String> _rfwString =
-      ValueNotifier<String>(LocalChatParameters.initializingRfwWidget);
+      ValueNotifier<String>(initializingRfwWidget);
   ValueNotifier<String> get rfwString => _rfwString;
 
   /// Processes submission.
