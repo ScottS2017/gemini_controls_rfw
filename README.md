@@ -1,38 +1,21 @@
-# gemini_controls_rfw
+# gemini__controls_rfw
 
-The closest thing to a guide found so far is rfw-1.0.26\lib\src\flutter\core_widgets.dart
+A collaboration to create a base for using Gemini to control RFW, customizable for various use cases.
 
-Basic guide to the widgets and how they're used:
+## Reference Material
+- [RFW on pub.dev](https://pub.dev/packages/rfw)
+- [RFW Docs](https://pub.dev/documentation/rfw/latest/rfw/rfw-library.html)
+- [Google Generative AI Package](https://pub.dev/packages/google_generative_ai)
+- [Get Gemini API Key Here](https://aistudio.google.com/app/apikey)
+- [Hixie's starter comments](https://github.com/flutter/packages/pull/6750/files)
+- [Gemini Web UI](https://gemini.google.com/app)
+- [Token Counter](https://tokenizer.streamlit.app/)
 
-Column(
-  children: [
-    SizedBox(
-      width: 100.0,
-      height: 4.0,
-      child: ColoredBox(
-        color: 0xFF0000FF, // Colors are just the hex value of the color.
-      ),
-   ),
-    Container(
-      width: 100.0,
-      height: 50.0,
-      color: 0xFFFFFF00, // Colors are just the hex value of the color.
-      padding: [16.0,10.0,6.0,10.0,], // Padding is just four doubles. The order is LTRB.
-      child: Text(
-        text: ["Hello World"], // The text parameter is named, and is a list of strings.
-        textDirection: "ltr",
-        // The style parameter is a map. The keys TextStyle parameters. Note the values like color are still used without the Color or Colors constructors.
-        style: {
-          'color': 0xFF00FF00, // Colors are just the hex value of the color.
-          'fontSize': 24.0,
-        },
-      ),
-    ),
-    Icon(
-      icon: 0xE2A0, // Icons are just the hex value of the icon, don't use the IconData constructor.
-      fontFamily: "MaterialIcons", // Specify the icon font family.
-      color: 0xFFFF00FF, // Colors are just the hex value of the color.
-      size: 30.0,
-    ),
-  ],
-),
+## Approaches Used in this App
+- State Management: Kept in the App class, with use of [findAncestorStateOfType](https://api.flutter.dev/flutter/widgets/BuildContext/findAncestorStateOfType.html)
+---
+How to use the provided instances, this is for the RfwStrings class:
+
+final RfwStrings rfwStrings = App.rfwStringsOf(context);
+
+  ---
