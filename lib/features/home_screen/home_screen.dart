@@ -51,11 +51,11 @@ class _HomeScreenState extends State<HomeScreen> {
   static const LibraryName remoteLibraryName = LibraryName(<String>['remote']);
 
   // Sends the input to [GeminiService] and updates [_futureResponse].
-  void _handleSubmit() {
+  void _handleSubmit(String input) {
     setState(() {
       // Process the prompt.
       _futureResponse = _geminiService.handleSubmit(
-          userInput: _inputController.text, gemini: _gemini, geminiService: _geminiService);
+          userInput: input, gemini: _gemini, geminiService: _geminiService);
       // Set focus back to the input field for the next input, then clear the text.
       _inputFieldFocusNode.requestFocus();
       _inputController.clear();
@@ -66,10 +66,12 @@ class _HomeScreenState extends State<HomeScreen> {
   void _update() {
     _runtime.update(coreLibraryName, createCoreWidgets());
     _runtime.update(materialLibraryName, createMaterialWidgets());
-    var rfwStringFromGemini =  _geminiService.rfwString.value;
-    _runtime.update(remoteLibraryName,
+    var rfwStringFromGemini = _geminiService.rfwString.value;
+    _runtime.update(
+        remoteLibraryName,
         // parseLibraryFile() takes a single string of all imports. The last is our rfwString.
-        parseLibraryFile('import core.widgets; import material.widgets; widget root = $rfwStringFromGemini;'));
+        parseLibraryFile(
+            'import core.widgets; import material.widgets; widget root = $rfwStringFromGemini;'));
   }
 
   /// Used with hot reloads/restarts. This function has no effect in production.
@@ -112,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       focusNode: _inputFieldFocusNode,
                       onSubmitted: (_) {
                         if (_geminiService.awaitingResponse) return;
-                        _handleSubmit();
+                        _handleSubmit(_inputController.text);
                       },
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(
@@ -150,7 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
               verticalMargin16,
               // SECTION: RFW Widget.
               ValueListenableBuilder(
-                // When [rfwString] changes, check to see if it's different than before and run update if it is.
+                  // When [rfwString] changes, check to see if it's different than before and run update if it is.
                   valueListenable: _geminiService.rfwString,
                   builder: (BuildContext context, String value, _) {
                     if (currentWidgetValue != _geminiService.rfwString.value) {
@@ -169,53 +171,72 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   }),
               const Spacer(),
-              FutureBuilder<void>(
-                future: _futureResponse,
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else if (snapshot.connectionState == ConnectionState.done) {
-                    // SECTION: The most recent message from the model, displayed in selectable text.
-                    return SizedBox(
-                      width: double.infinity,
-                      height: 200.0,
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            width: 1,
-                            color: Colors.grey,
-                          ),
-                          borderRadius: BorderRadius.circular(4.0),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-                          child: SingleChildScrollView(
-                            // Rebuilds on an updated response from the model.
-                            child: ValueListenableBuilder<String>(
-                                valueListenable: _geminiService.latestResponseFromModel,
-                                builder: (BuildContext context, String value, _) {
-                                  return SelectableText(
-                                    _geminiService.latestResponseFromModel.value ?? '',
-                                    maxLines: 1000,
-                                    style: const TextStyle(
-                                      fontSize: 18.0,
-                                    ),
-                                  );
-                                }),
-                          ),
-                        ),
-                      ),
-                    );
-                  } else {
-                    // TODO: Replace placeholder with something permanent.
-                    return const SizedBox(
-                      width: double.infinity,
-                      height: 200.0,
-                      child: Placeholder(),
-                    );
-                  }
-                },
-              ),
+              // FutureBuilder<void>(
+              //   future: _futureResponse,
+              //   builder: (BuildContext context, AsyncSnapshot snapshot) {
+              //     if (snapshot.hasError) {
+              //       return Text('Error: ${snapshot.error}');
+              //     } else if (snapshot.connectionState == ConnectionState.done) {
+              //       // SECTION: The most recent message from the model, displayed in selectable text.
+              //       return SizedBox(
+              //         width: double.infinity,
+              //         height: 500.0,
+              //         child: DecoratedBox(
+              //           decoration: BoxDecoration(
+              //             border: Border.all(
+              //               width: 1,
+              //               color: Colors.grey,
+              //             ),
+              //             borderRadius: BorderRadius.circular(4.0),
+              //           ),
+              //           child: FutureBuilder<void>(
+              //             future: _futureResponse,
+              //             builder: (BuildContext context, AsyncSnapshot snapshot) {
+              //               if (snapshot.hasError) {
+              //                 return Text('Error: ${snapshot.error}');
+              //               } else if (snapshot.connectionState == ConnectionState.done) {
+              //                 return Padding(
+              //                   padding:
+              //                       const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+              //                   child: SingleChildScrollView(
+              //                     // Rebuilds on an updated response from the model.
+              //                     child: ValueListenableBuilder<String>(
+              //                       valueListenable: _geminiService.latestResponseFromModel,
+              //                       builder: (BuildContext context, String value, _) {
+              //                         return SelectableText(
+              //                           _geminiService.latestResponseFromModel.value ?? '',
+              //                           maxLines: 1000,
+              //                           style: const TextStyle(
+              //                             fontSize: 18.0,
+              //                           ),
+              //                         );
+              //                       },
+              //                     ),
+              //                   ),
+              //                 );
+              //               } else {
+              //                 return const SizedBox.shrink();
+              //               }
+              //             },
+              //           ),
+              //         ),
+              //       );
+              //     } else {
+              //       // TODO: Replace placeholder with something permanent.
+              //       return Container(
+              //         width: double.infinity,
+              //         height: 100.0,
+              //         decoration: BoxDecoration(
+              //           border: Border.all(
+              //             width: 1,
+              //             color: Colors.grey,
+              //           ),
+              //           borderRadius: BorderRadius.circular(4.0),
+              //         ),
+              //       );
+              //     }
+              //   },
+              // ),
             ],
           ),
         ),

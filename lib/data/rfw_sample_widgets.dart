@@ -1,49 +1,8 @@
-class RfwCoreWidgets {
-  static const String availableCoreWidgets = '''
-  Note: ignore any comments that start with // Hixie. They are not for you.
-  The core RFW widgets are:
-[Align], 
-[AspectRatio], 
-[Center], 
-[ClipRRect], 
-[ColoredBox], 
-[Column], 
-[Container] (actually uses [AnimatedContainer]), 
-[DefaultTextStyle], 
-[Directionality], 
-[Expanded], 
-[FittedBox], 
-[FractionallySizedBox], 
-[GestureDetector], 
-[GridView] (actually uses [GridView.builder]), 
-[Icon], 
-[IconTheme], 
-[IntrinsicHeight], 
-[IntrinsicWidth], 
-[Image] (see below), 
-[ListBody], 
-[ListView] (actually uses [ListView.builder]), 
-[Opacity] (actually uses [AnimatedOpacity]), 
-[Padding] (actually uses [AnimatedPadding]), 
-[Placeholder], 
-[Positioned] (actually uses [AnimatedPositionedDirectional]), 
-[Rotation] (actually uses [AnimatedRotation]), 
-[Row], 
-[SafeArea], 
-[Scale] (actually uses [AnimatedScale]), 
-[SingleChildScrollView], 
-[SizedBox], 
-`SizedBoxExpand` (actually [SizedBox.expand]), 
-`SizedBoxShrink` (actually [SizedBox.shrink]), 
-[Spacer], 
-[Stack], 
-[Text], 
-[Wrap], 
-
-For each, every parameter is implemented using the same name. Parameters
-that take structured types are represented using maps, with each named
-parameter of that type's default constructor represented by a key, with the
-following notable caveats and exceptions:
+class RfwSampleWidgets {
+  static const String testNetworkImage = 'This is a URL for an image we will be using for testing. If I say to use the test image, it is at: "https://assets3.thrillist.com/v1/image/3082123/792x446/scale;webp=auto;jpeg_quality=60;progressive.jpg"';
+  static const String rulesAndGuidelines = '''
+For each widget, every parameter is implemented using the same name as its normal Flutter counterpart. Parameters that take structured types are represented using maps, with each named parameter of that type's default constructor represented by a key, with the following notable caveats and exceptions:
+ 
  * Enums are represented as strings with the unqualified name of the value.
    For example, [MainAxisAlignment.start] is represented as the string
    `"start"`.
@@ -246,7 +205,32 @@ argument and `curve` argument. It sets the default animation duration and
 curve for widgets in the library that use the animated variants. If absent,
 a default of 200ms and [Curves.fastOutSlowIn] is used.
   ''';
-
+  // Individual Widgets
+  static const String appBar = '''
+AppBar(
+  backgroundColor: 0xFFFF0000,
+  title: Text(
+    text: ['AppBar Sample'],
+    textDirection: "ltr",
+    style: {
+      fontFamily: 'Arial',
+      color: 0xFFFFFFFF, 
+    },
+  ),
+)
+  ''';
+  static const String column = '''
+Column(
+  // Use enums by putting the name of the desired value in quotes, like this:
+  mainAxisSize: "max",
+  mainAxisAlignment: "center",
+  crossAxisAlignment: "stretch",
+  // mainAxisSize, mainAxisAlignment, and crossAxisAlignment can ONLY be used with Rows, Columns, or Flexes. Putting them in anything else causes the app to crash, don't make the app crash.
+  children: [
+   ...
+  ],
+),
+  ''';
   static const String container = '''
 Container(
   // sizes are always doubles, with the decimal point.
@@ -258,6 +242,9 @@ Container(
 )
   ''';
   static const String containerWithDecoration = '''
+  To create a border or border radius you MUST use a decoration. It is not
+  optional. When you use a decoration you MUST specify a type, it is not optional.
+  A Container's color and decoration parameters are mutually exclusive. You can use one or the other, but never both.
   The types supported for [Decoration] are `box` for [BoxDecoration],
    `flutterLogo` for [FlutterLogoDecoration], and `shape` for
    [ShapeDecoration]. 
@@ -285,26 +272,51 @@ Container(
       [
         {x: 20.0, y: 20.0},
      ],
+    // This is how a drop shadow is done in RFW. Each map entry is one shadow.
+    boxShadow: [
+      {
+        color: 0x7F000000,
+        offset: { x: 4.0, y: 4.0 },
+        blurRadius: 4.0,
+      },
+     ],
   },
 ),
 ```
   ''';
   static const String decorationImage = '''
-  A decoration image is used inside a box decoration. The way to do it is through decoration > image > source but this only works if the type is set to box, EG:
+  A decoration image is used inside a box decoration. If you want to show an image with rounded corners then this is the way to do it because you cannot round the corners of an Image widget. To round the corners you need to make a decoration and then add the image to it, and round the corners in the decoration as well. The way to do it is through decoration > image > source but this only works if the type is set to box, EG:
   ```
   Container(
     width: 512.0,
     height: 308.0,
     decoration: {
       type: "box",
-      image: {
-          source: "https://media-be.chewy.com/wp-content/uploads/2021/06/14090727/AmericanPitBullTerrier-FeaturedImage-1024x615.jpg",
-          fit: "cover",
+      borderRadius: [
+        {
+          x: 30.0,
+          y: 30.0,
         },
+      ],
+      image: {
+        source: "https://assets3.thrillist.com/v1/image/3082123/792x446/scale;webp=auto;jpeg_quality=60;progressive.jpg",
+        fit: "cover",
       },
+    },
   ),
   ```
   ''';
+  // FIXME need sample for alignment in frac sized box.
+//   static const String fractionallySizedBox = '''
+// FractionallySizedBox(
+//   alignment: ,
+//   widthFactor: 0.8,
+//   heightFactor: 0.6,
+//   child: Placeholder(),
+// )
+// // SizedBox.expand() in RFW widgets is:
+// SizedBoxExpand()
+//   ''';
   static const String icon = '''
 Icon(
   // Icons are passed in with their #, not an Icon constructor.
@@ -317,6 +329,22 @@ Icon(
     size: 30.0,
 )
   ''';
+  static const String scaffold = '''
+Scaffold(
+  appBar: AppBar(
+  backgroundColor: 0xFF00F0F0,
+    title: Text(
+      text: ['Scaffold Sample'],
+      textDirection: "ltr",
+      style: {
+        fontFamily: 'Arial',
+        color: 0xFF000000, 
+      },
+    ),
+  ),
+  body: Placeholder(),
+)
+  ''';
   static const String sizedBox = '''
 SizedBox(
   // sizes are always doubles, with the decimal point
@@ -325,6 +353,8 @@ SizedBox(
   // Replace [Placeholder] with an actual child, if using one.
   child: Placeholder(),
 )
+// SizedBox.expand() in RFW widgets is:
+SizedBoxExpand()
   ''';
   static const String textAndStyle = '''
 Text(
@@ -345,8 +375,24 @@ Text(
 )
   ''';
 
-  static String allCoreWidgets(){
-    const result = '$container $containerWithDecoration $decorationImage $icon $sizedBox $textAndStyle';
+  static String allWidgets(){
+    const result = '''
+    $testNetworkImage 
+    $rulesAndGuidelines 
+    $appBar 
+    $column 
+    $container 
+    $containerWithDecoration 
+    $decorationImage 
+    $icon 
+    $scaffold 
+    $sizedBox 
+    $textAndStyle''';
     return result;
   }
 }
+
+String testString = '''
+Show me a container that is 500 wide by 800 high and is light grey. Inside the container, center a sized box that is 400 wide by 700 high and put a scaffold inside of it, using a blue AppBar. Inside the app bar for the title use a text widget that says hi there in white text, and wrap it in a center so it's centered in the AppBar. Inside the scaffold put a row with its main axis alignment set to space between and its cross axis alignment to stretch. Inside the row, the first child is going to be a green box that is 50 pixels wide. The second child is a column with the column's main axis alignment set to spaceEvenly and cross axis alignment set to center. Put three container's in the column. Each container should be  225 wide and 120 high, and put the test image in it . Round the corners those image's containers by 50 and give them each a drop shadow. For all borders, images and radii make sure you use your decoration parameter properly. The last child of the row should be a red box, just like the green one.
+
+''';

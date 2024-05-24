@@ -1,19 +1,29 @@
 /// The widgets shown on startup.
 const initializingRfwWidget = '''
-SizedBox(
+Container(
   width: 400.0,
   height: 700.0,
+ decoration: {
+  type: "box",
+    border: [
+      {
+        color: 0xFFDDDDDD,
+        width: 2.0,
+      },
+    ],
+  },
   child: Scaffold(
-    appBar: {
+    appBar: AppBar(
+    backgroundColor: 0xFFFF0000,
       title: Text(
         text: ['RFW'],
         textDirection: "ltr",
         style: {
           fontFamily: 'Arial',
-          color: 0xFF000000, 
+          color: 0xFFFFFFFF, 
         },
       ),
-    },
+    ),
     body: SizedBoxExpand(
       child: ColoredBox(
         color: 0xFFEEEEEE,
