@@ -10,26 +10,17 @@ SizedBox(
         textDirection: "ltr",
         style: {
           fontFamily: 'Arial',
-          color: 0xFF009900, 
+          color: 0xFF000000, 
         },
       ),
     },
-    body: SizedBox(
-      width: 300.0,
-      height: 500.0,
+    body: SizedBoxExpand(
       child: ColoredBox(
-        color: 0xFFFFFF00,
+        color: 0xFFEEEEEE,
       ),  
     ),  
   ),
 )
-
-
-
-
-
-
-
 ''';
 
 const oldInitString = '''

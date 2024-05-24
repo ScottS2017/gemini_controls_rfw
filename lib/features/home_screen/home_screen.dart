@@ -64,10 +64,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // Handles changing the widgets.
   void _update() {
-    _runtime.update(materialLibraryName, createMaterialWidgets());
     _runtime.update(coreLibraryName, createCoreWidgets());
+    _runtime.update(materialLibraryName, createMaterialWidgets());
+    var rfwStringFromGemini =  _geminiService.rfwString.value;
     _runtime.update(remoteLibraryName,
-        parseLibraryFile('import core.widgets; widget root = ${_geminiService.rfwString.value};'));
+        // parseLibraryFile() takes a single string of all imports. The last is our rfwString.
+        parseLibraryFile('import core.widgets; import material.widgets; widget root = $rfwStringFromGemini;'));
   }
 
   /// Used with hot reloads/restarts. This function has no effect in production.

@@ -19,7 +19,7 @@ class GeminiService {
   /// An instance of the gemini-pro model.
   final model = GenerativeModel(model: 'gemini-pro', apiKey: apiKey);
 
-  /// This is the widget tree shown on app initialization.
+  /// This is the widget tree sent from RFW.
   final ValueNotifier<String> _rfwString =
       ValueNotifier<String>(initializingRfwWidget);
   ValueNotifier<String> get rfwString => _rfwString;
