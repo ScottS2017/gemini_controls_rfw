@@ -237,8 +237,22 @@ AppBar(
     ),
   ),
   ''';
-  // TODO MATERIAL: ButtonBar
-  // TODO MATERIAL: CircularProgressIndicator
+  // TODO MATERIAL: ButtonBar / OverflowBar
+  // TODO MATERIAL: Card
+  static const String circularProgressIndicator = '''
+  CircularProgressIndicator(
+    // Value is a double between 0.0 and 1.0 representing progress towards completion, in percent.
+    value: 0.75,
+    color: 0xFF0000FF,
+    backgroundColor: 0xFFFF0000,
+    // Width of the line that goes around.
+    strokeWidth: 4.0,
+    // semanticsLabel indicates the purpose of the progress bar, and will be read out by screen readers to indicate the purpose of this progress indicator.
+    semanticsLabel: "Percent of Loading Complete",
+    // This will be used in conjunction with the [semanticsLabel] by screen reading software to identify the widget, and is primarily intended for use with determinate progress indicators to announce how far along they are. For determinate progress indicators, this will be defaulted to [ProgressIndicator.value] expressed as a percentage, i.e. `0.1` will become '10%'.
+    semanticsValue: '0.1',
+  ),
+  ''';
   static const String clipRRect = '''
   ClipRRect(
   // Rounds the corners of the Container by 20:
@@ -387,9 +401,23 @@ Icon(
     child: Placeholder(),
   ),    
   ''';
-
-  // TODO CORE: Placeholder
+  static const String placeholder = '''
+  Placeholder(
+    color: 0xFFFF00FF,
+    strokeWidth: 2.0,
+    placeholderWidth: 100.0,
+    placeholderHeight: 100.0,
+  ),    
+  ''';
   // TODO CORE: Positioned
+  static const String positioned = '''
+  // This actually uses an AnimatedPositioned under the hood.
+  Positioned(
+  // Duration is always an integer in milliseconds.
+  duration: 1000,
+  ),
+  ''';
+
   // TODO CORE: Rotation
   // TODO CORE: Row
   // TODO CORE: SafeArea
