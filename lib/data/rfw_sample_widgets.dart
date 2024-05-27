@@ -206,6 +206,15 @@ curve for widgets in the library that use the animated variants. If absent,
 a default of 200ms and [Curves.fastOutSlowIn] is used.
   ''';
   // Individual Widgets
+  // TODO MATERIAL: AboutListTile
+  static const String align = '''
+  // The easiest way to use an align is with x, y like this:
+  Align(
+    // Alignment top center:
+    alignment: {x: 0.0, y:-1.0},
+    child: Placeholder(),
+  ),          
+  ''';
   static const String appBar = '''
 AppBar(
   backgroundColor: 0xFFFF0000,
@@ -219,6 +228,29 @@ AppBar(
   ),
 )
   ''';
+  static const String aspectRatio = '''
+  // aspectRatio takes a double.
+  AspectRatio(
+    aspectRatio: 3.0,
+    child: Container(
+      color: 0xFF0000FF,
+    ),
+  ),
+  ''';
+  // TODO MATERIAL: ButtonBar
+  // TODO MATERIAL: CircularProgressIndicator
+  static const String clipRRect = '''
+  ClipRRect(
+  // Rounds the corners of the Container by 20:
+    borderRadius:
+      [
+        {x: 20.0, y: 20.0},
+      ],
+    child: Container(
+      color: 0xFF0000FF,
+    ),
+  ),  
+  ''';
   static const String column = '''
 Column(
   // Use enums by putting the name of the desired value in quotes, like this:
@@ -231,11 +263,15 @@ Column(
   ],
 ),
   ''';
-  static const String container = '''
+  static const String containerWithoutDecoration = '''
 Container(
   // sizes are always doubles, with the decimal point.
   width: 200.0,
   height: 200.0,
+  // Padding is Left, Top, Right, Bottom
+  padding: [10.0,20.0,30.0,40.0,],
+  // Margin, like padding, is also Left, Top, Right, Bottom
+  margin: [50.0,20.0,30.0,40.0,],
   color: 0xFFFF00FF,
   // Replace the [Placeholder] with your actual child, if using one.
   child: Placeholder(),
@@ -253,13 +289,12 @@ Container(
    in this example Container is 10.0 left, 20.0 top, 30.0 right, and 40.0 bottom:
 ```
 Container(
+// Since we're using a decoration, we cannot use the Container's color parameter.
   decoration: {
     // This will be a box decoration.
    type: "box",
    // The container will be red.
    color: 0xFFFF0000,
-   // Padding is Left, Top, Right, Bottom
-   padding: [10.0,20.0,30.0,40.0,],
    // All four borders will be green, and 5 wide.
    border: [
     {
@@ -267,7 +302,7 @@ Container(
        width: 5.0,
      },
    ],
-   // All four borders will have a radii of 20.0, both horizontal and vertical.
+   // All four corners will have a radii of 20.0, both horizontal and vertical.
     borderRadius:
       [
         {x: 20.0, y: 20.0},
@@ -280,43 +315,47 @@ Container(
         blurRadius: 4.0,
       },
      ],
+    // Decoration Image example:
+    image: {
+      source: "https://assets3.thrillist.com/v1/image/3082123/792x446/scale;webp=auto;jpeg_quality=60;progressive.jpg",
+      fit: "cover",
+    },
   },
 ),
 ```
   ''';
-  static const String decorationImage = '''
-  A decoration image is used inside a box decoration. If you want to show an image with rounded corners then this is the way to do it because you cannot round the corners of an Image widget. To round the corners you need to make a decoration and then add the image to it, and round the corners in the decoration as well. The way to do it is through decoration > image > source but this only works if the type is set to box, EG:
-  ```
-  Container(
-    width: 512.0,
-    height: 308.0,
-    decoration: {
-      type: "box",
-      borderRadius: [
-        {
-          x: 30.0,
-          y: 30.0,
-        },
-      ],
-      image: {
-        source: "https://assets3.thrillist.com/v1/image/3082123/792x446/scale;webp=auto;jpeg_quality=60;progressive.jpg",
-        fit: "cover",
-      },
-    },
-  ),
-  ```
+  static const String directionality = '''
+  Directionality(
+    textDirection: "ltr",
+    child: Placeholder(),
+  )
   ''';
-  // FIXME need sample for alignment in frac sized box.
-//   static const String fractionallySizedBox = '''
-// FractionallySizedBox(
-//   alignment: ,
-//   widthFactor: 0.8,
-//   heightFactor: 0.6,
-//   child: Placeholder(),
-// )
-// // SizedBox.expand() in RFW widgets is:
-// SizedBoxExpand()
-//   ''';
+  // TODO MATERIAL: Divider
+  // TODO MATERIAL: Drawer
+  // TODO MATERIAL: DrawerHeader
+  // TODO MATERIAL: DropdownButton
+  // TODO MATERIAL: ElevatedButton
+  static const String expanded = '''
+  Expanded(
+    flex: 2,
+    child: Placeholder(),
+  ),
+  ''';
+  // TODO CORE: FittedBox
+  // TODO MATERIAL: FloatingActionButton
+  static const String fractionallySizedBox = '''
+  FractionallySizedBox(
+  widthFactor: 0.25,
+  heightFactor: 0.5,
+  alignment: {x: 0.0, y:-1.0},
+    child: Container(
+      color: 0xFF0000FF,
+    ),
+),
+  ''';
+  // TODO CORE: GestureDetector
+  // TODO CORE: GridView
+  // TODO CORE: IconTheme
   static const String icon = '''
 Icon(
   // Icons are passed in with their #, not an Icon constructor.
@@ -329,6 +368,32 @@ Icon(
     size: 30.0,
 )
   ''';
+  // TODO MATERIAL: InkResponse
+  // TODO MATERIAL: InkWell
+  // TODO CORE: IntrinsicHeight
+  // TODO CORE: IntrinsicWidth
+  // TODO CORE: Image
+  // TODO MATERIAL: LinearProgressIndicator
+  // TODO CORE: ListBody
+  // TODO MATERIAL: ListTile
+  // TODO CORE: ListView
+  // TODO MATERIAL: Material
+  // TODO CORE: Opacity
+  // TODO MATERIAL: OutlinedButton
+  static const String padding = '''
+  Padding(
+    // Padding is Left, Top, Right, Bottom
+    padding: [10.0,20.0,30.0,40.0,],
+    child: Placeholder(),
+  ),    
+  ''';
+
+  // TODO CORE: Placeholder
+  // TODO CORE: Positioned
+  // TODO CORE: Rotation
+  // TODO CORE: Row
+  // TODO CORE: SafeArea
+  // FIXME add more to scaffold
   static const String scaffold = '''
 Scaffold(
   appBar: AppBar(
@@ -345,6 +410,8 @@ Scaffold(
   body: Placeholder(),
 )
   ''';
+  // TODO CORE: Scale
+  // TODO CORE: SingleChildScrollView
   static const String sizedBox = '''
 SizedBox(
   // sizes are always doubles, with the decimal point
@@ -356,6 +423,10 @@ SizedBox(
 // SizedBox.expand() in RFW widgets is:
 SizedBoxExpand()
   ''';
+  // TODO CORE: SizedBoxExpand
+  // TODO CORE: SizedBoxShrink
+  // TODO CORE: Spacer
+  // TODO CORE: Stack
   static const String textAndStyle = '''
 Text(
   // RFW [Text.text] takes a list of strings.
@@ -374,6 +445,9 @@ Text(
   },
 )
   ''';
+  // TODO MATERIAL: TextButton
+  // TODO MATERIAL: VerticalDivider
+  // TODO CORE: Wrap
 
   static String allWidgets(){
     const result = '''
@@ -381,9 +455,8 @@ Text(
     $rulesAndGuidelines 
     $appBar 
     $column 
-    $container 
+    $containerWithoutDecoration 
     $containerWithDecoration 
-    $decorationImage 
     $icon 
     $scaffold 
     $sizedBox 
@@ -393,6 +466,21 @@ Text(
 }
 
 String testString = '''
-Show me a container that is 500 wide by 800 high and is light grey. Inside the container, center a sized box that is 400 wide by 700 high and put a scaffold inside of it, using a blue AppBar. Inside the app bar for the title use a text widget that says hi there in white text, and wrap it in a center so it's centered in the AppBar. Inside the scaffold put a row with its main axis alignment set to space between and its cross axis alignment to stretch. Inside the row, the first child is going to be a green box that is 50 pixels wide. The second child is a column with the column's main axis alignment set to spaceEvenly and cross axis alignment set to center. Put three container's in the column. Each container should be  225 wide and 120 high, and put the test image in it . Round the corners those image's containers by 50 and give them each a drop shadow. For all borders, images and radii make sure you use your decoration parameter properly. The last child of the row should be a red box, just like the green one.
+
+
+
+Align(
+  alignment: {x: 0.0, y:-1.0},
+  child: Container(
+    width: 100,
+    height: 100,
+    child: ColoredBox(
+      color: 0xFF0000FF,
+    ),
+  ),
+),
+
+
+Show me a container that is 500 wide by 800 high and is light grey. Inside the container, center a sized box that is 400 wide by 700 high and put a scaffold inside of it, using a blue AppBar. Inside the app bar for the title use a text widget that says hi there in white text, and wrap it in a center so it's centered in the AppBar. Inside the scaffold put a row with its main axis alignment set to space between and its cross axis alignment to stretch. Inside the row, the first child is going to be a green box that is 50 pixels wide. The second child is a column with the column's main axis alignment set to spaceEvenly and cross axis alignment set to center. Put three container's in the column. Each container should be  225 wide and 120 high, and put the test image in it . Round the corners of those image's containers by 50 and give them each a drop shadow. For all borders, images and radii make sure you use your decoration parameter properly. The last child of the row should be a red box, just like the green one.
 
 ''';

@@ -17,7 +17,20 @@ class GeminiService {
   ValueNotifier<String> get latestResponseFromModel => _latestResponseFromModel;
 
   /// An instance of the gemini-pro model.
-  final model = GenerativeModel(model: 'gemini-pro', apiKey: apiKey);
+  final model = GenerativeModel(
+    model: 'gemini-pro',
+    apiKey: apiKey,
+    generationConfig: GenerationConfig(
+      // Not used.
+      // stopSequences: ["red"],
+      // Set an absurdly high limit to ensure the UI code isn't cut off.
+      maxOutputTokens: 10000,
+      // Lower temp from 0.9 to prevent "creative" replies because we need consistency in the generated RFW code.
+      temperature: 0.5,
+      topP: 0.1,
+      topK: 16,
+    ),
+  );
 
   /// This is the widget tree sent from RFW.
   final ValueNotifier<String> _rfwString =

@@ -87,10 +87,10 @@ packages:
     dependency: "direct main"
     description:
       name: google_generative_ai
-      sha256: f666a8c09225630a9ab366296407b38c6dab87ba7b1bce15a7db35e9411c17d3
+      sha256: "35072cb63e4c0b0bab11735b60d9d2335c2b463b60358fd6c456a7286e649a5e"
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.3"
+    version: "0.4.1"
   http:
     dependency: transitive
     description:
@@ -175,10 +175,10 @@ packages:
     dependency: "direct main"
     description:
       name: rfw
-      sha256: "079eb640f510b2b0e606dd011e6ccf438d39def206133bca400ba19bc0074667"
+      sha256: "34e8bae5458234654ab1db3b99b31a334f316fb22aa409929e22c15d569cfdf8"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.26"
+    version: "1.0.27"
   riverpod:
     dependency: transitive
     description:

@@ -27,6 +27,23 @@ Container(
     body: SizedBoxExpand(
       child: ColoredBox(
         color: 0xFFEEEEEE,
+        child: Center(
+          child: Container(
+            width: 200.0,
+            height: 200.0,
+            color: 0xFFFF0000,
+              child: 
+              FractionallySizedBox(
+                widthFactor: 0.25,
+                heightFactor: 0.5,
+                alignment: {x: 0.0, y:-1.0},
+                  child: Container(
+                    color: 0xFF0000FF,
+                  ),
+              ),
+
+          ),
+        ),
       ),  
     ),  
   ),

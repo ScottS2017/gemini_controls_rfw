@@ -2,7 +2,7 @@ name: gemini_controls_rfw
 description: "A new Flutter project."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+1
+version: 1.0.0+1aa
 
 environment:
   sdk: '>=3.3.3 <4.0.0'
@@ -12,8 +12,8 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_riverpod: 2.5.1
-  google_generative_ai: ^0.2.2
-  rfw: 1.0.26
+  google_generative_ai: ^0.4.1
+  rfw: ^1.0.27
 
 dev_dependencies:
   flutter_test:
