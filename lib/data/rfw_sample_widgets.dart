@@ -205,6 +205,145 @@ argument and `curve` argument. It sets the default animation duration and
 curve for widgets in the library that use the animated variants. If absent,
 a default of 200ms and [Curves.fastOutSlowIn] is used.
   ''';
+  static const String parametersTakeTheseTypes = '''
+  RFW widgets do not always take the same types as normal
+  Flutter widgets. This is a key to many parameter types we're
+  going to use with this client app. If it is a simple type then
+  the comment will be only the type for the following parameter
+  listed. If it is more complex than that, a small description will
+  be included. This key is sported alphabetically. Begin:
+  //
+  // Alignments are maps with keys x and y:
+  ```alignment: {x: 0.0, y:-1.0},```
+  
+  // <double>
+  ```aspectRatio: 3.0,```
+  
+  // All Colors are just hex literal integers, formatted ARGB:
+  ```backgroundColor: 0xFFFF0000,```
+  
+  // border is a list is a list of values as interpreted by [borderSide]. An empty or
+  // missing list results in a null return value. The list should have one
+  // through four items. Extra items are ignored.
+  //
+  // The values are interpreted as follows:
+  //
+  //  * start: first value.
+  //  * top: second value, defaulting to same as start.
+  //  * end: third value, defaulting to same as start.
+  //  * bottom: fourth value, defaulting to same as top.
+   ```border: [
+     {
+       // See color.
+       color: 0xFF00FF00,
+       width: 5.0,
+     },
+   ],```
+  
+  // <bool>
+  ```borderOnForeground: false,```
+  
+  // <Widget>
+  ```child: Placeholder(),```
+  
+  // All Colors are just hex literal integers, formatted ARGB:
+  ```color: 0xFFFF00FF,```
+  
+  // decoration is a map describing a BoxDecoration. This example continues until another
+  comment marks the end of the BoxDecoration:
+  
+  
+  
+  ```decoration: {
+
+
+   // See border:
+   border: [
+     {
+       // See color.
+       color: 0xFF00FF00,
+       width: 5.0,
+     },
+   ],
+   // [BorderRadiusGeometry] values work similarly to [BoxBorder], as an array
+   of [Radius] values. If the array has one value, it's used for all corners.
+   With two values, the first becomes the `topStart` and `bottomStart`
+   corners and the second the `topEnd` and `bottomEnd`. With three, the
+   values are used for `topStart`, `topEnd`-and-`bottomEnd`, and
+   `bottomStart` respectively. Four values map to the `topStart`, `topEnd`,
+   `bottomStart`, and `bottomEnd` respectively. Note the horizontal and
+   vertical components of any given corner do not have to be the same. The
+   corner can have different radii for horizontal and vertical sides. The x is
+   always the horizontal part and the y is always the vertical part. EG This
+   will create top corners with a 20.0 radius and bottom ones with a 30.0
+   radius:
+   borderRadius:
+     [
+       {x: 20.0, y: 20.0},
+       {x: 20.0, y: 20.0},
+       {x: 30.0, y: 30.0},
+       {x: 30.0, y: 30.0},
+     ],
+   // This is how a drop shadow is done in RFW. Each map entry is one shadow:
+   boxShadow: [
+     {
+       // See color.
+       color: 0x7F000000,
+       offset: { x: 4.0, y: 4.0 },
+       blurRadius: 4.0,
+     },
+   ],
+     // See color.
+    color: 0xFFFF0000,
+   // Decoration Image example:
+   image: {
+   colorFilter: {
+     // type choices are: linearToSrgbGamma, matrix, mode, srgbToLinearGamma.
+     type: "mode",
+     // fit values are fill, contain, cover, fitWidth, fitHeight, and none.
+     fit: "cover",
+     // See alignment. This is centered:
+     alignment: {x: 0.0, y:0.0},
+   },
+     // <ImageProvider>
+     source: "https://assets3.thrillist.com/v1/image/3082123/792x446/scale;webp=auto;jpeg_quality=60;progressive.jpg",
+     fit: "cover",
+   },
+   // Type option choices are box, shape, and flutterLogo
+   type: "box",
+ },```
+ // End of BoxDecoration. 
+ 
+ 
+ 
+ 
+ 
+      // <double>
+  ```elevation: 4.0,```
+  
+  // semanticsLabel indicates the purpose of the progress bar, and will be read out by screen readers to indicate the purpose of this progress indicator.
+  ```semanticsLabel: "Percent of Loading Complete",```
+  
+  // shadowColor is used in a Card
+  ```shadowColor: 0xFFFF00FF,```
+  
+  // <double>
+  ```strokeWidth: 4.0,```
+  
+  // TextStyle is a map of its parameters:
+  ```style: {
+    fontFamily: 'Arial',
+    // See color.
+    color: 0xFFFFFFFF, 
+  },```
+  
+  // Strings for Text Widgets are a list of Strings:
+  ```text: ['Sample'],```
+  
+  // All enums are listed as the value name ONLY:
+  ```textDirection: "ltr",```
+  ''';
+
   // Individual Widgets
   // TODO MATERIAL: AboutListTile
   static const String align = '''
@@ -239,15 +378,26 @@ AppBar(
   ''';
   // TODO MATERIAL: ButtonBar / OverflowBar
   // TODO MATERIAL: Card
+  static const String card = '''
+  Card(
+  // colors are just hex numbers.
+    color: 0xFFFF00FF,
+    shadowColor: 0xFFFF00FF,
+    // <double>
+    elevation: 4.0,
+    // <bool>
+    borderOnForeground: false,
+    margin: 
+    
+  ),
+  ''';
   static const String circularProgressIndicator = '''
   CircularProgressIndicator(
     // Value is a double between 0.0 and 1.0 representing progress towards completion, in percent.
     value: 0.75,
     color: 0xFF0000FF,
     backgroundColor: 0xFFFF0000,
-    // Width of the line that goes around.
     strokeWidth: 4.0,
-    // semanticsLabel indicates the purpose of the progress bar, and will be read out by screen readers to indicate the purpose of this progress indicator.
     semanticsLabel: "Percent of Loading Complete",
     // This will be used in conjunction with the [semanticsLabel] by screen reading software to identify the widget, and is primarily intended for use with determinate progress indicators to announce how far along they are. For determinate progress indicators, this will be defaulted to [ProgressIndicator.value] expressed as a percentage, i.e. `0.1` will become '10%'.
     semanticsValue: '0.1',
@@ -417,11 +567,10 @@ Icon(
   duration: 1000,
   ),
   ''';
-
   // TODO CORE: Rotation
   // TODO CORE: Row
   // TODO CORE: SafeArea
-  // FIXME add more to scaffold
+  // TODO add more to scaffold
   static const String scaffold = '''
 Scaffold(
   appBar: AppBar(
