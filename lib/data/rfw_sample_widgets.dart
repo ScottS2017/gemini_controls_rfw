@@ -210,136 +210,12 @@ a default of 200ms and [Curves.fastOutSlowIn] is used.
   Flutter widgets. This is a key to many parameter types we're
   going to use with this client app. If it is a simple type then
   the comment will be only the type for the following parameter
-  listed. If it is more complex than that, a small description will
-  be included. This key is sported alphabetically. Begin:
-  //
-  // Alignments are maps with keys x and y:
-  ```alignment: {x: 0.0, y:-1.0},```
-  
-  // <double>
-  ```aspectRatio: 3.0,```
-  
-  // All Colors are just hex literal integers, formatted ARGB:
-  ```backgroundColor: 0xFFFF0000,```
-  
-  // border is a list is a list of values as interpreted by [borderSide]. An empty or
-  // missing list results in a null return value. The list should have one
-  // through four items. Extra items are ignored.
-  //
-  // The values are interpreted as follows:
-  //
-  //  * start: first value.
-  //  * top: second value, defaulting to same as start.
-  //  * end: third value, defaulting to same as start.
-  //  * bottom: fourth value, defaulting to same as top.
-   ```border: [
-     {
-       // See color.
-       color: 0xFF00FF00,
-       width: 5.0,
-     },
-   ],```
-  
-  // <bool>
-  ```borderOnForeground: false,```
-  
-  // <Widget>
-  ```child: Placeholder(),```
-  
-  // All Colors are just hex literal integers, formatted ARGB:
-  ```color: 0xFFFF00FF,```
-  
-  // decoration is a map describing a BoxDecoration. This example continues until another
-  comment marks the end of the BoxDecoration:
-  
-  
-  
-  ```decoration: {
-
-
-   // See border:
-   border: [
-     {
-       // See color.
-       color: 0xFF00FF00,
-       width: 5.0,
-     },
-   ],
-   // [BorderRadiusGeometry] values work similarly to [BoxBorder], as an array
-   of [Radius] values. If the array has one value, it's used for all corners.
-   With two values, the first becomes the `topStart` and `bottomStart`
-   corners and the second the `topEnd` and `bottomEnd`. With three, the
-   values are used for `topStart`, `topEnd`-and-`bottomEnd`, and
-   `bottomStart` respectively. Four values map to the `topStart`, `topEnd`,
-   `bottomStart`, and `bottomEnd` respectively. Note the horizontal and
-   vertical components of any given corner do not have to be the same. The
-   corner can have different radii for horizontal and vertical sides. The x is
-   always the horizontal part and the y is always the vertical part. EG This
-   will create top corners with a 20.0 radius and bottom ones with a 30.0
-   radius:
-   borderRadius:
-     [
-       {x: 20.0, y: 20.0},
-       {x: 20.0, y: 20.0},
-       {x: 30.0, y: 30.0},
-       {x: 30.0, y: 30.0},
-     ],
-   // This is how a drop shadow is done in RFW. Each map entry is one shadow:
-   boxShadow: [
-     {
-       // See color.
-       color: 0x7F000000,
-       offset: { x: 4.0, y: 4.0 },
-       blurRadius: 4.0,
-     },
-   ],
-     // See color.
-    color: 0xFFFF0000,
-   // Decoration Image example:
-   image: {
-   colorFilter: {
-     // type choices are: linearToSrgbGamma, matrix, mode, srgbToLinearGamma.
-     type: "mode",
-     // fit values are fill, contain, cover, fitWidth, fitHeight, and none.
-     fit: "cover",
-     // See alignment. This is centered:
-     alignment: {x: 0.0, y:0.0},
-   },
-     // <ImageProvider>
-     source: "https://assets3.thrillist.com/v1/image/3082123/792x446/scale;webp=auto;jpeg_quality=60;progressive.jpg",
-     fit: "cover",
-   },
-   // Type option choices are box, shape, and flutterLogo
-   type: "box",
- },```
- // End of BoxDecoration. 
- 
- 
- 
- 
- 
-      // <double>
-  ```elevation: 4.0,```
-  
-  // semanticsLabel indicates the purpose of the progress bar, and will be read out by screen readers to indicate the purpose of this progress indicator.
-  ```semanticsLabel: "Percent of Loading Complete",```
-  
-  // shadowColor is used in a Card
-  ```shadowColor: 0xFFFF00FF,```
-  
-  // <double>
-  ```strokeWidth: 4.0,```
-  
-  // TextStyle is a map of its parameters:
-  ```style: {
-    fontFamily: 'Arial',
-    // See color.
-    color: 0xFFFFFFFF, 
-  },```
-  
-  // Strings for Text Widgets are a list of Strings:
-  ```text: ['Sample'],```
-  
+  listed. If it is an integer then the value shown is an integer (EG: 3).
+  If it is a double then the value shown is a double and it
+  must be used that way. Every double must use a decimal point, even
+  if it is only followed by a 0 (EG: 7.0). bools are shown as simply true 
+  or false. If it is more complex than that, a small description will
+  be included. Any special notes are listed here:
   // All enums are listed as the value name ONLY:
   ```textDirection: "ltr",```
   ''';
@@ -354,6 +230,9 @@ a default of 200ms and [Curves.fastOutSlowIn] is used.
     child: Placeholder(),
   ),          
   ''';
+  static const String alignment = '''
+  // Alignments are maps with keys x and y:
+  ```alignment: {x: 0.0, y:-1.0},```''';
   static const String appBar = '''
 AppBar(
   backgroundColor: 0xFFFF0000,
@@ -376,19 +255,63 @@ AppBar(
     ),
   ),
   ''';
+  static const String backgroundBlendMode = '''
+    // backgroundBlendMode values are the same as the BlendMode values in painting.dart . Choices are: clear, src, dst, srcOver, dstOver, srcIn, dstIn, srcOut, dstOut, srcATop, dstATop, xor, plus, modulate, screen, overlay, darken, lighten,  colorDodge, colorBurn, hardLight, softLight, difference, exclusion, multiply, hue, saturation, color, and luminosity. This is an optional parameter, rarely used, and defaults to "srcOver". The BoxDecoration has an assert that must be complied with: ```assert( backgroundBlendMode == null || color != null || gradient != null, "backgroundBlendMode applies to BoxDecoration's background color or " 'gradient, but no color or gradient was provided.',);```
+  ```backgroundBlendMode: "srcOver",```
+    ''';
+  static const String backgroundColor = '''
+    ```backgroundColor: 0xFFFF0000,```
+    ''';
+  static const String borderOnForeground = '''
+    ```borderOnForeground: false,```
+    ''';
+  static const String border = '''
+  // border is a list is a list of values as interpreted by [borderSide].
+  An empty or missing list results in a null return value. The list should 
+  have one through four items. Extra items are ignored.
+  The values are interpreted as follows:
+    * start: first value.
+    * top: second value, defaulting to same as start.
+    * end: third value, defaulting to same as start.
+    * bottom: fourth value, defaulting to same as top.
+  The following would make a green border 5 wide, all around:
+   ```border: [
+     {
+       color: 0xFF00FF00,
+       width: 5.0,
+     },
+   ],```
+    ''';
+  static const String borderRadius = '''
+   // borderRadius is a list is a list of values as interpreted by [radius]. An
+  empty or missing list results in a null return value. The list should have one
+  through four items. Extra items are ignored. The values are interpreted
+  as follows:
+    * topStart: first value.
+    * topEnd: second value, defaulting to same as topStart.
+    * bottomStart: third value, defaulting to same as topStart.
+    * bottomEnd: fourth value, defaulting to same as topEnd.
+  This will create top corners with a 20.0 radius and bottom ones with a 30.0
+   radius:
+   ```borderRadius:
+     [
+       {x: 20.0, y: 20.0},
+       {x: 20.0, y: 20.0},
+       {x: 30.0, y: 30.0},
+       {x: 30.0, y: 30.0},
+     ],```
+    ''';
   // TODO MATERIAL: ButtonBar / OverflowBar
-  // TODO MATERIAL: Card
   static const String card = '''
   Card(
-  // colors are just hex numbers.
     color: 0xFFFF00FF,
     shadowColor: 0xFFFF00FF,
-    // <double>
     elevation: 4.0,
-    // <bool>
     borderOnForeground: false,
-    margin: 
-    
+    margin: [10.0,20.0,10.0,20.0,],
+    clipBehavior: "none",
+    semanticContainer: true,
+    child: Placeholder(),
   ),
   ''';
   static const String circularProgressIndicator = '''
@@ -403,6 +326,10 @@ AppBar(
     semanticsValue: '0.1',
   ),
   ''';
+  static const String clipBehavior = '''
+  // Takes an enum value, choices are none, hardEdge, antiAlias, and antiAliasWithSaveLayer. Defaults to none.
+  ```clipBehavior: "none",```
+  ''';
   static const String clipRRect = '''
   ClipRRect(
   // Rounds the corners of the Container by 20:
@@ -410,11 +337,15 @@ AppBar(
       [
         {x: 20.0, y: 20.0},
       ],
+    clipBehavior: "none",
     child: Container(
       color: 0xFF0000FF,
     ),
   ),  
   ''';
+  static const String color = '''
+      // All Colors are just hex literal integers, formatted ARGB:
+  ```color: 0xFFFF00FF,```''';
   static const String column = '''
 Column(
   // Use enums by putting the name of the desired value in quotes, like this:
@@ -432,12 +363,10 @@ Container(
   // sizes are always doubles, with the decimal point.
   width: 200.0,
   height: 200.0,
-  // Padding is Left, Top, Right, Bottom
+  // Padding and Margin are both listed Left, Top, Right, Bottom
   padding: [10.0,20.0,30.0,40.0,],
-  // Margin, like padding, is also Left, Top, Right, Bottom
   margin: [50.0,20.0,30.0,40.0,],
   color: 0xFFFF00FF,
-  // Replace the [Placeholder] with your actual child, if using one.
   child: Placeholder(),
 )
   ''';
@@ -488,6 +417,51 @@ Container(
 ),
 ```
   ''';
+  static const String curve = '''
+    // Returns a [Curve] from the specified string. Choices are linear, decelerate, fastLinearToSlowEaseIn, ease, easeIn, easeInToLinear, easeInSine, easeInQuad, easeInCubic, easeInQuart, easeInQuint, easeInExpo, easeInCirc, easeInBack, easeOut, linearToEaseOut, easeOutSine, easeOutQuad, easeOutCubic, easeOutQuart, easeOutQuint, easeOutExpo, easeOutCirc, easeOutBack, easeInOut, easeInOutSine, easeInOutQuad, easeInOutCubic, easeInOutCubicEmphasized, easeInOutQuart, easeInOutQuint, easeInOutExpo, easeInOutCirc, easeInOutBack, fastOutSlowIn, slowMiddle, bounceIn, bounceOut, bounceInOut, elasticIn, elasticOut, and elasticInOut.
+    ```curve: "linear",```
+    ''';
+  static const String decoration = '''
+  // decoration is a map describing a BoxDecoration. 
+  ```decoration: {
+   // See border:
+   border: [
+     {
+       color: 0xFF00FF00,
+       width: 5.0,
+     },
+   ],
+   borderRadius:
+     [
+       {x: 20.0, y: 20.0},
+     ],
+   // A list of Maps. Each entry describes one boxShadow:
+   boxShadow: [
+     {
+       color: 0x7F000000,
+       offset: { x: 4.0, y: 4.0 },
+       blurRadius: 4.0,
+       spreadRadius: 2.0,
+     },
+   ],
+   color: 0xFFFF0000,
+   // <DecorationImage>
+   image: {
+     colorFilter: {
+       // type choices are: linearToSrgbGamma, matrix, mode, srgbToLinearGamma.
+       type: "mode",
+       // fit values are fill, contain, cover, fitWidth, fitHeight, and none.
+       fit: "cover",
+       alignment: {x: 0.0, y:0.0},
+     },
+     // <ImageProvider>
+     source: "https://assets3.thrillist.com/v1/image/3082123/792x446/scale;webp=auto;jpeg_quality=60;progressive.jpg",
+     fit: "cover",
+   },
+   // Type option choices are box, shape, and flutterLogo
+   type: "box",
+ },```
+  ''';
   static const String directionality = '''
   Directionality(
     textDirection: "ltr",
@@ -498,7 +472,15 @@ Container(
   // TODO MATERIAL: Drawer
   // TODO MATERIAL: DrawerHeader
   // TODO MATERIAL: DropdownButton
+  static const String duration = '''
+    // Returns a duration in milliseconds from the specified integer.
+    ```duration: 500,```
+    ''';
   // TODO MATERIAL: ElevatedButton
+  static const String elevation = '''
+  // elevation
+  ```elevation: 4.0,```
+  ''';
   static const String expanded = '''
   Expanded(
     flex: 2,
@@ -507,6 +489,19 @@ Container(
   ''';
   // TODO CORE: FittedBox
   // TODO MATERIAL: FloatingActionButton
+  static const String foregroundDecoration = '''
+   // foregroundDecoration, see decoration. 
+  ```foregroundDecoration: {
+   // See border:
+   border: [
+     {
+       // See color.
+       color: 0xFF00FF00,
+       width: 5.0,
+     },
+   ],
+   } ```
+  ''';
   static const String fractionallySizedBox = '''
   FractionallySizedBox(
   widthFactor: 0.25,
@@ -518,6 +513,51 @@ Container(
 ),
   ''';
   // TODO CORE: GestureDetector
+  static const String gradients = '''
+  // Linear Gradient:
+  ```
+  gradient: {
+    // Enum value. Choices are linear, radial, and sweep.
+    type: "linear",
+    // Both begin and end alignments must use an Alignment enum value name.
+    begin: "centerRight",
+    end: "centerLeft",
+    colors: [
+      0xFFFF0000,
+      0xFF0000FF,
+    ],
+    stops: [
+      0.0,
+      1.0,
+    ],
+  },
+  ```
+  
+  // Radial gradient is not currently working correctly.
+  
+  // Sweep Gradient
+  ```
+  gradient: {
+  type: "sweep",
+ // See alignment.
+  center: {x: 0.5, y: 0.0},
+  // Start and end angles are radians expressed as doubles
+  startAngle: 0.0,
+  endAngle: 5.0,
+  colors: [
+    0xFF0000FF,
+    0xFF00FF00,
+    0xFFFF0000,
+  ],
+  stops: [
+  0.0,
+  0.5,
+  1.0,
+  ],
+},
+```
+  ''';
+
   // TODO CORE: GridView
   // TODO CORE: IconTheme
   static const String icon = '''
@@ -541,8 +581,50 @@ Icon(
   // TODO CORE: ListBody
   // TODO MATERIAL: ListTile
   // TODO CORE: ListView
-  // TODO MATERIAL: Material
-  // TODO CORE: Opacity
+  static const String margin = '''
+  // margin is a list of doubles representing Left, Top, Right, Bottom.
+    ```margin: [10.0,20.0,10.0,20.0,],```
+  ''';
+  static const String material = '''
+    ```
+    Material(
+      elevation: 4.0,
+      color: 0xFFFFFFFF,
+      shadowColor: 0x99000000,
+      // surfaceTintColor is the color of the surface tint overlay applied to the material color to indicate elevation.
+      surfaceTintColor: 0x99000000,
+      textStyle: {
+        fontSize: 12.0,
+        fontFamily: 'Arial',
+        color: 0xFF009900, 
+      },
+      borderRadius: [{x: 20.0, y: 20.0},],
+      shape: "rectangle",
+      borderOnForeground: "false",
+      clipBehavior: "none",
+      // animationDuration in milliseconds. 
+      animationDuration: 500,
+      child: Placeholder(),
+    ),```
+    ''';
+  static const String offset = '''
+  // offset is a map of x, y values.
+  offset: { x: 4.0, y: 4.0 },
+  ''';
+  // Scott check on the onEnd VoidCallback syntax for opacity.
+  static const String opacity = '''
+    // opacity is actually an AnimatedOpacity
+    ```
+    Opacity(
+      duration: 250,
+      curve: "linear",
+      opacity: 1.0,
+      // onEnd takes a VoidCallback
+      onEnd: ()=> print("Test"),
+      alwaysIncludeSemantics: "true",
+      child: Placeholder(),
+    ),```
+    ''';
   // TODO MATERIAL: OutlinedButton
   static const String padding = '''
   Padding(
@@ -588,6 +670,22 @@ Scaffold(
 )
   ''';
   // TODO CORE: Scale
+  static const String semanticsContainer = '''
+  semanticsContainer is an optional bool that indicates whether this widget represents a single semantic container. If false, it's a collection of individual semantic nodes. Defaults to true.
+  ```semanticsContainer: true,```
+  ''';
+  static const String semanticsLabel = '''
+    // semanticsLabel indicates the purpose of the progress bar, and will be read out by screen readers to indicate the purpose of this progress indicator.
+  ```semanticsLabel: "Percent of Loading Complete",```
+  ''';
+  static const String shadowColor = '''
+  // shadowColor is used in a Card
+  ```shadowColor: 0xFFFF00FF,```
+      ''';
+  static const String shape = '''
+    // shape is an enumValue<BoxShape>, choices are rectangle and circle.
+  ```shape: "rectangle",```
+  ''';
   // TODO CORE: SingleChildScrollView
   static const String sizedBox = '''
 SizedBox(
@@ -604,7 +702,10 @@ SizedBoxExpand()
   // TODO CORE: SizedBoxShrink
   // TODO CORE: Spacer
   // TODO CORE: Stack
-  static const String textAndStyle = '''
+  static const String strokeWidth = '''
+  ```strokeWidth: 4.0,```
+  ''';
+  static const String textAndTextStyle = '''
 Text(
   // RFW [Text.text] takes a list of strings.
   text: ['hello'],
@@ -618,7 +719,6 @@ Text(
     fontFamily: 'Arial',
     // color is just the AGB hex number
     color: 0xFF009900, 
-    'fontSize': 36.0,
   },
 )
   ''';
@@ -637,7 +737,7 @@ Text(
     $icon 
     $scaffold 
     $sizedBox 
-    $textAndStyle''';
+    $textAndTextStyle''';
     return result;
   }
 }

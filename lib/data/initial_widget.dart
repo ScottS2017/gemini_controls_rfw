@@ -31,17 +31,46 @@ Container(
           child: Container(
             width: 200.0,
             height: 200.0,
-            color: 0xFFFF0000,
-              child: 
-              FractionallySizedBox(
-                widthFactor: 0.25,
-                heightFactor: 0.5,
-                alignment: {x: 0.0, y:-1.0},
-                  child: Container(
-                    color: 0xFF0000FF,
-                  ),
-              ),
-
+            decoration: {
+              // This will be a box decoration.
+              type: "box",
+              gradient: {
+                type: "radial",
+                center: {x: 0.5, y: 0.0},
+                radius: 200.0,
+                colors: [
+                  0xFF0000FF,
+                  0xFF00FF00,
+                  0xFFFF0000,
+                ],
+                stops: [
+                0.0,
+                0.5,
+                1.0,
+                ],
+                focal: "center",
+                focalRadius: 100.0,
+              },
+              border: [
+              {
+                 color: 0xFF00FF00,
+                 width: 5.0,
+               },
+             ],
+             // All four corners will have a radii of 20.0, both horizontal and vertical.
+              borderRadius:
+                [
+                  {x: 20.0, y: 20.0},
+               ],
+              // This is how a drop shadow is done in RFW. Each map entry is one shadow.
+              boxShadow: [
+                {
+                  color: 0x7F000000,
+                  offset: { x: 4.0, y: 4.0 },
+                  blurRadius: 4.0,
+                },
+               ],
+             },
           ),
         ),
       ),  
