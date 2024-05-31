@@ -219,7 +219,6 @@ a default of 200ms and [Curves.fastOutSlowIn] is used.
   // All enums are listed as the value name ONLY:
   ```textDirection: "ltr",```
   ''';
-
   // Individual Widgets
   // TODO MATERIAL: AboutListTile
   static const String align = '''
@@ -332,7 +331,6 @@ AppBar(
   ''';
   static const String clipRRect = '''
   ClipRRect(
-  // Rounds the corners of the Container by 20:
     borderRadius:
       [
         {x: 20.0, y: 20.0},
@@ -424,7 +422,6 @@ Container(
   static const String decoration = '''
   // decoration is a map describing a BoxDecoration. 
   ```decoration: {
-   // See border:
    border: [
      {
        color: 0xFF00FF00,
@@ -435,7 +432,6 @@ Container(
      [
        {x: 20.0, y: 20.0},
      ],
-   // A list of Maps. Each entry describes one boxShadow:
    boxShadow: [
      {
        color: 0x7F000000,
@@ -476,7 +472,17 @@ Container(
     // Returns a duration in milliseconds from the specified integer.
     ```duration: 500,```
     ''';
-  // TODO MATERIAL: ElevatedButton
+  // FIXME ElevatedButton callbacks.
+  static const String elevatedButton = '''
+  ElevatedButton(
+  // onPressed and onLongPress both take <VoidCallback?>
+  onPressed: ,
+  onLongPress: .
+  // autofocus defaults to false.
+  autofocus: "false",
+  child: Placeholder(),
+  ),
+  ''';
   static const String elevation = '''
   // elevation
   ```elevation: 4.0,```
@@ -490,12 +496,9 @@ Container(
   // TODO CORE: FittedBox
   // TODO MATERIAL: FloatingActionButton
   static const String foregroundDecoration = '''
-   // foregroundDecoration, see decoration. 
   ```foregroundDecoration: {
-   // See border:
    border: [
      {
-       // See color.
        color: 0xFF00FF00,
        width: 5.0,
      },
@@ -533,8 +536,31 @@ Container(
   },
   ```
   
-  // Radial gradient is not currently working correctly.
-  
+  // Radial gradient. Note the radius and focalRadius both take doubles between 0.0 and 1.0, representing  a fraction of the shortest side of the paint box.
+  //
+  // For example, if a radial gradient is painted on a box that is
+  // 100.0 pixels wide and 200.0 pixels tall, then a radius of 0.8
+  // will place the 1.0 stop at 80.0 pixels from the [center].
+  ```
+  gradient: {
+    type: "radial",
+    center: {x: 0.5, y: 0.0},
+    radius: 0.8,
+    colors: [
+      0xFF0000FF,
+      0xFF00FF00,
+      0xFFFF0000,
+    ],
+    stops: [
+    0.0,
+    0.5,
+    1.0,
+    ],
+    focal: {x:0.0, y:0.0},
+    focalRadius: 0.4,
+  },
+  ```
+                
   // Sweep Gradient
   ```
   gradient: {
@@ -557,7 +583,6 @@ Container(
 },
 ```
   ''';
-
   // TODO CORE: GridView
   // TODO CORE: IconTheme
   static const String icon = '''
@@ -611,7 +636,7 @@ Icon(
   // offset is a map of x, y values.
   offset: { x: 4.0, y: 4.0 },
   ''';
-  // Scott check on the onEnd VoidCallback syntax for opacity.
+  // Scott check on the onEnd VoidCallback syntax
   static const String opacity = '''
     // opacity is actually an AnimatedOpacity
     ```
@@ -641,12 +666,20 @@ Icon(
     placeholderHeight: 100.0,
   ),    
   ''';
-  // TODO CORE: Positioned
   static const String positioned = '''
   // This actually uses an AnimatedPositioned under the hood.
   Positioned(
   // Duration is always an integer in milliseconds.
   duration: 1000,
+  curve: "easeInToLinear",
+  // Only two out of the three horizontal values ([start], [end], [width]) can be set. The third must be null.
+  width: 100.0,
+  // Only two out of the three vertical values ([top], [bottom], [height]) can
+  // be set. The third must be null.
+  height: 150.0,
+  child: Placeholder(),
+  // Other parameters: "start:" takes a double and is the offset of the child's start edge from the start of the stack. "top" is the offset of the child's top edge from the top of the stack.
+  "end" is the offset of the child's end edge from the end of the stack. "bottom" is the offset of the child's bottom edge from the bottom of the stack. "onEnd" takes  void callback.
   ),
   ''';
   // TODO CORE: Rotation
@@ -670,6 +703,20 @@ Scaffold(
 )
   ''';
   // TODO CORE: Scale
+  static const String scale = '''
+  // scale returns an AnimatedScale.
+  Scale(
+    duration: 500,
+    curve: "linear",
+    // The target scale. 1.0 is original size, 0.75 is 3/4 original size, etc.
+    scale: 1.0,
+    alignment: {x: 0.0, y:-0.5},
+    // The filter quality with which to apply the transform as a bitmap operation. Takes an enum [FilterQuality] with values of none, low, medium, and high.
+    filterQuality: "medium",
+    // "onEnd" is a parameter that takes a VoidCallback.
+    child: Placeholder(),
+  )
+  ''';
   static const String semanticsContainer = '''
   semanticsContainer is an optional bool that indicates whether this widget represents a single semantic container. If false, it's a collection of individual semantic nodes. Defaults to true.
   ```semanticsContainer: true,```
