@@ -57,8 +57,10 @@ class GeminiService {
     required String prompt,
     required GeminiService geminiService,
   }) async {
+    // Workaround for the fact that the LLM keeps forgetting to use a type parameter in decorations.
+    const dontForgetType = "When using a decoration, make sure to include the type parameter.";
     // Add the current chat message from the user to the list of the google_generative_ai [Content] objects.
-    gemini.updateChatHistory(who: 'user', latestMessage: prompt);
+    gemini.updateChatHistory(who: 'user', latestMessage: prompt + dontForgetType );
     // Create a list of [Content] with current active chat history and all messages before it.
     List<Content> content = gemini.chatHistoryContent;
     // Declare a response object.

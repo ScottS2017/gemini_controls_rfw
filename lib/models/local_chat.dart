@@ -33,10 +33,11 @@ class LocalChat {
   void initChat() {
     updateChatHistory(
         who: 'user',
+        // Parking these here to see if we can do without them.
+        // LocalChatParameters.coreWidgetsDocs +
+        // LocalChatParameters.selectedClassesSourceCode +
         latestMessage: LocalChatParameters.initializingPrompt +
-            LocalChatParameters.rfw_examples +
-            LocalChatParameters.coreWidgetsDocs +
-            LocalChatParameters.selectedClassesSourceCode +
+            LocalChatParameters.rfwExamples +
             RfwSampleWidgets.allWidgets());
     updateChatHistory(who: 'model', latestMessage: "Sounds good. I'll do my best.");
   }

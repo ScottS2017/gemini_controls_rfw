@@ -90,6 +90,10 @@ class _HomeScreenState extends State<HomeScreen> {
     _gemini.initChat();
   }
 
+  void rfwTestPrint(){
+    debugPrint('RFW Test Print Good');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -166,77 +170,80 @@ class _HomeScreenState extends State<HomeScreen> {
                         widget: const FullyQualifiedWidgetName(remoteLibraryName, 'root'),
                         onEvent: (String name, DynamicMap arguments) {
                           debugPrint('User triggered event "$name" with data: $arguments');
+                          if (name == 'rfwTestPrint') {
+                            rfwTestPrint();
+                          }
                         },
                       ),
                     );
                   }),
               const Spacer(),
-              FutureBuilder<void>(
-                future: _futureResponse,
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else if (snapshot.connectionState == ConnectionState.done) {
-                    // SECTION: The most recent message from the model, displayed in selectable text.
-                    return SizedBox(
-                      width: double.infinity,
-                      height: 500.0,
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            width: 1,
-                            color: Colors.grey,
-                          ),
-                          borderRadius: BorderRadius.circular(4.0),
-                        ),
-                        child: FutureBuilder<void>(
-                          future: _futureResponse,
-                          builder: (BuildContext context, AsyncSnapshot snapshot) {
-                            if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            } else if (snapshot.connectionState == ConnectionState.done) {
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-                                child: SingleChildScrollView(
-                                  // Rebuilds on an updated response from the model.
-                                  child: ValueListenableBuilder<String>(
-                                    valueListenable: _geminiService.latestResponseFromModel,
-                                    builder: (BuildContext context, String value, _) {
-                                      return SelectableText(
-                                        _geminiService.latestResponseFromModel.value ?? '',
-                                        maxLines: 1000,
-                                        style: const TextStyle(
-                                          fontSize: 18.0,
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              );
-                            } else {
-                              return const SizedBox.shrink();
-                            }
-                          },
-                        ),
-                      ),
-                    );
-                  } else {
-                    // TODO: Replace placeholder with something permanent.
-                    return Container(
-                      width: double.infinity,
-                      height: 100.0,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 1,
-                          color: Colors.grey,
-                        ),
-                        borderRadius: BorderRadius.circular(4.0),
-                      ),
-                    );
-                  }
-                },
-              ),
+              // FutureBuilder<void>(
+              //   future: _futureResponse,
+              //   builder: (BuildContext context, AsyncSnapshot snapshot) {
+              //     if (snapshot.hasError) {
+              //       return Text('Error: ${snapshot.error}');
+              //     } else if (snapshot.connectionState == ConnectionState.done) {
+              //       // SECTION: The most recent message from the model, displayed in selectable text.
+              //       return SizedBox(
+              //         width: double.infinity,
+              //         height: 500.0,
+              //         child: DecoratedBox(
+              //           decoration: BoxDecoration(
+              //             border: Border.all(
+              //               width: 1,
+              //               color: Colors.grey,
+              //             ),
+              //             borderRadius: BorderRadius.circular(4.0),
+              //           ),
+              //           child: FutureBuilder<void>(
+              //             future: _futureResponse,
+              //             builder: (BuildContext context, AsyncSnapshot snapshot) {
+              //               if (snapshot.hasError) {
+              //                 return Text('Error: ${snapshot.error}');
+              //               } else if (snapshot.connectionState == ConnectionState.done) {
+              //                 return Padding(
+              //                   padding:
+              //                       const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+              //                   child: SingleChildScrollView(
+              //                     // Rebuilds on an updated response from the model.
+              //                     child: ValueListenableBuilder<String>(
+              //                       valueListenable: _geminiService.latestResponseFromModel,
+              //                       builder: (BuildContext context, String value, _) {
+              //                         return SelectableText(
+              //                           _geminiService.latestResponseFromModel.value ?? '',
+              //                           maxLines: 1000,
+              //                           style: const TextStyle(
+              //                             fontSize: 18.0,
+              //                           ),
+              //                         );
+              //                       },
+              //                     ),
+              //                   ),
+              //                 );
+              //               } else {
+              //                 return const SizedBox.shrink();
+              //               }
+              //             },
+              //           ),
+              //         ),
+              //       );
+              //     } else {
+              //       // TODO: Replace placeholder with something permanent.
+              //       return Container(
+              //         width: double.infinity,
+              //         height: 100.0,
+              //         decoration: BoxDecoration(
+              //           border: Border.all(
+              //             width: 1,
+              //             color: Colors.grey,
+              //           ),
+              //           borderRadius: BorderRadius.circular(4.0),
+              //         ),
+              //       );
+              //     }
+              //   },
+              // ),
             ],
           ),
         ),

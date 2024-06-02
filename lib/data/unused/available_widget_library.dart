@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:rfw/formats.dart';
 import 'package:rfw/rfw.dart';
 
 /// The collection of [Widget] that can be utilized by the model when

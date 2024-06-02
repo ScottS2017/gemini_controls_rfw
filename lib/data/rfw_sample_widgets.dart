@@ -3,34 +3,15 @@ class RfwSampleWidgets {
   static const String rulesAndGuidelines = '''
 For each widget, every parameter is implemented using the same name as its normal Flutter counterpart. Parameters that take structured types are represented using maps, with each named parameter of that type's default constructor represented by a key, with the following notable caveats and exceptions:
  
- * Enums are represented as strings with the unqualified name of the value.
-   For example, [MainAxisAlignment.start] is represented as the string
-   `"start"`.
+ * Enums are represented as strings with the unqualified name of the value. For example, `MainAxisAlignment.start` is represented as the string `"start"`.
+
+ * Types that have multiple subclasses (or multiple very unrelated constructors, like `ColorFilter`):** These are represented as maps where the `type` key specifies the type. Typically these have an extension mechanism.
+
+ * Matrices are represented as **column-major** flattened arrays. `Matrix4` values must have exactly 16 doubles in the array.
+
+ * [AlignmentGeometry] values can be represented either as `{x: ..., y: ...}` for a non-directional variant or `{start: ..., y: ...}` for a directional variant.
    
-   // EXAMPLE NEEDED
-   
- * Types that have multiple subclasses (or multiple very unrelated
-   constructors, like [ColorFilter]) are represented as maps where the `type`
-   key specifies the type. Typically these have an extension mechanism.
-   
-   // EXAMPLE NEEDED
-   
- * Matrices are represented as **column-major** flattened arrays. [Matrix4]
-   values must have exactly 16 doubles in the array.
-   
-   // EXAMPLE NEEDED
-   
- * [AlignmentGeometry] values can be represented either as `{x: ..., y:
-   ...}` for a non-directional variant or `{start: ..., y: ...}` for a
-   directional variant.
-   
-   // EXAMPLE NEEDED
-   
- * [BoxBorder] instances are defined as arrays of [BorderSide] maps. If the
-   array has length 1, then that value is used for all four sides. Two
-   values become the horizontal and vertical sides respectively. Three
-   values become the start, top-and-bottom, and end respectively. Four
-   values become the start, top, end, and bottom respectively. EG:
+ * [BoxBorder] instances are defined as arrays of `BorderSide` maps. If the array has length 1, then that value is used for all four sides. Two values become the horizontal and vertical sides respectively. Three values become the start, top-and-bottom, and end respectively. Four values become the start, top, end, and bottom respectively. EG:
    ```
    border: [
       {
@@ -39,16 +20,7 @@ For each widget, every parameter is implemented using the same name as its norma
       },
     ],
     ```
- * [BorderRadiusGeometry] values work similarly to [BoxBorder], as an array
-   of [Radius] values. If the array has one value, it's used for all corners.
-   With two values, the first becomes the `topStart` and `bottomStart`
-   corners and the second the `topEnd` and `bottomEnd`. With three, the
-   values are used for `topStart`, `topEnd`-and-`bottomEnd`, and
-   `bottomStart` respectively. Four values map to the `topStart`, `topEnd`,
-   `bottomStart`, and `bottomEnd` respectively. Note the horizontal and
-   vertical components of any given corner do not have to be the same. The
-   corner can have different radii for horizontal and vertical sides. The x is
-   always the horizontal part and the y is always the vertical part. EG This
+ * [BorderRadiusGeometry] values work similarly to `BoxBorder`, as an array of `Radius` values. If the array has one value, it's used for all corners. With two values, the first becomes the `topStart` and `bottomStart` corners and the second the `topEnd` and `bottomEnd`. With three, the values are used for `topStart`, `topEnd`-and-`bottomEnd`, and `bottomStart` respectively. Four values map to the `topStart`, `topEnd`, `bottomStart`, and `bottomEnd` respectively. Note the horizontal and vertical components of any given corner do not have to be the same. The corner can have different radii for horizontal and vertical sides. The x is always the horizontal part and the y is always the vertical part. EG This
    will create top corners with a 20.0 radius and bottom ones with a 30.0
    radius:
    ```
@@ -60,9 +32,7 @@ For each widget, every parameter is implemented using the same name as its norma
        {x: 30.0, y: 30.0},
      ],
    ```
- * [Color] values are represented as integers. The hex literal values are
-   most convenient for this, the alpha, red, green, and blue channels map to
-   the 32 bit hex integer as 0xAARRGGBB. EG: Solid green is:
+ * [Color] values are represented as integers. The hex literal values are most convenient for this, the alpha, red, green, and blue channels map to the 32 bit hex integer as 0xAARRGGBB. EG: Solid green is:
    ```
    0xFF00FF00
    ```
@@ -301,6 +271,10 @@ AppBar(
      ],```
     ''';
   // TODO MATERIAL: ButtonBar / OverflowBar
+  static const String callbacks = '''
+  // RFW handles callback differently. The method is located in the page that hosts the RFW text widget tree, and therefore has to be referred to during an event. Arguments may be passed to the event handler by adding the arg to the list of arguments. arguments is a required parameter. The syntax for haneling a method is 'event "METHOD NAME" { arguments: [ARGS HERE IF ANY]}'. The following example calls a method named testPrint, and that method has to be in the page that displays the RFW widget tree:
+  onPressed: event "testPrint"  { arguments: [] },
+  ''';
   static const String card = '''
   Card(
     color: 0xFFFF00FF,
@@ -350,7 +324,11 @@ Column(
   mainAxisSize: "max",
   mainAxisAlignment: "center",
   crossAxisAlignment: "stretch",
-  // mainAxisSize, mainAxisAlignment, and crossAxisAlignment can ONLY be used with Rows, Columns, or Flexes. Putting them in anything else causes the app to crash, don't make the app crash.
+  // mainAxisSize, mainAxisAlignment, and crossAxisAlignment can ONLY be used with Rows, Columns, or Flexes. Putting them in anything else causes the app to crash. The values must be the names of the appropriate enums for each parameter or it wil make the app crash. In the past using enum values for MainAxisSize where we needed ones for MainAxisAlignment made the app crash. Don't make the app crash.
+  mainAxisSize: "min",
+  mainAxisAlignment: "spaceAround",
+  crossAxisAlignment: "stretch"
+  textDirection: "ltr",
   children: [
    ...
   ],
@@ -454,7 +432,7 @@ Container(
      source: "https://assets3.thrillist.com/v1/image/3082123/792x446/scale;webp=auto;jpeg_quality=60;progressive.jpg",
      fit: "cover",
    },
-   // Type option choices are box, shape, and flutterLogo
+   // **Make sure to include the type parameter, the app will crash without it. Choices are box (most often used), shape, and flutterLogo.
    type: "box",
  },```
   ''';
@@ -475,9 +453,9 @@ Container(
   // FIXME ElevatedButton callbacks.
   static const String elevatedButton = '''
   ElevatedButton(
-  // onPressed and onLongPress both take <VoidCallback?>
-  onPressed: ,
-  onLongPress: .
+  // SEE CALLBACKS FOR EXPLANATION.
+  onPressed: event "onPressMethodName"  { arguments: [] },
+  onLongPress: event "onLongPressMethodName"  { arguments: [] },
   // autofocus defaults to false.
   autofocus: "false",
   child: Placeholder(),
@@ -683,7 +661,22 @@ Icon(
   ),
   ''';
   // TODO CORE: Rotation
-  // TODO CORE: Row
+  static const String row = '''
+Row(
+  // Use enums by putting the name of the desired value in quotes, like this:
+  mainAxisSize: "max",
+  mainAxisAlignment: "center",
+  crossAxisAlignment: "stretch",
+  // mainAxisSize, mainAxisAlignment, and crossAxisAlignment can ONLY be used with Rows, Columns, or Flexes. Putting them in anything else causes the app to crash, don't make the app crash.
+  mainAxisSize: "min",
+  mainAxisAlignment: "spaceAround",
+  crossAxisAlignment: "stretch"
+  textDirection: "ltr",
+  children: [
+   ...
+  ],
+),
+  ''';
   // TODO CORE: SafeArea
   // TODO add more to scaffold
   static const String scaffold = '''
@@ -777,17 +770,64 @@ Text(
     const result = '''
     $testNetworkImage 
     $rulesAndGuidelines 
+    $align 
+    $alignment 
     $appBar 
+    $aspectRatio 
+    $backgroundBlendMode 
+    $backgroundColor 
+    $borderOnForeground 
+    $border 
+    $borderRadius 
+    $card 
+    $circularProgressIndicator 
+    $clipBehavior 
+    $clipRRect 
+    $color 
     $column 
     $containerWithoutDecoration 
     $containerWithDecoration 
+    $curve 
+    $decoration 
+    $directionality 
+    $duration 
+    $elevatedButton 
+    $elevation 
+    $expanded 
+    $foregroundDecoration 
+    $fractionallySizedBox 
+    $gradients 
     $icon 
+    $margin 
+    $material 
+    $offset 
+    $opacity 
+    $padding 
+    $placeholder 
+    $positioned 
+    $row 
     $scaffold 
+    $scale 
+    $semanticsContainer 
+    $semanticsLabel 
+    $shadowColor 
+    $shape 
     $sizedBox 
+    $strokeWidth 
     $textAndTextStyle''';
     return result;
   }
 }
+
+String geminiFeedback = '''
+**Enums:** Enums are represented as strings with the unqualified name of the value. For example, `MainAxisAlignment.start` is represented as the string `"start"`.
+**Types that have multiple subclasses (or multiple very unrelated constructors, like `ColorFilter`):** These are represented as maps where the `type` key specifies the type. Typically these have an extension mechanism.
+**Matrices:** Matrices are represented as **column-major** flattened arrays. `Matrix4` values must have exactly 16 doubles in the array.
+**`AlignmentGeometry` values:** These can be represented either as `{x: ..., y: ...}` for a non-directional variant or `{start: ..., y: ...}` for a directional variant.
+**`BoxBorder` instances:** These are defined as arrays of `BorderSide` maps. If the array has length 1, then that value is used for all four sides. Two values become the horizontal and vertical sides respectively. Three values become the start, top-and-bottom, and end respectively. Four values become the start, top, end, and bottom respectively.
+**`BorderRadiusGeometry` values:** These work similarly to `BoxBorder`, as an array of `Radius` values. If the array has one value, it's used for all corners. With two values, the first becomes the `topStart` and `bottomStart` corners and the second the `topEnd` and `bottomEnd`. With three, the values are used for `topStart`, `topEnd`-and-`bottomEnd`, and `bottomStart` respectively. Four values map to the `topStart`, `topEnd`, `bottomStart`, and `bottomEnd` respectively. Note the horizontal and vertical components of any given corner do not have to be the same. The corner can have different radii for horizontal and vertical sides. The x is always the horizontal part and the y is always the vertical part.
+**`Color` values:** These are represented as integers. The hex literal values are most convenient for this, the alpha, red, green, and blue channels map to the 32 bit hex integer as 0xAARRGGBB. EG: Solid green is:
+''';
 
 String testString = '''
 
@@ -807,4 +847,5 @@ Align(
 
 Show me a container that is 500 wide by 800 high and is light grey. Inside the container, center a sized box that is 400 wide by 700 high and put a scaffold inside of it, using a blue AppBar. Inside the app bar for the title use a text widget that says hi there in white text, and wrap it in a center so it's centered in the AppBar. Inside the scaffold put a row with its main axis alignment set to space between and its cross axis alignment to stretch. Inside the row, the first child is going to be a green box that is 50 pixels wide. The second child is a column with the column's main axis alignment set to spaceEvenly and cross axis alignment set to center. Put three container's in the column. Each container should be  225 wide and 120 high, and put the test image in it . Round the corners of those image's containers by 50 and give them each a drop shadow. For all borders, images and radii make sure you use your decoration parameter properly. The last child of the row should be a red box, just like the green one.
 
+https://drive.google.com/file/d/1tluWX3jNN3rzFwX3JkBiVaydGBBmNE3z/view?usp=sharing
 ''';

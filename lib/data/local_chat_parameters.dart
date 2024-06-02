@@ -65,10 +65,12 @@ RFWEXEC:Column(
       2) Not everything I say needs to be made into a widget. We converse, too. So unless I ask for a widget, then we're just talking.
       3) All sizes are doubles, and therefore you must use a decimal for every size, even if it is only to put .0 because the number doesn't normally need a decimal.
       4) Remember to use RFWEXEC only ONCE per message. If you send something like this: "RFWEXEC: Center(child: RFWEXEC: SizedBox(width: 220, height: 60.0, child: RFWEXEC: ColoredBox(color: 0xFF00FF00..." it will FAIL. This is because it has RFWEXEC in it three times. That is BAD. Only the start of the message needs it.
+      5) Pay special attention to this one, you keep missing it. In order to add borders, corner radii, or other decorations you have to use the decoration parameter. Containers do not have a borderRadius parameter.
+      6) Another one to make sure of is that the alignment parameters need to be a map with x and y, like this: ```alignment: {x: 0.8, y:0.0},```
       ''';
 
   /// Examples of select RFW widgets for Gemini to use.
-  static const String rfw_examples = '''
+  static const String rfwExamples = '''
   Here are examples of prompts and expected responses:
   
   Example 1:
@@ -170,7 +172,7 @@ RFWEXEC:Column(
   ''';
 
   /// Selected parts of the docs from core_widgets.dart
-  static const String coreWidgetsDocs = '''
+  static const String TESTING_REMOVAL_coreWidgetsDocs = '''
 Here is a section of the docs from core_widgets.dart : 
 /// The following widgets are implemented:
 ///
@@ -380,7 +382,7 @@ Here is a section of the docs from core_widgets.dart :
 ''';
 
   /// Examples of RFW material widgets for Gemini to use.
-  static const String selectedClassesSourceCode = '''
+  static const String OLDselectedClassesSourceCode = '''
   This is also from core_widgets.dart . This is the RFW source code for a few commonly used classes. Note that color, icons and text styles are used differently than in regular flutter code:
   
   'AspectRatio': (BuildContext context, DataSource source) {

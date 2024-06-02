@@ -11,37 +11,71 @@ class Experiments extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF5F5F5),
       appBar: AppBar(
-        title: Text(title),
+        backgroundColor: Color(0xFF800080),
+        title: Text(
+          'Testing',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24.0,
+          ),
+        ),
       ),
       body: Center(
-        child: Container(
-          width: 300.0,
-          height: 300.0,
-          decoration: BoxDecoration(
-            gradient: const
-            RadialGradient(
-              center: Alignment(0.5, 0.0),
-              radius: 0.8,
-              colors: [
-                Color(0xFF0000FF),
-                Color(0xFF00FF00),
-                Color(0xFFFF0000),
-              ],
-              stops: [
-                0.0,
-                0.5,
-                1.0,
-              ],
-              focal: Alignment.center,
-              focalRadius: 0.4,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container(
+              width: 300.0,
+              height: 300.0,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(
+                      'https://st3.depositphotos.com/1192109/35237/i/450/depositphotos_352372118-stock-photo-beauty-portrait-young-brunette-classic.jpg'),
+                  fit: BoxFit.cover,
+                ),
+                borderRadius: BorderRadius.circular(50.0),
+                border: Border.all(
+                  color: Colors.black,
+                  width: 2.0,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.75),
+                    offset: Offset(4.0, 4.0),
+                    blurRadius: 4.0,
+                    spreadRadius: 2.0,
+                  ),
+                ],
+              ),
             ),
-            borderRadius: BorderRadius.circular(50.0),
-            border: Border.all(
-              color: Colors.black,
-              width: 5.0,
+            Container(
+              width: 300.0,
+              height: 300.0,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(
+                      'https://st3.depositphotos.com/8935838/35907/i/450/depositphotos_359071356-stock-photo-beautiful-young-woman-long-eyelashes.jpg'),
+                  fit: BoxFit.cover,
+                ),
+                borderRadius: BorderRadius.circular(50.0),
+                border: Border.all(
+                  color: Colors.black,
+                  width: 2.0,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.75),
+                    offset: Offset(4.0, 4.0),
+                    blurRadius: 4.0,
+                    spreadRadius: 2.0,
+                  ),
+                ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
