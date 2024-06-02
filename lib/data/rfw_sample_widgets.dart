@@ -514,7 +514,21 @@ but never both.
     ),
 ),
   ''';
-  // TODO CORE: GestureDetector
+  static const String gestureDetector = '''
+    ```
+    GestureDetector(
+      // SEE CALLBACKS FOR EXPLANATION.
+      onTap: event "onTapMethodName"  { arguments: [] },
+      onTapDown: event "onTapDownMethodName"  { arguments: [] },
+      onTapUp: event "onTapUpMethodName"  { arguments: [] },
+      onTapCancel: event "onTapCancelMethodName"  { arguments: [] },
+      onDoubleTap: event "onDoubleTapMethodName"  { arguments: [] },
+      onLongPress: event "onLongPressMethodName"  { arguments: [] },
+      // Use the name property of the desired HitTestBehavior enum value:
+      behavior: "deferToChild",
+      child: Placeholder(),
+    ),
+    ```''';
   static const String gradients = '''
   // Linear Gradient:
   ```
@@ -598,8 +612,12 @@ Icon(
   ''';
   // TODO MATERIAL: InkResponse
   // TODO MATERIAL: InkWell
-  // TODO CORE: IntrinsicHeight
-  // TODO CORE: IntrinsicWidth
+  static const String intrinsicHeightAndWidth = '''
+    Intrinsic height and width are similar:
+    ```
+    IntrinsicHeight(child: Placeholder(),),
+    IntrinsicWidth(child: Placeholder(),),
+    ```''';
   static const String image = '''
     ```
   Image(
@@ -671,7 +689,17 @@ Icon(
       child: Placeholder(),
     ),```
     ''';
-  // TODO MATERIAL: OutlinedButton
+  static const String outlinedButton = '''
+    ```
+    OutlinedButton(,
+      // SEE CALLBACKS FOR EXPLANATION.
+      onPressed: event "onPressMethodName"  { arguments: [] },
+      onLongPress: event "onLongPressMethodName"  { arguments: [] },
+      autofocus: false,
+      clipBehavior: "none",
+      child: Placeholder(),
+),
+    ```''';
   static const String padding = '''
   Padding(
     // Padding is Left, Top, Right, Bottom
@@ -876,10 +904,46 @@ Text(
   },
 )
   ''';
-  // TODO MATERIAL: TextButton
-  // TODO MATERIAL: VerticalDivider
-  // TODO CORE: Wrap
-
+  static const String textButton = '''
+    ```
+    // SEE CALLBACKS
+    onPressed: event "testPrint"  { arguments: [] },
+    onLongPress: event "testPrint"  { arguments: [] },
+    autofocus: false,
+    clipBehavior: "none",
+    child: Placeholder(),
+    ```''';
+  static const String verticalDivider = '''
+    ```
+    VerticalDivider(
+      width: 2.2,
+      thickness: 2.2,
+      indent: 5.0,
+      endIndent: 5.0,
+      color: 0xFF00FF00,
+    ),
+    ```''';
+  static const String wrap = '''
+    ```
+    Wrap(
+      direction: "horizontal",
+      // Takes a [WrapAlignment] value.
+      alignment: "start",
+      // spacing in the main axis, in pixels.
+      spacing: 8.0,
+      // Takes a [WrapAlignment] value.
+      runAlignment: "start",
+      // How much space to place between the runs in the cross axis.
+      runSpacing: 16.0,
+      // Takes a [WrapCrossAlignment] value.
+      crossAxisAlignment: "start",
+      textDirection: "rtl",
+      // Takes a [VerticalDirection] value.
+      verticalDirection: "down",
+      clipBehavior: "none",
+      children: [Placeholder(), Placeholder()],
+    ),
+    ```''';
   static String allWidgets(){
     const result = '''
     $testNetworkImage 
