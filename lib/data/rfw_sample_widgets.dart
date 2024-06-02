@@ -224,8 +224,8 @@ AppBar(
     ),
   ),
   ''';
-  static const String backgroundBlendMode = '''
-    // backgroundBlendMode values are the same as the BlendMode values in painting.dart . Choices are: clear, src, dst, srcOver, dstOver, srcIn, dstIn, srcOut, dstOut, srcATop, dstATop, xor, plus, modulate, screen, overlay, darken, lighten,  colorDodge, colorBurn, hardLight, softLight, difference, exclusion, multiply, hue, saturation, color, and luminosity. This is an optional parameter, rarely used, and defaults to "srcOver". The BoxDecoration has an assert that must be complied with: ```assert( backgroundBlendMode == null || color != null || gradient != null, "backgroundBlendMode applies to BoxDecoration's background color or " 'gradient, but no color or gradient was provided.',);```
+  static const String backgroundAndColorBlendMode = '''
+    // backgroundBlendMode and colorBlendMode values are the same as the BlendMode values in painting.dart . Choices are: clear, src, dst, srcOver, dstOver, srcIn, dstIn, srcOut, dstOut, srcATop, dstATop, xor, plus, modulate, screen, overlay, darken, lighten,  colorDodge, colorBurn, hardLight, softLight, difference, exclusion, multiply, hue, saturation, color, and luminosity. This is an optional parameter, rarely used, and defaults to "srcOver". The BoxDecoration has an assert that must be complied with: ```assert( backgroundBlendMode == null || color != null || gradient != null, "backgroundBlendMode applies to BoxDecoration's background color or " 'gradient, but no color or gradient was provided.',);```
   ```backgroundBlendMode: "srcOver",```
     ''';
   static const String backgroundColor = '''
@@ -287,6 +287,11 @@ AppBar(
     child: Placeholder(),
   ),
   ''';
+  static const String centerSlice = '''
+  Returns a Rect.fromLTWH:
+    ```
+    centerSlice: {x: 0.0, y: 0.0, w: 100.0, h: 200.0},
+    ```''';
   static const String circularProgressIndicator = '''
   CircularProgressIndicator(
     // Value is a double between 0.0 and 1.0 representing progress towards completion, in percent.
@@ -299,8 +304,8 @@ AppBar(
     semanticsValue: '0.1',
   ),
   ''';
-  static const String clipBehavior = '''
-  // Takes an enum value, choices are none, hardEdge, antiAlias, and antiAliasWithSaveLayer. Defaults to none.
+  static const String clipAndClipBehavior = '''
+  // clip and clipBehavior both take an enum value. Choices are none, hardEdge, antiAlias, and antiAliasWithSaveLayer. Defaults to none.
   ```clipBehavior: "none",```
   ''';
   static const String clipRRect = '''
@@ -458,6 +463,10 @@ but never both.
     // Returns a duration in milliseconds from the specified integer.
     ```duration: 500,```
     ''';
+  static const String fit = '''
+   If this is the fit of an image use the name property of the desired BoxFit enum value:
+  ```fit: "cover",```
+  ''';
   static const String elevatedButton = '''
   ElevatedButton(
   // SEE CALLBACKS FOR EXPLANATION.
@@ -478,6 +487,11 @@ but never both.
     child: Placeholder(),
   ),
   ''';
+  static const String filterQuality = '''
+  Use the name property of the desired FilterQuality enum value:
+  ```
+  filterQuality: "low",
+  ```''';
   // TODO CORE: FittedBox
   // TODO MATERIAL: FloatingActionButton
   static const String foregroundDecoration = '''
@@ -586,7 +600,26 @@ Icon(
   // TODO MATERIAL: InkWell
   // TODO CORE: IntrinsicHeight
   // TODO CORE: IntrinsicWidth
-  // TODO CORE: Image
+  static const String image = '''
+    ```
+  Image(
+    semanticLabel: "Semantics, good for alt tags",
+    excludeFromSemantics: false,
+    width: 600.0,
+    height: 400.0,
+    color: 0xFF0000FF,
+    colorBlendMode: "srcOver",
+    fit: "fitWidth",
+    alignment: {x: 0.0, y:-0.3},
+    repeat: "noRepeat",
+    centerSlice: {x: 0.0, y: 0.0, w: 100.0, h: 50.0},
+    matchTextDirection: false,
+    gaplessPlayback: false,
+    isAntiAlias: false,
+    filterQuality: "medium",
+  ),
+    ```
+    ''';
   static const String keyboardDismissBehavior = '''
   Use the name property of the desired ScrollViewKeyboardDismissBehavior enum value:
   ```keyboardDismissBehavior: "manual",```
@@ -670,7 +703,26 @@ Icon(
   "end" is the offset of the child's end edge from the end of the stack. "bottom" is the offset of the child's bottom edge from the bottom of the stack. "onEnd" takes  void callback.
   ),
   ''';
-  // TODO CORE: Rotation
+static const String repeat = '''
+  Use the name property of the desired ImageRepeat enum value:
+  ```
+  repeat: "noRepeat",
+  ```''';
+  static const String rotation = '''
+    Returns and AnimatedRotation
+    ```
+    Rotation(
+      duration: 250,
+      curve: "easeIn",
+      // turns docs say: "The animation that controls the rotation of the child. If the current value of the turns animation is v, the child will be rotated v * 2 * pi radians before being painted.
+      turns: ,
+      alignment: {x: 0.0, y: 0.0},
+      filterQuality: "high",
+      // SEE CALLBACKS FOR EXPLANATION OF onEnd.
+      onEnd: event "onPressMethodName"  { arguments: [] },
+      child: Placeholder(),
+    ),
+    ```''';
   static const String row = '''
 Row(
   // Use enums by putting the name of the desired value in quotes, like this:
@@ -687,7 +739,19 @@ Row(
   ],
 ),
   ''';
-  // TODO CORE: SafeArea
+  static const String safeArea = '''
+    ```
+    SafeArea(
+      left: true,
+      top: true,
+      right: true,
+      bottom: true,
+      // minimum uses an EdgeInsetsDirectional.fromSTEB, the order of elements in the list is [S,T,E,B]:
+      minimum: [16.0, 8.0, 16.0, 8.0],
+      maintainBottomViewPadding: false,
+      child: Placeholder(),
+    ),
+    ```''';
   // TODO add more to scaffold
   static const String scaffold = '''
 Scaffold(
@@ -764,10 +828,34 @@ SizedBox(
 // SizedBox.expand() in RFW widgets is:
 SizedBoxExpand()
   ''';
-  // TODO CORE: SizedBoxExpand
-  // TODO CORE: SizedBoxShrink
-  // TODO CORE: Spacer
-  // TODO CORE: Stack
+  static const String sizedBoxExpand = '''
+    This is how to use a SizedBox.expand() in RFW:
+    ```
+    SizedBoxExpand(),
+    ```''';
+  static const String sizedBoxShrink = '''
+    This is how to use a SizedBox.shrink() in RFW:
+    ```
+    SizedBoxShrink(),
+    ```''';
+  static const String spacer = '''
+    ```
+    Spacer(
+      flex: 2,
+    ),
+    ```''';
+  // TODO try Stack.alignment with the enum strings such as "topStart" to see if they work.
+  static const String stack = '''
+    ```
+    Stack(
+      alignment: {x: 0.0, y:0.0},
+      textDirection: "ltr",
+      // fit takes a StackFit enum value. Choices are loose, expand, and passthrough.
+      fit: "loose",
+      clipBehavior: "none",
+      children: [Placeholder(),],
+    ),
+    ```''';
   static const String strokeWidth = '''
   ```strokeWidth: 4.0,```
   ''';
@@ -800,14 +888,14 @@ Text(
     $alignment 
     $appBar 
     $aspectRatio 
-    $backgroundBlendMode 
+    $backgroundAndColorBlendMode 
     $backgroundColor 
     $borderOnForeground 
     $border 
     $borderRadius 
     $card 
     $circularProgressIndicator 
-    $clipBehavior 
+    $clipAndClipBehavior 
     $clipRRect 
     $color 
     $column 
