@@ -272,7 +272,7 @@ AppBar(
     ''';
   // TODO MATERIAL: ButtonBar / OverflowBar
   static const String callbacks = '''
-  // RFW handles callback differently. The method is located in the page that hosts the RFW text widget tree, and therefore has to be referred to during an event. Arguments may be passed to the event handler by adding the arg to the list of arguments. arguments is a required parameter. The syntax for haneling a method is 'event "METHOD NAME" { arguments: [ARGS HERE IF ANY]}'. The following example calls a method named testPrint, and that method has to be in the page that displays the RFW widget tree:
+  // RFW handles callback differently. The method is located in the page that hosts the RFW text widget tree, and therefore has to be referred to during an event. Arguments may be passed to the event handler by adding the arg to the list of arguments. arguments is a required parameter, if there are no args then pass in an empty list. The syntax for handling a method is 'event "METHOD NAME" { arguments: [ARGS HERE IF ANY]}'. The following example calls a method named testPrint, and that method has to be in the page that displays the RFW widget tree:
   onPressed: event "testPrint"  { arguments: [] },
   ''';
   static const String card = '''
@@ -335,70 +335,48 @@ Column(
 ),
   ''';
   static const String containerWithoutDecoration = '''
-Container(
+Actually returns an AnimatedContainer. To create a border or border radius
+you MUST use a decoration. It is not optional. When you use a decoration
+you MUST specify a type, it is not optional. A Container's color and
+decoration parameters are mutually exclusive. You can use one or the other,
+but never both.
+```Container(
   // sizes are always doubles, with the decimal point.
   width: 200.0,
   height: 200.0,
   // Padding and Margin are both listed Left, Top, Right, Bottom
   padding: [10.0,20.0,30.0,40.0,],
   margin: [50.0,20.0,30.0,40.0,],
+  alignment:  {x: 0.0, y:0.0},
+  clipBehavior: "none",
+  // Use color OR decoration, not both.
   color: 0xFFFF00FF,
-  child: Placeholder(),
-)
-  ''';
-  static const String containerWithDecoration = '''
-  To create a border or border radius you MUST use a decoration. It is not
-  optional. When you use a decoration you MUST specify a type, it is not optional.
-  A Container's color and decoration parameters are mutually exclusive. You can use one or the other, but never both.
-  The types supported for [Decoration] are `box` for [BoxDecoration],
-   `flutterLogo` for [FlutterLogoDecoration], and `shape` for
-   [ShapeDecoration]. 
-   [EdgeInsetsGeometry] values work like [BoxBorder], with each value in the
-   array being a double rather than a map. The order is LTRB. The padding
-   in this example Container is 10.0 left, 20.0 top, 30.0 right, and 40.0 bottom:
-```
-Container(
-// Since we're using a decoration, we cannot use the Container's color parameter.
-  decoration: {
-    // This will be a box decoration.
-   type: "box",
-   // The container will be red.
-   color: 0xFFFF0000,
-   // All four borders will be green, and 5 wide.
-   border: [
-    {
-       color: 0xFF00FF00,
-       width: 5.0,
-     },
-   ],
-   // All four corners will have a radii of 20.0, both horizontal and vertical.
-    borderRadius:
-      [
-        {x: 20.0, y: 20.0},
-     ],
-    // This is how a drop shadow is done in RFW. Each map entry is one shadow.
-    boxShadow: [
-      {
-        color: 0x7F000000,
-        offset: { x: 4.0, y: 4.0 },
-        blurRadius: 4.0,
-      },
-     ],
-    // Decoration Image example:
-    image: {
-      source: "https://assets3.thrillist.com/v1/image/3082123/792x446/scale;webp=auto;jpeg_quality=60;progressive.jpg",
-      fit: "cover",
-    },
+  // constraints is a map representing a BoxConstraints()
+  constraints: {
+    minWidth: 0.0,
+    maxWidth: 500.0,
+    minHeight: 0.0,
+    maxHeight: 500.0,
   },
-),
-```
+  curve: "linear",
+  decoration: {borderRadius: [{x: 20.0, y: 20.0},],},
+  // See decoration
+  foregroundDecoration: {borderRadius: [{x: 20.0, y: 20.0},],},
+  duration: 500,
+  // SEE CALLBACKS
+  onEnd: event "onEndMethodName"  { arguments: [] },
+  // transform and transformAlignment are beyond the scope of this app, at present.
+  child: Placeholder(),
+)```
   ''';
   static const String curve = '''
     // Returns a [Curve] from the specified string. Choices are linear, decelerate, fastLinearToSlowEaseIn, ease, easeIn, easeInToLinear, easeInSine, easeInQuad, easeInCubic, easeInQuart, easeInQuint, easeInExpo, easeInCirc, easeInBack, easeOut, linearToEaseOut, easeOutSine, easeOutQuad, easeOutCubic, easeOutQuart, easeOutQuint, easeOutExpo, easeOutCirc, easeOutBack, easeInOut, easeInOutSine, easeInOutQuad, easeInOutCubic, easeInOutCubicEmphasized, easeInOutQuart, easeInOutQuint, easeInOutExpo, easeInOutCirc, easeInOutBack, fastOutSlowIn, slowMiddle, bounceIn, bounceOut, bounceInOut, elasticIn, elasticOut, and elasticInOut.
     ```curve: "linear",```
     ''';
   static const String decoration = '''
-  // decoration is a map describing a BoxDecoration. 
+  decoration is a map describing a BoxDecoration. The types supported
+  for [Decoration] are `box` for [BoxDecoration], `flutterLogo` for
+  [FlutterLogoDecoration], and `shape` for [ShapeDecoration]. 
   ```decoration: {
    border: [
      {
@@ -614,7 +592,6 @@ Icon(
   // offset is a map of x, y values.
   offset: { x: 4.0, y: 4.0 },
   ''';
-  // Scott check on the onEnd VoidCallback syntax
   static const String opacity = '''
     // opacity is actually an AnimatedOpacity
     ```
@@ -622,8 +599,8 @@ Icon(
       duration: 250,
       curve: "linear",
       opacity: 1.0,
-      // onEnd takes a VoidCallback
-      onEnd: ()=> print("Test"),
+      // SEE CALLBACKS
+      onEnd: event "onEndMethodName"  { arguments: [] },
       alwaysIncludeSemantics: "true",
       child: Placeholder(),
     ),```
@@ -706,7 +683,8 @@ Scaffold(
     alignment: {x: 0.0, y:-0.5},
     // The filter quality with which to apply the transform as a bitmap operation. Takes an enum [FilterQuality] with values of none, low, medium, and high.
     filterQuality: "medium",
-    // "onEnd" is a parameter that takes a VoidCallback.
+    // SEE CALLBACKS
+    onEnd: event "onEndMethodName"  { arguments: [] },
     child: Placeholder(),
   )
   ''';
@@ -819,7 +797,7 @@ Text(
   }
 }
 
-String geminiFeedback = '''
+String geminisFeedbackSuggestions = '''
 **Enums:** Enums are represented as strings with the unqualified name of the value. For example, `MainAxisAlignment.start` is represented as the string `"start"`.
 **Types that have multiple subclasses (or multiple very unrelated constructors, like `ColorFilter`):** These are represented as maps where the `type` key specifies the type. Typically these have an extension mechanism.
 **Matrices:** Matrices are represented as **column-major** flattened arrays. `Matrix4` values must have exactly 16 doubles in the array.
@@ -831,6 +809,7 @@ String geminiFeedback = '''
 
 String testString = '''
 
+Show me a sized box, 400x400, and within it center an elevated button. Make the callback for the button trigger a method called "rfwTestPrint". For an argument, pass in the string "The quick brown fox jumped over the lazy dog's back.".
 
 
 Align(

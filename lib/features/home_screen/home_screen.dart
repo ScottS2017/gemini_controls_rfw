@@ -90,8 +90,8 @@ class _HomeScreenState extends State<HomeScreen> {
     _gemini.initChat();
   }
 
-  void rfwTestPrint(){
-    debugPrint('RFW Test Print Good');
+  void rfwTestPrint(Map arguments){
+    debugPrint(arguments.values.first[0].toString());
   }
 
   @override
@@ -171,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         onEvent: (String name, DynamicMap arguments) {
                           debugPrint('User triggered event "$name" with data: $arguments');
                           if (name == 'rfwTestPrint') {
-                            rfwTestPrint();
+                            rfwTestPrint(arguments);
                           }
                         },
                       ),
