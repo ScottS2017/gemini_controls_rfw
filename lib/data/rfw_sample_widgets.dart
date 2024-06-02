@@ -334,7 +334,7 @@ Column(
   ],
 ),
   ''';
-  static const String containerWithoutDecoration = '''
+  static const String container = '''
 Actually returns an AnimatedContainer. To create a border or border radius
 you MUST use a decoration. It is not optional. When you use a decoration
 you MUST specify a type, it is not optional. A Container's color and
@@ -420,15 +420,44 @@ but never both.
     child: Placeholder(),
   )
   ''';
-  // TODO MATERIAL: Divider
-  // TODO MATERIAL: Drawer
-  // TODO MATERIAL: DrawerHeader
+  static const String divider = '''
+  ```
+  Divider(
+    height: 2.0,
+    thickness: 1.0,
+    indent: 5.0,
+    endIndent: 5.0,
+    color: 0xFF000000,
+  ),```
+  ''';
+  static const String dragStartBehavior = '''
+  Use the name property of the desired DragStartBehavior enum value:
+  ```scrollDirection: "start",```
+  ''';
+  static const String drawer = '''
+    // 
+    ```
+   Drawer(
+    elevation: 4.0.
+    semanticLabel: "Semantics label for the Drawer".
+    child: Placeholder().
+   ),```
+    ''';
+  static const String drawerHeader = '''
+  DrawerHeader(
+    duration: 250.
+    curve: "easeIn,
+    decoration: {color: 0xFFFFFF66},
+    margin: [10.0, 10.0, 10.0, 10.0,],
+    padding: [10.0, 20.0, 10.0, 20.0,],
+    child: Placeholder(),
+  ),
+  ''';
   // TODO MATERIAL: DropdownButton
   static const String duration = '''
     // Returns a duration in milliseconds from the specified integer.
     ```duration: 500,```
     ''';
-  // FIXME ElevatedButton callbacks.
   static const String elevatedButton = '''
   ElevatedButton(
   // SEE CALLBACKS FOR EXPLANATION.
@@ -523,9 +552,9 @@ but never both.
   type: "sweep",
  // See alignment.
   center: {x: 0.5, y: 0.0},
-  // Start and end angles are radians expressed as doubles
+  // Start and end angles are in radians and expressed as doubles
   startAngle: 0.0,
-  endAngle: 5.0,
+  endAngle: 1.9,
   colors: [
     0xFF0000FF,
     0xFF00FF00,
@@ -558,6 +587,10 @@ Icon(
   // TODO CORE: IntrinsicHeight
   // TODO CORE: IntrinsicWidth
   // TODO CORE: Image
+  static const String keyboardDismissBehavior = '''
+  Use the name property of the desired ScrollViewKeyboardDismissBehavior enum value:
+  ```keyboardDismissBehavior: "manual",```
+  ''';
   // TODO MATERIAL: LinearProgressIndicator
   // TODO CORE: ListBody
   // TODO MATERIAL: ListTile
@@ -672,7 +705,6 @@ Scaffold(
   body: Placeholder(),
 )
   ''';
-  // TODO CORE: Scale
   static const String scale = '''
   // scale returns an AnimatedScale.
   Scale(
@@ -687,6 +719,10 @@ Scaffold(
     onEnd: event "onEndMethodName"  { arguments: [] },
     child: Placeholder(),
   )
+  ''';
+  static const String scrollDirection = '''
+  Use the name property of the desired Axis enum value:
+  ```scrollDirection: "vertical",```
   ''';
   static const String semanticsContainer = '''
   semanticsContainer is an optional bool that indicates whether this widget represents a single semantic container. If false, it's a collection of individual semantic nodes. Defaults to true.
@@ -704,7 +740,19 @@ Scaffold(
     // shape is an enumValue<BoxShape>, choices are rectangle and circle.
   ```shape: "rectangle",```
   ''';
-  // TODO CORE: SingleChildScrollView
+  static const String singleChildScrollView = '''
+  SingleChildScrollView(
+    scrollDirection "vertical",
+    reverse false,
+    padding: [10.0,20.0,30.0,40.0,],
+    primary true,
+    dragStartBehavior: "start",
+    clipBehavior: "none",
+    restorationId: "A String serves as an ID",
+    keyboardDismissBehavior: "manual",
+    child: Placeholder(),
+  ),
+  ''';
   static const String sizedBox = '''
 SizedBox(
   // sizes are always doubles, with the decimal point
@@ -763,8 +811,7 @@ Text(
     $clipRRect 
     $color 
     $column 
-    $containerWithoutDecoration 
-    $containerWithDecoration 
+    $container 
     $curve 
     $decoration 
     $directionality 
