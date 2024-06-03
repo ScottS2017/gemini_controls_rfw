@@ -1081,10 +1081,12 @@ Text(
       children: [Placeholder(), Placeholder()],
     ),
     ```''';
+
   static String allWidgets(){
     const result = '''
     $testNetworkImage 
     $rulesAndGuidelines 
+    $parametersTakeTheseTypes 
     $align 
     $alignment 
     $appBar 
@@ -1094,7 +1096,9 @@ Text(
     $borderOnForeground 
     $border 
     $borderRadius 
+    $callbacks 
     $card 
+    $centerSlice 
     $circularProgressIndicator 
     $clipAndClipBehavior 
     $clipRRect 
@@ -1104,31 +1108,60 @@ Text(
     $curve 
     $decoration 
     $directionality 
+    $divider 
+    $dragStartBehavior  
+    $drawer 
+    $drawerHeader 
     $duration 
     $elevatedButton 
     $elevation 
     $expanded 
+    $filterQuality 
+    $fit 
+    $fittedBox 
+    $floatingActionButton 
     $foregroundDecoration 
     $fractionallySizedBox 
+    $gestureDetector 
     $gradients 
     $icon 
+    $inkResponse 
+    $inkWell 
+    $intrinsicHeightAndWidth 
+    $image 
+    $keyboardDismissBehavior 
     $margin 
     $material 
+    $materialTapTargetSize 
     $offset 
     $opacity 
+    $outlinedButton 
     $padding 
     $placeholder 
     $positioned 
+    $repeat 
+    $rotation 
     $row 
+    $safeArea 
     $scaffold 
     $scale 
+    $scrollDirection 
     $semanticsContainer 
     $semanticsLabel 
     $shadowColor 
     $shape 
+    $singleChildScrollView 
     $sizedBox 
+    $sizedBoxExpand 
+    $sizedBoxShrink 
+    $spacer 
+    $stack 
     $strokeWidth 
-    $textAndTextStyle''';
+    $textAndTextStyle 
+    $textButton 
+    $verticalDivider 
+    $wrap 
+    ''';
     return result;
   }
 }
