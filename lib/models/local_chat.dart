@@ -38,7 +38,7 @@ class LocalChat {
         // LocalChatParameters.selectedClassesSourceCode +
         latestMessage: LocalChatParameters.initializingPrompt +
             LocalChatParameters.rfwExamples +
-            RfwSampleWidgets.allWidgets());
+            RfwMasterKey.allWidgets());
     updateChatHistory(who: 'model', latestMessage: "Sounds good. I'll do my best.");
   }
 

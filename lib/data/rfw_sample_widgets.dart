@@ -1,4 +1,4 @@
-class RfwSampleWidgets {
+class RfwMasterKey {
   static const String testNetworkImage = 'This is a URL for an image we will be using for testing. If I say to use the test image, it is at: "https://assets3.thrillist.com/v1/image/3082123/792x446/scale;webp=auto;jpeg_quality=60;progressive.jpg"';
   static const String rulesAndGuidelines = '''
 For each widget, every parameter is implemented using the same name as its normal Flutter counterpart. Parameters that take structured types are represented using maps, with each named parameter of that type's default constructor represented by a key, with the following notable caveats and exceptions:
@@ -275,6 +275,7 @@ AppBar(
   // RFW handles callback differently. The method is located in the page that hosts the RFW text widget tree, and therefore has to be referred to during an event. Arguments may be passed to the event handler by adding the arg to the list of arguments. arguments is a required parameter, if there are no args then pass in an empty list. The syntax for handling a method is 'event "METHOD NAME" { arguments: [ARGS HERE IF ANY]}'. The following example calls a method named testPrint, and that method has to be in the page that displays the RFW widget tree:
   onPressed: event "testPrint"  { arguments: [] },
   ''';
+  // TODO add shape to card.
   static const String card = '''
   Card(
     color: 0xFFFF00FF,
@@ -458,13 +459,13 @@ but never both.
     child: Placeholder(),
   ),
   ''';
-  // TODO MATERIAL: DropdownButton
+  // TODO MATERIAL: DropdownButton is generated, P3 item.
   static const String duration = '''
     // Returns a duration in milliseconds from the specified integer.
     ```duration: 500,```
     ''';
   static const String fit = '''
-   If this is the fit of an image use the name property of the desired BoxFit enum value:
+   If this is the fit of an image or FittedBox use the name property of the desired BoxFit enum value:
   ```fit: "cover",```
   ''';
   static const String elevatedButton = '''
@@ -492,8 +493,42 @@ but never both.
   ```
   filterQuality: "low",
   ```''';
-  // TODO CORE: FittedBox
-  // TODO MATERIAL: FloatingActionButton
+  static const String fittedBox = '''
+    ```
+    FittedBox(
+      fit: "contain",
+      alignment: {x: 0.0, y:0.2},
+      clipBehavior: "none",
+      child: Placeholder(),
+    ),
+    ```''';
+  static const String floatingActionButton = '''
+    ```
+    FloatingActionButton(
+      tooltip: "Tooltip Text Here",
+      foregroundColor: 0xFF000000,
+      backgroundColor: 0xFFFFFFFF,
+      focusColor: 0xFF999999,
+      hoverColor: 0xFFEEEEEE,
+      splashColor: 0xFFBBBBBB,
+      heroTag: "Hero Tag ID",
+      elevation: 4.0,
+      focusElevation: 4.0,
+      hoverElevation: 4.0,
+      highlightElevation: 4.0,
+      disabledElevation: 0.0,
+      // SEE CALLBACKS
+      onPressed: event "testPrint"  { arguments: [] },
+      mini: false,
+      shape: "circle",
+      clipBehavior: clipBehavior: "none",
+      autofocus: false,
+      materialTapTargetSize: "padded",
+      isExtended: false,
+      enableFeedback: true,
+      child: Placeholder(),
+    ),
+    ```''';
   static const String foregroundDecoration = '''
   ```foregroundDecoration: {
    border: [
@@ -505,14 +540,14 @@ but never both.
    } ```
   ''';
   static const String fractionallySizedBox = '''
-  FractionallySizedBox(
+  ```FractionallySizedBox(
   widthFactor: 0.25,
   heightFactor: 0.5,
   alignment: {x: 0.0, y:-1.0},
     child: Container(
       color: 0xFF0000FF,
     ),
-),
+),```
   ''';
   static const String gestureDetector = '''
     ```
@@ -596,8 +631,8 @@ but never both.
 },
 ```
   ''';
-  // TODO CORE: GridView
-  // TODO CORE: IconTheme
+  // TODO CORE: GridView P3.
+  // TODO CORE: IconTheme P3.
   static const String icon = '''
 Icon(
   // Icons are passed in with their #, not an Icon constructor.
@@ -610,8 +645,68 @@ Icon(
     size: 30.0,
 )
   ''';
-  // TODO MATERIAL: InkResponse
-  // TODO MATERIAL: InkWell
+  // TODO MATERIAL: add customBorder to InkResponse and InkWell.
+  static const String inkResponse = '''
+    ```
+    InkResponse(
+      // SEE CALLBACKS
+      onTap: event "testPrint"  { arguments: [] },
+      onTapDown: event "testPrint"  { arguments: [] },
+      onTapUp: event "testPrint"  { arguments: [] },
+      onTapCancel: event "testPrint"  { arguments: [] },
+      onDoubleTap: event "testPrint"  { arguments: [] },
+      onLongPress: event "testPrint"  { arguments: [] },
+      onSecondaryTap: event "testPrint"  { arguments: [] },
+      onSecondaryTapUp: event "testPrint"  { arguments: [] },
+      onSecondaryTapDown: event "testPrint"  { arguments: [] },
+      onSecondaryTapCancel: event "testPrint"  { arguments: [] },
+      onHighlightChanged: event "testPrint"  { arguments: [] },
+      onHover: event "testPrint"  { arguments: [] },
+      containedInkWell: false,
+      highlightShape: "circle",
+      // InkSplash radius
+      radius: 20.0,
+      borderRadius: [{x: 20.0, y: 20.0}],
+      focusColor: 0xFFFF0000,
+      hoverColor: 0xFFFF0000,
+      highlightColor: 0xFFFF0000,
+      splashColor: 0xFFFF0000,
+      enableFeedback: true,
+      excludeFromSemantics: false,
+      canRequestFocus: true,
+      onFocusChange: event "testPrint"  { arguments: [] },
+      autofocus: false,
+      hoverDuration: 250,
+      child: Placeholder(),
+    )
+    ```''';
+  static const String inkWell = '''
+    ```
+    InkWell(
+    // SEE CALLBACKS
+      onTap: event "testPrint"  { arguments: [] },
+      onDoubleTap: event "testPrint"  { arguments: [] },
+      onLongPress: event "testPrint"  { arguments: [] },
+      onTapDown: event "testPrint"  { arguments: [] },
+      onTapCancel: event "testPrint"  { arguments: [] },
+      onSecondaryTap: event "testPrint"  { arguments: [] },
+      onSecondaryTapUp: event "testPrint"  { arguments: [] },
+      onSecondaryTapDown: event "testPrint"  { arguments: [] },
+      onSecondaryTapCancel: event "testPrint"  { arguments: [] },
+      onHighlightChanged: event "testPrint"  { arguments: [] },
+      onHover: event "testPrint"  { arguments: [] },
+      focusColor: 0xFFFF0000,
+      hoverColor: 0xFFFF0000,
+      highlightColor: 0xFFFF0000,
+      splashColor: 0xFFFF0000,
+      radius: 20.0,
+      borderRadius: [{x: 20.0, y: 20.0}],
+      enableFeedback: true,
+      excludeFromSemantics: false,
+      autofocus: false,
+      child: Placeholder(),
+    ),
+    ```''';
   static const String intrinsicHeightAndWidth = '''
     Intrinsic height and width are similar:
     ```
@@ -672,6 +767,11 @@ Icon(
       child: Placeholder(),
     ),```
     ''';
+  static const String materialTapTargetSize = '''
+  Use the name property of the desired MaterialTapTargetSize enum value. Choices are padded and shrinkWrap:
+  ```
+  materialTapTargetSize: "padded",
+  ```''';
   static const String offset = '''
   // offset is a map of x, y values.
   offset: { x: 4.0, y: 4.0 },
