@@ -190,7 +190,7 @@ a default of 200ms and [Curves.fastOutSlowIn] is used.
   ```textDirection: "ltr",```
   ''';
   // Individual Widgets
-  // TODO MATERIAL: AboutListTile
+  // TODO MATERIAL: AboutListTile P3.
   static const String align = '''
   // The easiest way to use an align is with x, y like this:
   Align(
@@ -270,7 +270,7 @@ AppBar(
        {x: 30.0, y: 30.0},
      ],```
     ''';
-  // TODO MATERIAL: ButtonBar / OverflowBar
+  // TODO MATERIAL: ButtonBar / OverflowBar P3.
   static const String callbacks = '''
   // RFW handles callback differently. The method is located in the page that hosts the RFW text widget tree, and therefore has to be referred to during an event. Arguments may be passed to the event handler by adding the arg to the list of arguments. arguments is a required parameter, if there are no args then pass in an empty list. The syntax for handling a method is 'event "METHOD NAME" { arguments: [ARGS HERE IF ANY]}'. The following example calls a method named testPrint, and that method has to be in the page that displays the RFW widget tree:
   onPressed: event "testPrint"  { arguments: [] },
@@ -459,15 +459,11 @@ but never both.
     child: Placeholder(),
   ),
   ''';
-  // TODO MATERIAL: DropdownButton is generated, P3 item.
+  // TODO MATERIAL: DropdownButton P3.
   static const String duration = '''
     // Returns a duration in milliseconds from the specified integer.
     ```duration: 500,```
     ''';
-  static const String fit = '''
-   If this is the fit of an image or FittedBox use the name property of the desired BoxFit enum value:
-  ```fit: "cover",```
-  ''';
   static const String elevatedButton = '''
   ElevatedButton(
   // SEE CALLBACKS FOR EXPLANATION.
@@ -493,6 +489,10 @@ but never both.
   ```
   filterQuality: "low",
   ```''';
+  static const String fit = '''
+   If this is the fit of an image or FittedBox use the name property of the desired BoxFit enum value:
+  ```fit: "cover",```
+  ''';
   static const String fittedBox = '''
     ```
     FittedBox(
@@ -880,11 +880,11 @@ Row(
       child: Placeholder(),
     ),
     ```''';
-  // TODO add more to scaffold
+  // TODO add persistentFooterButtons, bottomNavigationBar, and bottomSheet to scaffold.
   static const String scaffold = '''
 Scaffold(
   appBar: AppBar(
-  backgroundColor: 0xFF00F0F0,
+    backgroundColor: 0xFF00F0F0,
     title: Text(
       text: ['Scaffold Sample'],
       textDirection: "ltr",
@@ -894,6 +894,43 @@ Scaffold(
       },
     ),
   ),
+  floatingActionButton: [
+    FloatingActionButton(
+      tooltip: "Tooltip Text Here",
+      foregroundColor: 0xFF000000,
+      backgroundColor: 0xFFFFFFFF,
+      // SEE CALLBACKS
+      onPressed: event "testPrint"  { arguments: [] },  
+      child: Icon(
+        icon: 0xE2A0,
+        fontFamily: "MaterialIcons",
+        color: 0xFFFF00FF,
+        size: 30.0,
+      ),
+    ),
+  ],
+  // Do not use persistentFooterButtons, bottomNavigationBar, bottomSheet
+  drawer: Drawer(
+    elevation: 4.0.
+    semanticLabel: "Semantics label for the Drawer".
+    child: Placeholder().
+   ),
+  endDrawer: Drawer(
+    elevation: 4.0.
+    semanticLabel: "Semantics label for the Drawer".
+    child: Placeholder().
+   ),
+  backgroundColor: 0xFFFFFFFF,
+  resizeToAvoidBottomInset: false,
+  primary: true,
+  drawerDragStartBehavior: "start",
+  extendBody: false,
+  extendBodyBehindAppBar: false,
+  drawerScrimColor: 0x33000000,
+  drawerEdgeDragWidth: 36.0,
+  drawerEnableOpenDragGesture: true,
+  endDrawerEnableOpenDragGesture: true,
+  restorationId: "Restoration ID",
   body: Placeholder(),
 )
   ''';
