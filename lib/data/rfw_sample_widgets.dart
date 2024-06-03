@@ -1,6 +1,7 @@
 class RfwMasterKey {
   static const String testNetworkImage = 'This is a URL for an image we will be using for testing. If I say to use the test image, it is at: "https://assets3.thrillist.com/v1/image/3082123/792x446/scale;webp=auto;jpeg_quality=60;progressive.jpg"';
   static const String rulesAndGuidelines = '''
+  
   The base widget of your rfw tree must be a SizedBox or a Container or you lose the game we're playing.
   
 For each widget, every parameter is implemented using the same name as its normal Flutter counterpart. Parameters that take structured types are represented using maps, with each named parameter of that type's default constructor represented by a key, with the following notable caveats and exceptions:
@@ -382,9 +383,9 @@ but never both.
     ```curve: "linear",```
     ''';
   static const String decoration = '''
-  decoration is a map describing a BoxDecoration. The types supported
-  for [Decoration] are `box` for [BoxDecoration], `flutterLogo` for
-  [FlutterLogoDecoration], and `shape` for [ShapeDecoration]. 
+  decoration is a map describing a BoxDecoration. There are only three types supported
+  for [Decoration]: `box` for [BoxDecoration], `flutterLogo` for
+  [FlutterLogoDecoration], and `shape` for [ShapeDecoration]. These are the ONLY valid choices, you will lose 10 points for trying to use anything else.
   ```decoration: {
    border: [
      {

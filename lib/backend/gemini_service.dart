@@ -26,7 +26,7 @@ class GeminiService {
       // Set an absurdly high limit to ensure the UI code isn't cut off.
       maxOutputTokens: 20000,
       // Lower temp from 0.9 to prevent "creative" replies because we need consistency in the generated RFW code.
-      temperature: 0.5,
+      temperature: 0.3,
       topP: 0.1,
       topK: 16,
     ),
@@ -86,6 +86,7 @@ class GeminiService {
 
     // Add the response message from the user to the list of the google_generative_ai [Content] objects.
     gemini.updateChatHistory(who: 'model', latestMessage: responseText);
+    latestResponseFromModel.value = responseText;
     debugPrint('Response was: $responseText');
     // Does the message start with the code for an RFW Command?
     if (responseText.contains('RFWEXEC')) {

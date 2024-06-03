@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class Experiments extends StatelessWidget {
   const Experiments({
@@ -11,71 +12,96 @@ class Experiments extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF800080),
-        title: const Text(
-          'Testing',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 24.0,
+        backgroundColor: const Color(0xFF9C27B0),
+        title: const Center(
+          child: Text(
+            'RFW Testing',
+            style: TextStyle(
+              color: Color(0xFFFFFFFF),
+              fontSize: 20.0,
+            ),
           ),
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container(
-              width: 300.0,
-              height: 300.0,
-              decoration: BoxDecoration(
-                image: const DecorationImage(
-                  image: NetworkImage(
-                      'https://st3.depositphotos.com/1192109/35237/i/450/depositphotos_352372118-stock-photo-beauty-portrait-young-brunette-classic.jpg'),
-                  fit: BoxFit.cover,
-                ),
-                borderRadius: BorderRadius.circular(50.0),
-                border: Border.all(
-                  color: Colors.black,
-                  width: 2.0,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.75),
-                    offset: const Offset(4.0, 4.0),
-                    blurRadius: 4.0,
-                    spreadRadius: 2.0,
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: RadialGradient(
+            center: Alignment(-1.0, -1.0),
+            radius: 2.0,
+            colors: [
+              Color(0xFF00BFFF),
+              Color(0xFFFFFFFF),
+            ],
+            stops: [
+              0.0,
+              1.0,
+            ],
+          ),
+        ),
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Container(
+                width: 200.0,
+                height: 100.0,
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    begin: Alignment(-1.0, -1.0),
+                    end: Alignment(1.0, 1.0),
+                    colors: [
+                      Color(0xFFFF0000),
+                      Color(0xFF00FF00),
+                    ],
+                    stops: [
+                      0.0,
+                      1.0,
+                    ],
                   ),
-                ],
-              ),
-            ),
-            Container(
-              width: 300.0,
-              height: 300.0,
-              decoration: BoxDecoration(
-                image: const DecorationImage(
-                  image: NetworkImage(
-                      'https://st3.depositphotos.com/8935838/35907/i/450/depositphotos_359071356-stock-photo-beautiful-young-woman-long-eyelashes.jpg'),
-                  fit: BoxFit.cover,
-                ),
-                borderRadius: BorderRadius.circular(50.0),
-                border: Border.all(
-                  color: Colors.black,
-                  width: 2.0,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.75),
-                    offset: const Offset(4.0, 4.0),
-                    blurRadius: 4.0,
-                    spreadRadius: 2.0,
+                  border: Border.all(
+                    width: 1.0,
+                    color: const Color(0xFF424242),
                   ),
-                ],
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color(0x77000000),
+                      offset: Offset(1.0, 1.0),
+                      blurRadius: 2.0,
+                      spreadRadius: 2.0,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+              Container(
+                width: 200.0,
+                height: 100.0,
+                decoration: BoxDecoration(
+                  image: const DecorationImage(
+                    image: NetworkImage(
+                      "https://assets3.thrillist.com/v1/image/3082123/792x446/scale;webp=auto;jpeg_quality=60;progressive.jpg",
+                    ),
+                    fit: BoxFit.cover,
+                  ),
+                  border: Border.all(
+                    width: 1.0,
+                    color: const Color(0xFF424242),
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color(0x77000000),
+                      offset: Offset(1.0, 1.0),
+                      blurRadius: 2.0,
+                      spreadRadius: 2.0,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
