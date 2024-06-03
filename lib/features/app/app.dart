@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gemini_controls_rfw/backend/gemini_service.dart';
 import 'package:gemini_controls_rfw/data/local_chat_parameters.dart';
+import 'package:gemini_controls_rfw/data/rfw_sample_widgets.dart';
 import 'package:gemini_controls_rfw/experiments/brainstorming_experiments.dart';
 import 'package:gemini_controls_rfw/features/home_screen/home_screen.dart';
 import 'package:gemini_controls_rfw/features/no_type/no_type_2.dart';
@@ -64,7 +65,7 @@ class AppState extends State<App> {
       ),
        // home: const Experiments(
        home: const HomeScreen(
-      // home: const NoType(
+      //home: const NoType(
         title: 'Gemini Controls RFW',
       ),
     );

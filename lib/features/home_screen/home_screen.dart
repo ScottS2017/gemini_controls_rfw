@@ -34,6 +34,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final _inputFieldFocusNode = FocusNode();
   // FIXME currentWidgetValue is a workaround for the ValueListenableBuilder not rebuilding.
   String currentWidgetValue = '';
+  double width = 360;
+  double height = 720;
 
   // The future used the the UI's [FutureBuilder].
   Future<void>? _futureResponse;
@@ -90,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _gemini.initChat();
   }
 
-  void rfwTestPrint(Map arguments){
+  void rfwTestPrint(Map arguments) {
     debugPrint(arguments.values.first[0].toString());
   }
 
@@ -155,95 +157,105 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               verticalMargin16,
               // SECTION: RFW Widget.
-              ValueListenableBuilder(
-                  // When [rfwString] changes, check to see if it's different than before and run update if it is.
-                  valueListenable: _geminiService.rfwString,
-                  builder: (BuildContext context, String value, _) {
-                    if (currentWidgetValue != _geminiService.rfwString.value) {
-                      currentWidgetValue = _geminiService.rfwString.value;
-                      _update();
-                    }
-                    return Center(
-                      child: RemoteWidget(
-                        runtime: _runtime,
-                        data: _data,
-                        widget: const FullyQualifiedWidgetName(remoteLibraryName, 'root'),
-                        onEvent: (String name, DynamicMap arguments) {
-                          debugPrint('User triggered event "$name" with data: $arguments');
-                          if (name == 'rfwTestPrint') {
-                            rfwTestPrint(arguments);
-                          }
-                        },
+              Container(
+                width: width,
+                height: height,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: const Color(0xFF000000),
+                    width: 1.0,
+                  ),
+                ),
+                child: ValueListenableBuilder(
+                    // When [rfwString] changes, check to see if it's different than before and run update if it is.
+                    valueListenable: _geminiService.rfwString,
+                    builder: (BuildContext context, String value, _) {
+                      if (currentWidgetValue != _geminiService.rfwString.value) {
+                        currentWidgetValue = _geminiService.rfwString.value;
+                        _update();
+                      }
+                      return Center(
+                        child: RemoteWidget(
+                          runtime: _runtime,
+                          data: _data,
+                          widget: const FullyQualifiedWidgetName(remoteLibraryName, 'root'),
+                          onEvent: (String name, DynamicMap arguments) {
+                            debugPrint('User triggered event "$name" with data: $arguments');
+                            if (name == 'rfwTestPrint') {
+                              rfwTestPrint(arguments);
+                            }
+                          },
+                        ),
+                      );
+                    }),
+              ),
+              const Spacer(),
+              FutureBuilder<void>(
+                future: _futureResponse,
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else if (snapshot.connectionState == ConnectionState.done) {
+                    // SECTION: The most recent message from the model, displayed in selectable text.
+                    return SizedBox(
+                      width: double.infinity,
+                      height: 300.0,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 1,
+                            color: Colors.grey,
+                          ),
+                          borderRadius: BorderRadius.circular(4.0),
+                        ),
+                        child: FutureBuilder<void>(
+                          future: _futureResponse,
+                          builder: (BuildContext context, AsyncSnapshot snapshot) {
+                            if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else if (snapshot.connectionState == ConnectionState.done) {
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                                child: SingleChildScrollView(
+                                  // Rebuilds on an updated response from the model.
+                                  child: ValueListenableBuilder<String>(
+                                    valueListenable: _geminiService.latestResponseFromModel,
+                                    builder: (BuildContext context, String value, _) {
+                                      return SelectableText(
+                                        _geminiService.latestResponseFromModel.value ?? '',
+                                        maxLines: 1000,
+                                        style: const TextStyle(
+                                          fontSize: 18.0,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              );
+                            } else {
+                              return const SizedBox.shrink();
+                            }
+                          },
+                        ),
                       ),
                     );
-                  }),
-              const Spacer(),
-              // FutureBuilder<void>(
-              //   future: _futureResponse,
-              //   builder: (BuildContext context, AsyncSnapshot snapshot) {
-              //     if (snapshot.hasError) {
-              //       return Text('Error: ${snapshot.error}');
-              //     } else if (snapshot.connectionState == ConnectionState.done) {
-              //       // SECTION: The most recent message from the model, displayed in selectable text.
-              //       return SizedBox(
-              //         width: double.infinity,
-              //         height: 500.0,
-              //         child: DecoratedBox(
-              //           decoration: BoxDecoration(
-              //             border: Border.all(
-              //               width: 1,
-              //               color: Colors.grey,
-              //             ),
-              //             borderRadius: BorderRadius.circular(4.0),
-              //           ),
-              //           child: FutureBuilder<void>(
-              //             future: _futureResponse,
-              //             builder: (BuildContext context, AsyncSnapshot snapshot) {
-              //               if (snapshot.hasError) {
-              //                 return Text('Error: ${snapshot.error}');
-              //               } else if (snapshot.connectionState == ConnectionState.done) {
-              //                 return Padding(
-              //                   padding:
-              //                       const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-              //                   child: SingleChildScrollView(
-              //                     // Rebuilds on an updated response from the model.
-              //                     child: ValueListenableBuilder<String>(
-              //                       valueListenable: _geminiService.latestResponseFromModel,
-              //                       builder: (BuildContext context, String value, _) {
-              //                         return SelectableText(
-              //                           _geminiService.latestResponseFromModel.value ?? '',
-              //                           maxLines: 1000,
-              //                           style: const TextStyle(
-              //                             fontSize: 18.0,
-              //                           ),
-              //                         );
-              //                       },
-              //                     ),
-              //                   ),
-              //                 );
-              //               } else {
-              //                 return const SizedBox.shrink();
-              //               }
-              //             },
-              //           ),
-              //         ),
-              //       );
-              //     } else {
-              //       // TODO: Replace placeholder with something permanent.
-              //       return Container(
-              //         width: double.infinity,
-              //         height: 100.0,
-              //         decoration: BoxDecoration(
-              //           border: Border.all(
-              //             width: 1,
-              //             color: Colors.grey,
-              //           ),
-              //           borderRadius: BorderRadius.circular(4.0),
-              //         ),
-              //       );
-              //     }
-              //   },
-              // ),
+                  } else {
+                    // TODO: Replace placeholder with something permanent.
+                    return Container(
+                      width: double.infinity,
+                      height: 300.0,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1,
+                          color: Colors.grey,
+                        ),
+                        borderRadius: BorderRadius.circular(4.0),
+                      ),
+                    );
+                  }
+                },
+              ),
             ],
           ),
         ),

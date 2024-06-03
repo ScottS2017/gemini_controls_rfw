@@ -11,10 +11,10 @@ class Experiments extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF5F5F5),
+      backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppBar(
-        backgroundColor: Color(0xFF800080),
-        title: Text(
+        backgroundColor: const Color(0xFF800080),
+        title: const Text(
           'Testing',
           style: TextStyle(
             color: Colors.white,
@@ -31,7 +31,7 @@ class Experiments extends StatelessWidget {
               width: 300.0,
               height: 300.0,
               decoration: BoxDecoration(
-                image: DecorationImage(
+                image: const DecorationImage(
                   image: NetworkImage(
                       'https://st3.depositphotos.com/1192109/35237/i/450/depositphotos_352372118-stock-photo-beauty-portrait-young-brunette-classic.jpg'),
                   fit: BoxFit.cover,
@@ -44,7 +44,7 @@ class Experiments extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.75),
-                    offset: Offset(4.0, 4.0),
+                    offset: const Offset(4.0, 4.0),
                     blurRadius: 4.0,
                     spreadRadius: 2.0,
                   ),
@@ -55,7 +55,7 @@ class Experiments extends StatelessWidget {
               width: 300.0,
               height: 300.0,
               decoration: BoxDecoration(
-                image: DecorationImage(
+                image: const DecorationImage(
                   image: NetworkImage(
                       'https://st3.depositphotos.com/8935838/35907/i/450/depositphotos_359071356-stock-photo-beautiful-young-woman-long-eyelashes.jpg'),
                   fit: BoxFit.cover,
@@ -68,7 +68,7 @@ class Experiments extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.75),
-                    offset: Offset(4.0, 4.0),
+                    offset: const Offset(4.0, 4.0),
                     blurRadius: 4.0,
                     spreadRadius: 2.0,
                   ),

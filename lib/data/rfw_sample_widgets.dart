@@ -1,6 +1,8 @@
 class RfwMasterKey {
   static const String testNetworkImage = 'This is a URL for an image we will be using for testing. If I say to use the test image, it is at: "https://assets3.thrillist.com/v1/image/3082123/792x446/scale;webp=auto;jpeg_quality=60;progressive.jpg"';
   static const String rulesAndGuidelines = '''
+  The base widget of your rfw tree must be a SizedBox or a Container or you lose the game we're playing.
+  
 For each widget, every parameter is implemented using the same name as its normal Flutter counterpart. Parameters that take structured types are represented using maps, with each named parameter of that type's default constructor represented by a key, with the following notable caveats and exceptions:
  
  * Enums are represented as strings with the unqualified name of the value. For example, `MainAxisAlignment.start` is represented as the string `"start"`.
@@ -200,7 +202,7 @@ a default of 200ms and [Curves.fastOutSlowIn] is used.
   ),          
   ''';
   static const String alignment = '''
-  // Alignments are maps with keys x and y:
+  // ALL Alignments must be maps with keys x and y:
   ```alignment: {x: 0.0, y:-1.0},```''';
   static const String appBar = '''
 AppBar(
@@ -571,8 +573,8 @@ but never both.
     // Enum value. Choices are linear, radial, and sweep.
     type: "linear",
     // Both begin and end alignments must use an Alignment enum value name.
-    begin: "centerRight",
-    end: "centerLeft",
+    begin: {x: 0.0, y: 1.0},
+    end:  {x: 0.0, y: -1.0},
     colors: [
       0xFFFF0000,
       0xFF0000FF,
@@ -645,6 +647,26 @@ Icon(
     size: 30.0,
 )
   ''';
+  static const String image = '''
+    ```
+  Image(
+    semanticLabel: "Semantics, good for alt tags",
+    excludeFromSemantics: false,
+    width: 600.0,
+    height: 400.0,
+    color: 0xFF0000FF,
+    colorBlendMode: "srcOver",
+    fit: "fitWidth",
+    alignment: {x: 0.0, y:-0.3},
+    repeat: "noRepeat",
+    centerSlice: {x: 0.0, y: 0.0, w: 100.0, h: 50.0},
+    matchTextDirection: false,
+    gaplessPlayback: false,
+    isAntiAlias: false,
+    filterQuality: "medium",
+  ),
+    ```
+    ''';
   // TODO MATERIAL: add customBorder to InkResponse and InkWell.
   static const String inkResponse = '''
     ```
@@ -713,26 +735,6 @@ Icon(
     IntrinsicHeight(child: Placeholder(),),
     IntrinsicWidth(child: Placeholder(),),
     ```''';
-  static const String image = '''
-    ```
-  Image(
-    semanticLabel: "Semantics, good for alt tags",
-    excludeFromSemantics: false,
-    width: 600.0,
-    height: 400.0,
-    color: 0xFF0000FF,
-    colorBlendMode: "srcOver",
-    fit: "fitWidth",
-    alignment: {x: 0.0, y:-0.3},
-    repeat: "noRepeat",
-    centerSlice: {x: 0.0, y: 0.0, w: 100.0, h: 50.0},
-    matchTextDirection: false,
-    gaplessPlayback: false,
-    isAntiAlias: false,
-    filterQuality: "medium",
-  ),
-    ```
-    ''';
   static const String keyboardDismissBehavior = '''
   Use the name property of the desired ScrollViewKeyboardDismissBehavior enum value:
   ```keyboardDismissBehavior: "manual",```
@@ -1082,6 +1084,7 @@ Text(
     ),
     ```''';
 
+  // The string returned by allWidgets() is 8712 tokens long.
   static String allWidgets(){
     const result = '''
     $testNetworkImage 
@@ -1125,10 +1128,10 @@ Text(
     $gestureDetector 
     $gradients 
     $icon 
+    $image 
     $inkResponse 
     $inkWell 
     $intrinsicHeightAndWidth 
-    $image 
     $keyboardDismissBehavior 
     $margin 
     $material 
@@ -1177,23 +1180,8 @@ String geminisFeedbackSuggestions = '''
 ''';
 
 String testString = '''
+Create a container 360 by 720 with a one pixel wide black border around it, and a drop shadow. Inside of the container place A scaffold that has an app bar that is purple with centered white letters saying hello there. Capitalize the H and the T in hello there . No matter what you are told to put in the scaffold, we must keep the outer container because it is providing the only constraints for the scaffold.
 
-Show me a sized box, 400x400, and within it center an elevated button. Make the callback for the button trigger a method called "rfwTestPrint". For an argument, pass in the string "The quick brown fox jumped over the lazy dog's back.".
+Inside of the scaffold center a container that is 200 by 100 with a 1 pixel black border a corner radius of 50, And put the test image in it 
 
-
-Align(
-  alignment: {x: 0.0, y:-1.0},
-  child: Container(
-    width: 100,
-    height: 100,
-    child: ColoredBox(
-      color: 0xFF0000FF,
-    ),
-  ),
-),
-
-
-Show me a container that is 500 wide by 800 high and is light grey. Inside the container, center a sized box that is 400 wide by 700 high and put a scaffold inside of it, using a blue AppBar. Inside the app bar for the title use a text widget that says hi there in white text, and wrap it in a center so it's centered in the AppBar. Inside the scaffold put a row with its main axis alignment set to space between and its cross axis alignment to stretch. Inside the row, the first child is going to be a green box that is 50 pixels wide. The second child is a column with the column's main axis alignment set to spaceEvenly and cross axis alignment set to center. Put three container's in the column. Each container should be  225 wide and 120 high, and put the test image in it . Round the corners of those image's containers by 50 and give them each a drop shadow. For all borders, images and radii make sure you use your decoration parameter properly. The last child of the row should be a red box, just like the green one.
-
-https://drive.google.com/file/d/1tluWX3jNN3rzFwX3JkBiVaydGBBmNE3z/view?usp=sharing
 ''';

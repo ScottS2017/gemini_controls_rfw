@@ -24,7 +24,7 @@ class GeminiService {
       // Not used.
       // stopSequences: ["red"],
       // Set an absurdly high limit to ensure the UI code isn't cut off.
-      maxOutputTokens: 10000,
+      maxOutputTokens: 20000,
       // Lower temp from 0.9 to prevent "creative" replies because we need consistency in the generated RFW code.
       temperature: 0.5,
       topP: 0.1,

@@ -33,7 +33,7 @@ Container(
              crossAxisAlignment: "center",
               children: [
                 ElevatedButton(
-                onPressed: event "rfwTestPrint"  { arguments: [] },
+                onPressed: event "rfwTestPrint"  { arguments: ["Test String in args"] },
                 child: Container(
                   width: 225.0,
                   height: 120.0,
