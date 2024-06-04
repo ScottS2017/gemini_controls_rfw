@@ -1,7 +1,7 @@
 class RfwMasterKey {
   static const String testNetworkImage = 'This is a URL for an image we will be using for testing. If I say to use the test image, it is at: "https://assets3.thrillist.com/v1/image/3082123/792x446/scale;webp=auto;jpeg_quality=60;progressive.jpg"';
   static const String rulesAndGuidelines = '''
-  
+
   The base widget of your rfw tree must be a SizedBox or a Container or you lose the game we're playing.
   
 For each widget, every parameter is implemented using the same name as its normal Flutter counterpart. Parameters that take structured types are represented using maps, with each named parameter of that type's default constructor represented by a key, with the following notable caveats and exceptions:
@@ -574,6 +574,7 @@ but never both.
     // Enum value. Choices are linear, radial, and sweep.
     type: "linear",
     // Both begin and end alignments must use an Alignment enum value name.
+    // In a linear gradient, the x and y values for begin and end range from -1 to 1. This means center is at 0.0.
     begin: {x: 0.0, y: 1.0},
     end:  {x: 0.0, y: -1.0},
     colors: [
@@ -1088,6 +1089,7 @@ Text(
   // The string returned by allWidgets() is 8712 tokens long.
   static String allWidgets(){
     const result = '''
+    A list of Widget and parameter examples for your reference: 
     $testNetworkImage 
     $rulesAndGuidelines 
     $parametersTakeTheseTypes 

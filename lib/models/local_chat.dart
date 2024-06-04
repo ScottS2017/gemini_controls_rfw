@@ -40,8 +40,8 @@ class LocalChat {
         // Parking these here to see if we can do without them.
         // LocalChatParameters.coreWidgetsDocs +
         // LocalChatParameters.selectedClassesSourceCode +
-        latestMessage: LocalChatParameters.gameIntro +
-             RfwMasterKey.allWidgets() + LocalChatParameters.rfwExamples);
+        latestMessage: LocalChatParameters.introBlurb +
+             RfwMasterKey.allWidgets() + LocalChatParameters.rfwExamples + LocalChatParameters.reminders);
     updateChatHistory(who: 'model', latestMessage: "Sounds good. I'll do my best.");
   }
 
@@ -51,8 +51,8 @@ class LocalChat {
     messagesSent += 1;
     if (who == 'user') {
       if(messagesSent % 25 == 0){
-        var messageToSend = LocalChatParameters.gameIntro +
-            RfwMasterKey.allWidgets() + LocalChatParameters.rfwExamples + latestMessage;
+        var messageToSend = LocalChatParameters.introBlurb +
+            RfwMasterKey.allWidgets() + LocalChatParameters.rfwExamples + latestMessage + LocalChatParameters.reminders;
         chatHistoryContent.add(Content.text(messageToSend));
         messageHistory.add(CustomChatMessage(who: 'user', message: messageToSend));
       } else {
