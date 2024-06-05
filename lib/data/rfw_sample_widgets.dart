@@ -1,5 +1,5 @@
 class RfwMasterKey {
-  static const String testNetworkImage = 'This is a URL for an image we will be using for testing. If I say to use the test image, it is at: "https://assets3.thrillist.com/v1/image/3082123/792x446/scale;webp=auto;jpeg_quality=60;progressive.jpg"';
+  static const String testNetworkImage = 'These are URLs for an images we will be using for testing. If I say to use the first test image, it is at: "https://assets3.thrillist.com/v1/image/3082123/792x446/scale;webp=auto;jpeg_quality=60;progressive.jpg". The second one is at "https://image.petmd.com/files/styles/863x625/public/2023-03/pit-bull.jpg", and the third one is at "https://kenneltocouch.org/wp-content/uploads/2019/09/iStock-1143880146-1080x675.jpg"';
   static const String rulesAndGuidelines = '''
 
   The base widget of your rfw tree must be a SizedBox or a Container or you lose the game we're playing.
@@ -203,8 +203,10 @@ a default of 200ms and [Curves.fastOutSlowIn] is used.
   ),          
   ''';
   static const String alignment = '''
-  // ALL Alignments must be maps with keys x and y:
-  ```alignment: {x: 0.0, y:-1.0},```''';
+  // ALL Alignments must be maps with keys x and y. This value is center left:
+  ```alignment: {x: -1.0, y:0.0},```
+  and this value is top center:
+  ```alignment: {x: -1.0, y:0.0},```''';
   static const String appBar = '''
 AppBar(
   backgroundColor: 0xFFFF0000,
@@ -575,6 +577,8 @@ but never both.
     type: "linear",
     // Both begin and end alignments must use an Alignment enum value name.
     // In a linear gradient, the x and y values for begin and end range from -1 to 1. This means center is at 0.0.
+    // Unless I say otherwise begin and end linear gradients at the edges of the container instead of the center. 
+    // **Do not put the `begin` or `end` values of a linear gradient at the center of the container. The center of the container is `{x: 0.0, y: 0.0}`. Instead, use values between -1 and 1 to specify the position of the `begin` and `end` values. For example, to start the gradient at the left edge of the container, use `{x: -1.0, y: 0.0}` for the `begin` value.**
     begin: {x: 0.0, y: 1.0},
     end:  {x: 0.0, y: -1.0},
     colors: [
@@ -593,9 +597,12 @@ but never both.
   // For example, if a radial gradient is painted on a box that is
   // 100.0 pixels wide and 200.0 pixels tall, then a radius of 0.8
   // will place the 1.0 stop at 80.0 pixels from the [center].
+  //
+  // Unless I say otherwise make the center of the gradient be {x: 0.0, y: 0.0} and do not use a focal or focalRadius.
   ```
   gradient: {
     type: "radial",
+    // Usually radial gradients will start at {x: 0.0, y: 0.0}.
     center: {x: 0.5, y: 0.0},
     radius: 0.8,
     colors: [

@@ -47,6 +47,7 @@ Container(
                   type: "box",
                     image: {
                       source: "https://assets3.thrillist.com/v1/image/3082123/792x446/scale;webp=auto;jpeg_quality=60;progressive.jpg",
+                      fit: "cover",
                     },
                     borderRadius: [
                       {
@@ -73,6 +74,7 @@ Container(
                   type: "box",
                     image: {
                       source: "https://assets3.thrillist.com/v1/image/3082123/792x446/scale;webp=auto;jpeg_quality=60;progressive.jpg",
+                      fit: "cover",
                     },
                     borderRadius: [
                       {
@@ -93,10 +95,6 @@ Container(
                   },
                 ),
               ],
-            ),
-            Container(
-              width: 50.0,
-              color: 0xFFFFFF00,
             ),
           ],
         ),

@@ -12,6 +12,9 @@ class GeminiService {
   /// a response to the previous message has been received.
   bool awaitingResponse = false;
 
+  /// String used to store the most recent widget, to allow undo capability.
+  String undoWidget = '';
+
   /// The most recent text response from the model. Used to display the most recent response in the large font, [SelectableText] in the middle of the screen.
   final ValueNotifier<String> _latestResponseFromModel = ValueNotifier<String>('');
   ValueNotifier<String> get latestResponseFromModel => _latestResponseFromModel;
@@ -57,6 +60,7 @@ class GeminiService {
     required String prompt,
     required GeminiService geminiService,
   }) async {
+    // FIXME undo not working.
     // Workaround for the fact that the LLM keeps forgetting to use a type parameter in decorations.
     const dontForgetType = "When using a decoration, make sure to include the type parameter.";
     // Add the current chat message from the user to the list of the google_generative_ai [Content] objects.
@@ -104,8 +108,9 @@ class GeminiService {
     required LocalChat gemini,
     required String response,
   }) {
+    // Stash the current widget to allow for undo.
+    undoWidget = 'There was a problem in a previous session and we need to restart. Show me this widget: ${_rfwString.value}';
     // Remove "RFWEXEC: From the front of the text string.
-    // FIXME erroring if a good widget is sent.  Out of range error.
     var result = '';
     final execLocation = response.indexOf('RFWEXEC');
     final cutOutTo = execLocation + 8;
@@ -117,6 +122,6 @@ class GeminiService {
       result = frontTrimmed;
     }
     debugPrint('processRFW called with\n$result');
-    rfwString.value = result;
+    _rfwString.value = result;
   }
 }

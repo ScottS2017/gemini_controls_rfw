@@ -34,8 +34,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final _inputFieldFocusNode = FocusNode();
   // FIXME currentWidgetValue is a workaround for the ValueListenableBuilder not rebuilding.
   String currentWidgetValue = '';
-  double width = 360;
-  double height = 720;
+  double width = 1080.0;
+  double height = 1080.0;
 
   // The future used the the UI's [FutureBuilder].
   Future<void>? _futureResponse;
@@ -58,6 +58,17 @@ class _HomeScreenState extends State<HomeScreen> {
       // Process the prompt.
       _futureResponse = _geminiService.handleSubmit(
           userInput: input, gemini: _gemini, geminiService: _geminiService);
+      // Set focus back to the input field for the next input, then clear the text.
+      _inputFieldFocusNode.requestFocus();
+      _inputController.clear();
+    });
+  }
+
+  void _undoToLastWidget(){
+    setState(() {
+      // Process the prompt.
+      _futureResponse = _geminiService.handleSubmit(
+          userInput: _geminiService.undoWidget, gemini: _gemini, geminiService: _geminiService);
       // Set focus back to the input field for the next input, then clear the text.
       _inputFieldFocusNode.requestFocus();
       _inputController.clear();
@@ -135,19 +146,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   horizontalMargin16,
-                  // SECTION: Reset Context Button.
+                  // SECTION: Undo Button.
                   ElevatedButton(
                     onPressed: () {
-                      _gemini.chatHistoryContent
-                          .removeRange(1, _gemini.chatHistoryContent.length - 1);
-                      _gemini.messageHistory.removeRange(1, _gemini.messageHistory.length - 1);
+                      _undoToLastWidget();
                     },
                     child: const SizedBox(
                       height: 50.0,
                       width: 80.0,
                       child: Center(
                         child: Text(
-                          'Reset the Context',
+                          'Undo',
                           textAlign: TextAlign.center,
                         ),
                       ),
