@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gemini_controls_rfw/backend/gemini_service.dart';
 import 'package:gemini_controls_rfw/data/local_chat_parameters.dart';
-import 'package:gemini_controls_rfw/data/rfw_sample_widgets.dart';
 import 'package:gemini_controls_rfw/experiments/brainstorming_experiments.dart';
 import 'package:gemini_controls_rfw/features/home_screen/home_screen.dart';
-import 'package:gemini_controls_rfw/features/no_type/no_type_2.dart';
 import 'package:gemini_controls_rfw/models/local_chat.dart';
 
 /// The foundation widget for the app. It also exposes certain items via the
@@ -63,11 +61,10 @@ class AppState extends State<App> {
         ),
         useMaterial3: true,
       ),
-      //home: const NoType(
-       // home: const Experiments(
-       home: const HomeScreen(
-       title: 'Gemini Controls RFW',
+      home: const HomeScreen(
+        title: 'Gemini Controls RFW',
       ),
+      //home: const Experiments(),
     );
   }
 }

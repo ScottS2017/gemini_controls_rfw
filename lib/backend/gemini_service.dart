@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart' show ValueNotifier, debugPrint;
 import 'package:gemini_controls_rfw/backend/api_key.dart';
 import 'package:gemini_controls_rfw/data/initial_widget.dart';
-import 'package:gemini_controls_rfw/data/local_chat_parameters.dart';
 import 'package:gemini_controls_rfw/models/local_chat.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
@@ -41,7 +40,6 @@ class GeminiService {
   ValueNotifier<String> get rfwString => _rfwString;
 
   /// Processes submission.
-  // TODO: Decide if this is needed. It can be tested, but without any other functionality it may be able to be refactored out.
   Future<void> handleSubmit({
     required String userInput,
     required LocalChat gemini,

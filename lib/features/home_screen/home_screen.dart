@@ -33,9 +33,10 @@ class _HomeScreenState extends State<HomeScreen> {
   final _inputController = TextEditingController();
   final _inputFieldFocusNode = FocusNode();
   // FIXME currentWidgetValue is a workaround for the ValueListenableBuilder not rebuilding.
-  String currentWidgetValue = '';
-  double width = 1080.0;
-  double height = 1080.0;
+  String _currentWidgetValue = '';
+  // The width and height of the outer border surrounding the working area.
+  final double _width = 1080.0;
+  final double _height = 900.0;
 
   // The future used the the UI's [FutureBuilder].
   Future<void>? _futureResponse;
@@ -103,7 +104,8 @@ class _HomeScreenState extends State<HomeScreen> {
     _gemini.initChat();
   }
 
-  void rfwTestPrint(Map arguments) {
+  // Used to test callbacks for RFW style buttons.
+  void _rfwTestPrint(Map arguments) {
     debugPrint(arguments.values.first[0].toString());
   }
 
@@ -167,20 +169,21 @@ class _HomeScreenState extends State<HomeScreen> {
               verticalMargin16,
               // SECTION: RFW Widget.
               Container(
-                width: width,
-                height: height,
+                width: _width,
+                height: _height,
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: const Color(0xFF000000),
                     width: 1.0,
                   ),
+                  borderRadius: BorderRadius.circular(6.0),
                 ),
                 child: ValueListenableBuilder(
                     // When [rfwString] changes, check to see if it's different than before and run update if it is.
                     valueListenable: _geminiService.rfwString,
                     builder: (BuildContext context, String value, _) {
-                      if (currentWidgetValue != _geminiService.rfwString.value) {
-                        currentWidgetValue = _geminiService.rfwString.value;
+                      if (_currentWidgetValue != _geminiService.rfwString.value) {
+                        _currentWidgetValue = _geminiService.rfwString.value;
                         _update();
                       }
                       return Center(
@@ -191,14 +194,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           onEvent: (String name, DynamicMap arguments) {
                             debugPrint('User triggered event "$name" with data: $arguments');
                             if (name == 'rfwTestPrint') {
-                              rfwTestPrint(arguments);
+                              _rfwTestPrint(arguments);
                             }
                           },
                         ),
                       );
                     }),
               ),
-              const Spacer(),
+              const SizedBox(height: 64.0,),
               FutureBuilder<void>(
                 future: _futureResponse,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -208,7 +211,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     // SECTION: The most recent message from the model, displayed in selectable text.
                     return SizedBox(
                       width: double.infinity,
-                      height: 300.0,
+                      height: 100.0,
                       child: DecoratedBox(
                         decoration: BoxDecoration(
                           border: Border.all(

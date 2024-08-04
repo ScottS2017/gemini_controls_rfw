@@ -191,6 +191,8 @@ a default of 200ms and [Curves.fastOutSlowIn] is used.
   be included. Any special notes are listed here:
   // All enums are listed as the value name ONLY:
   ```textDirection: "ltr",```
+  or
+  ```mainAxisAlignment: "start",```
   ''';
   // Individual Widgets
   // TODO MATERIAL: AboutListTile P3.
