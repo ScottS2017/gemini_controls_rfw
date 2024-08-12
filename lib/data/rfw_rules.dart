@@ -31,14 +31,34 @@ class RfwRules {
       {x: 20.0},
     ],
   ''';
+  static const String callbacks = '''
+  // RFW handles callbacks differently. The method is located in the page that hosts the RFW text widget tree, and therefore has to be referred to during an event. Arguments may be passed to the event handler by adding the arg to the list of arguments. arguments is a required parameter, if there are no args then pass in an empty list. The syntax for handling a method is 'event "METHOD NAME" { arguments: [ARGS HERE IF ANY]}'. The following example calls a method named testPrint, and that method has to be in the page that displays the RFW widget tree:
+  onPressed: event "testPrint"  { arguments: ["Print these words"] },
+  ''';
   static const String colorsAreNumbers = "Colors are always their ARGB hex number.";
   static const String iconsAreNumbers =  "Icons are passed in with their hex number and family name as a string, instead of an Icon constructor the way it's done in regular Flutter code.";
   static const String paddingListOfDoubles = '''padding is just a list of four doubles. The order is left, top, right, bottom. EG this is the same as normal Flutter's symmetric padding set to 16.0 horizontal and 10.0 vertical:
   padding: [16.0,10.0,16.0,10.0,]''';
+  static const String parametersTakeTheseTypes = '''
+  RFW widgets do not always take the same types as normal
+  Flutter widgets. This is a key to many parameter types we're
+  going to use with this client app. If it is a simple type then
+  the comment will be only the type for the following parameter
+  listed. If it is an integer then the value shown is an integer (EG: 3).
+  If it is a double then the value shown is a double and it
+  must be used that way. Every double must use a decimal point, even
+  if it is only followed by a 0 (EG: 7.0). bools are shown as simply true 
+  or false. If it is more complex than that, a small description will
+  be included. Any special notes are listed here:
+  // All enums are listed as the value name ONLY:
+  ```textDirection: "ltr",```
+  or
+  ```mainAxisAlignment: "start",```
+  ''';
   static const String sizesAreDoubles = "Sizes are always doubles, with the decimal point.";
 
   static String allRules(){
-    const result = '$animationDefaults $argumentDecodersClassInstructions $borderRadius $colorsAreNumbers $iconsAreNumbers $paddingListOfDoubles $sizesAreDoubles';
+    const result = '$animationDefaults $argumentDecodersClassInstructions $borderRadius $callbacks $colorsAreNumbers $iconsAreNumbers $paddingListOfDoubles $parametersTakeTheseTypes $sizesAreDoubles';
     return result;
   }
 }

@@ -1,0 +1,17 @@
+class Reminders{
+  static const firstReminder = '1) Code blocks make this system fail if you use them. If we see "```" in your message, you lose 50 points.';
+  static const secondReminder = "2) Not everything I say needs to be made into a widget. We can converse, too. So unless I ask for a widget, then we're just talking.";
+  static const thirdReminder = "3) All sizes are doubles, and therefore you must use a decimal for every size, even if it is only to put .0 .";
+  static const fourthReminder = '4) Remember to use RFWEXEC only ONCE per message. This is a bad example: "RFWEXEC: Center(child: RFWEXEC: SizedBox(width: 220, height: 60.0, child: RFWEXEC: ColoredBox(color: 0xFF00FF00...". That example will FAIL because it has RFWEXEC three times.';
+  static const fifthReminder = "5) To add borders, corner radii, or other decorations you MUST use the decoration parameter.";
+  static const sixthReminder = "6) Containers do not have a borderRadius parameter. To add a radius use the decoration.";
+  static const seventhReminder = '7) Every decoration must have a type parameter and the only valid choices are "box", "flutterLogo", and "shape". Check all decoration type parameters and if they are not one of those three, then change it before sending the message.';
+  static const eighthReminder = "8) **When specifying the `begin` and `end` values of a linear gradient, make sure to use values between -1 and 1. The left edge is at {x: -1.0 y: 0.0}, the right edge is at  {x: 1.0 y: 0.0}, the top is at  {x: 0.0 y: -1.0}, and the bottom is at  {x: 0.0 y: 1.0}. Unless told otherwise, make the begin value of a linear gradient  {x: -1.0 y: 0.0} and the end value {x: 1.0 y: 0.0}.**";
+  static const ninthReminder = '9) alignment parameters need to be a map with x and y. Good example: ```alignment: {x: 0.8, y:0.0},```. Bad example: ```"topCenter"```.';
+  static const tenthReminder = "10) If I say undo it means show me the widget just before the one showing at the moment instead of something new.";
+  static const eleventhReminder = "11) Don't do more than you are asked to do. E.G.: Bad: If you are told to change only a font family and then you actually change both the family and the drop shadow offset. Good: If you are told to change a font family then change that and nothing else.";
+  static const twelfthReminder = "12) When there is a screen in progress and you are told to put an existing widget inside another one, this means to _add_ the wrapping widget into the existing widget tree as the child of the existing widget. I need you to leave the rest of the widget tree in place. E.G.: If we have a scaffold with a column and an image in it and I say to wrap the image in a Row, here are good and bad examples: Good:  You place a Row _inside_ the column and then put the image in it. Bad: You replace the scaffold and column with a Row, and put the image inside it. This is bad because you were not told to replace the parent widgets and you lose 10 points for doing that. Any request to wrap or put widget x inside widget y means to put a new widget between the existing parent and that widget, it does not mean replace or delete any existing widget(s).";
+
+  static const allReminders =
+      'Double check for these before sending a message: $firstReminder + $secondReminder + $thirdReminder + $fourthReminder + $fifthReminder + $sixthReminder + $seventhReminder + $eighthReminder + $ninthReminder + $tenthReminder + $eleventhReminder + $twelfthReminder';
+}

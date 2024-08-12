@@ -1,4 +1,5 @@
 import 'package:gemini_controls_rfw/data/local_chat_parameters.dart';
+import 'package:gemini_controls_rfw/data/reminders.dart';
 import 'package:gemini_controls_rfw/data/rfw_rules.dart';
 import 'package:gemini_controls_rfw/data/rfw_sample_widgets.dart';
 import 'package:gemini_controls_rfw/models/custom_chat_message.dart';
@@ -41,7 +42,7 @@ class LocalChat {
         // LocalChatParameters.coreWidgetsDocs +
         // LocalChatParameters.selectedClassesSourceCode +
         latestMessage: LocalChatParameters.introBlurb +
-             RfwMasterKey.allWidgets() + LocalChatParameters.rfwExamples + LocalChatParameters.reminders);
+             RfwMasterKey.allWidgets() + LocalChatParameters.rfwExamples + Reminders.allReminders);
     updateChatHistory(who: 'model', latestMessage: "Sounds good. I'll do my best.");
   }
 
@@ -52,7 +53,7 @@ class LocalChat {
     if (who == 'user') {
       if(messagesSent % 25 == 0){
         var messageToSend = LocalChatParameters.introBlurb +
-            RfwMasterKey.allWidgets() + LocalChatParameters.rfwExamples + latestMessage + LocalChatParameters.reminders;
+            RfwMasterKey.allWidgets() + LocalChatParameters.rfwExamples + latestMessage + Reminders.allReminders;
         chatHistoryContent.add(Content.text(messageToSend));
         messageHistory.add(CustomChatMessage(who: 'user', message: messageToSend));
       } else {

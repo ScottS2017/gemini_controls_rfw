@@ -32,8 +32,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final _inputController = TextEditingController();
   final _inputFieldFocusNode = FocusNode();
-  // FIXME currentWidgetValue is a workaround for the ValueListenableBuilder not rebuilding.
+
+  // Used to determine if the RFW widget has changed, if so call update().
   String _currentWidgetValue = '';
+
   // The width and height of the outer border surrounding the working area.
   final double _width = 1080.0;
   final double _height = 900.0;
@@ -53,6 +55,12 @@ class _HomeScreenState extends State<HomeScreen> {
   /// The widget library of local custom widgets.
   static const LibraryName remoteLibraryName = LibraryName(<String>['remote']);
 
+  bool _useAnAppBar = true;
+
+  Color _appBarColor = const Color(0xFF800080);
+
+  String _appBarText = '1';
+
   // Sends the input to [GeminiService] and updates [_futureResponse].
   void _handleSubmit(String input) {
     setState(() {
@@ -65,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void _undoToLastWidget(){
+  void _undoToLastWidget() {
     setState(() {
       // Process the prompt.
       _futureResponse = _geminiService.handleSubmit(
@@ -104,9 +112,36 @@ class _HomeScreenState extends State<HomeScreen> {
     _gemini.initChat();
   }
 
-  // Used to test callbacks for RFW style buttons.
-  void _rfwTestPrint(Map arguments) {
-    debugPrint(arguments.values.first[0].toString());
+  int _currentColor = 0;
+  final _colorChoices = const [
+    Color(0xFF800080),
+    Color(0xFF550000),
+    Color(0xFF005500),
+    Color(0xFF000055),
+    Color(0xFF333333),
+  ];
+
+  int _currentAppBarText = 0;
+  final _numberToShow = const ['1', '2', '3', '4', '5'];
+
+  void _toggleAppBar() {
+    setState(() {
+      _useAnAppBar = !_useAnAppBar;
+    });
+  }
+
+  void _changeAppBarText() {
+    setState(() {
+      _currentAppBarText = (_currentAppBarText + 1) % 5;
+      _appBarText = _numberToShow[_currentAppBarText];
+    });
+  }
+
+  void _changeAppBarColor() {
+    setState(() {
+      _currentColor = (_currentColor + 1) % 5;
+      _appBarColor = _colorChoices[_currentColor];
+    });
   }
 
   @override
@@ -116,6 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
+      backgroundColor: const Color(0xFFF7F3F3),
       body: Padding(
         padding: allPadding16,
         child: Center(
@@ -176,32 +212,62 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: const Color(0xFF000000),
                     width: 1.0,
                   ),
-                  borderRadius: BorderRadius.circular(6.0),
+                  borderRadius: BorderRadius.circular(10.0),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color(0xFF333333),
+                      blurRadius: 4.0,
+                      offset: Offset(3.0, 3.0),
+                    ),
+                  ],
                 ),
-                child: ValueListenableBuilder(
-                    // When [rfwString] changes, check to see if it's different than before and run update if it is.
-                    valueListenable: _geminiService.rfwString,
-                    builder: (BuildContext context, String value, _) {
-                      if (_currentWidgetValue != _geminiService.rfwString.value) {
-                        _currentWidgetValue = _geminiService.rfwString.value;
-                        _update();
-                      }
-                      return Center(
-                        child: RemoteWidget(
-                          runtime: _runtime,
-                          data: _data,
-                          widget: const FullyQualifiedWidgetName(remoteLibraryName, 'root'),
-                          onEvent: (String name, DynamicMap arguments) {
-                            debugPrint('User triggered event "$name" with data: $arguments');
-                            if (name == 'rfwTestPrint') {
-                              _rfwTestPrint(arguments);
-                            }
-                          },
-                        ),
-                      );
-                    }),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10.0),
+                  child: ValueListenableBuilder(
+                      // When [rfwString] changes, check to see if it's different than before and run update if it is.
+                      valueListenable: _geminiService.rfwString,
+                      builder: (BuildContext context, String value, _) {
+                        if (_currentWidgetValue != _geminiService.rfwString.value) {
+                          _currentWidgetValue = _geminiService.rfwString.value;
+                          _update();
+                        }
+                        return Center(
+                          child: Scaffold(
+                            appBar: _useAnAppBar
+                                ? AppBar(
+                                    backgroundColor: _appBarColor,
+                                    title: Center(
+                                      child: Text(
+                                        'Heyyyyyy Flutter!     We can change this AppBar! ($_appBarText)',
+                                        style: const TextStyle(
+                                          color: Color(0xFFFFFFFF),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : null,
+                            body: RemoteWidget(
+                              runtime: _runtime,
+                              data: _data,
+                              widget: const FullyQualifiedWidgetName(remoteLibraryName, 'root'),
+                              onEvent: (String name, DynamicMap arguments) {
+                                if (name == '_changeAppBarText') {
+                                  _changeAppBarText();
+                                } else if (name == "_toggleAppBar") {
+                                  _toggleAppBar();
+                                } else if (name == "_swapColor") {
+                                  _changeAppBarColor();
+                                }
+                              },
+                            ),
+                          ),
+                        );
+                      }),
+                ),
               ),
-              const SizedBox(height: 64.0,),
+              const SizedBox(
+                height: 64.0,
+              ),
               FutureBuilder<void>(
                 future: _futureResponse,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {

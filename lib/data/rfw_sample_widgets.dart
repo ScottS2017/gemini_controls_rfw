@@ -178,22 +178,6 @@ argument and `curve` argument. It sets the default animation duration and
 curve for widgets in the library that use the animated variants. If absent,
 a default of 200ms and [Curves.fastOutSlowIn] is used.
   ''';
-  static const String parametersTakeTheseTypes = '''
-  RFW widgets do not always take the same types as normal
-  Flutter widgets. This is a key to many parameter types we're
-  going to use with this client app. If it is a simple type then
-  the comment will be only the type for the following parameter
-  listed. If it is an integer then the value shown is an integer (EG: 3).
-  If it is a double then the value shown is a double and it
-  must be used that way. Every double must use a decimal point, even
-  if it is only followed by a 0 (EG: 7.0). bools are shown as simply true 
-  or false. If it is more complex than that, a small description will
-  be included. Any special notes are listed here:
-  // All enums are listed as the value name ONLY:
-  ```textDirection: "ltr",```
-  or
-  ```mainAxisAlignment: "start",```
-  ''';
   // Individual Widgets
   // TODO MATERIAL: AboutListTile P3.
   static const String align = '''
@@ -278,10 +262,6 @@ AppBar(
      ],```
     ''';
   // TODO MATERIAL: ButtonBar / OverflowBar P3.
-  static const String callbacks = '''
-  // RFW handles callback differently. The method is located in the page that hosts the RFW text widget tree, and therefore has to be referred to during an event. Arguments may be passed to the event handler by adding the arg to the list of arguments. arguments is a required parameter, if there are no args then pass in an empty list. The syntax for handling a method is 'event "METHOD NAME" { arguments: [ARGS HERE IF ANY]}'. The following example calls a method named testPrint, and that method has to be in the page that displays the RFW widget tree:
-  onPressed: event "testPrint"  { arguments: [] },
-  ''';
   // TODO add shape to card.
   static const String card = '''
   Card(
@@ -1101,7 +1081,6 @@ Text(
     A list of Widget and parameter examples for your reference: 
     $testNetworkImage 
     $rulesAndGuidelines 
-    $parametersTakeTheseTypes 
     $align 
     $alignment 
     $appBar 
@@ -1111,7 +1090,6 @@ Text(
     $borderOnForeground 
     $border 
     $borderRadius 
-    $callbacks 
     $card 
     $centerSlice 
     $circularProgressIndicator 
