@@ -18,20 +18,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  /// Contains the logic that builds and maintains Remote Flutter Widgets.
-  final Runtime _runtime = Runtime();
-
-  /// Configuration data from the remote widgets.
-  final DynamicContent _data = DynamicContent();
-
-  /// An individual chat, with a personality, situation, and chat history.
-  late LocalChat _gemini;
-
-  /// The [GeminiService] singleton provided via the context.
-  late GeminiService _geminiService;
-
   final _inputController = TextEditingController();
   final _inputFieldFocusNode = FocusNode();
+  bool _useAnAppBar = true;
+  Color _appBarColor = const Color(0xFF800080);
+  String _appBarText = 'Heyyyyyy Flutter!     We can change this AppBar!';
+
+  // Contains the logic that builds and maintains Remote Flutter Widgets.
+  final Runtime _runtime = Runtime();
+
+  // Configuration data from the remote widgets.
+  final DynamicContent _data = DynamicContent();
+
+  // An individual chat instance. Having more than one is possible, but beyond the scope of this talk.
+  late LocalChat _gemini;
+
+  // The [GeminiService] singleton provided via the context.
+  late GeminiService _geminiService;
 
   // Used to determine if the RFW widget has changed, if so call update().
   String _currentWidgetValue = '';
@@ -43,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // The future used the the UI's [FutureBuilder].
   Future<void>? _futureResponse;
 
+  // NOTE: In RFW the library "parts" are the parts of a name sepearated by periods. The below 'material', 'widgets' is used in update() as 'material.widgets'.
   /// The widget library of material widgets.
   static const LibraryName materialLibraryName = LibraryName(<String>['material', 'widgets']);
 
@@ -50,16 +54,10 @@ class _HomeScreenState extends State<HomeScreen> {
   static const LibraryName coreLibraryName = LibraryName(<String>['core', 'widgets']);
 
   /// The widget library of local custom widgets.
-  static const LibraryName localLibraryName = LibraryName(<String>['local']);
+  static const LibraryName localLibraryName = LibraryName(<String>['local', 'widgets']);
 
   /// The widget library of local custom widgets.
   static const LibraryName remoteLibraryName = LibraryName(<String>['remote']);
-
-  bool _useAnAppBar = true;
-
-  Color _appBarColor = const Color(0xFF800080);
-
-  String _appBarText = '1';
 
   // Sends the input to [GeminiService] and updates [_futureResponse].
   void _handleSubmit(String input) {
@@ -73,6 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  // FIXME Undo needs re-implemented.
   void _undoToLastWidget() {
     setState(() {
       // Process the prompt.
@@ -92,8 +91,9 @@ class _HomeScreenState extends State<HomeScreen> {
     _runtime.update(
         remoteLibraryName,
         // parseLibraryFile() takes a single string of all imports. The last is our rfwString.
+        // The imports below are the library files, EG:  LibraryName(<String>['material', 'widgets']); = material.widgets
         parseLibraryFile(
-            'import core.widgets; import material.widgets; widget root = $rfwStringFromGemini;'));
+            'import core.widgets; import material.widgets; import local.widgets; widget root = $rfwStringFromGemini;'));
   }
 
   /// Used with hot reloads/restarts. This function has no effect in production.
@@ -112,6 +112,8 @@ class _HomeScreenState extends State<HomeScreen> {
     _gemini.initChat();
   }
 
+  // Variables and methods for controlling the [AppBar].
+  // ------------
   int _currentColor = 0;
   final _colorChoices = const [
     Color(0xFF800080),
@@ -120,9 +122,14 @@ class _HomeScreenState extends State<HomeScreen> {
     Color(0xFF000055),
     Color(0xFF333333),
   ];
-
   int _currentAppBarText = 0;
-  final _numberToShow = const ['1', '2', '3', '4', '5'];
+  final _textToShow = const [
+    'Heyyyyyy Flutter!     We can change this AppBar!',
+    'Like this.',
+    'Or like this.',
+    'Are you tired of this yet?',
+    'How about now?',
+  ];
 
   void _toggleAppBar() {
     setState(() {
@@ -133,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _changeAppBarText() {
     setState(() {
       _currentAppBarText = (_currentAppBarText + 1) % 5;
-      _appBarText = _numberToShow[_currentAppBarText];
+      _appBarText = _textToShow[_currentAppBarText];
     });
   }
 
@@ -143,6 +150,8 @@ class _HomeScreenState extends State<HomeScreen> {
       _appBarColor = _colorChoices[_currentColor];
     });
   }
+  // ------------
+  // End variables and methods for controlling the [AppBar].
 
   @override
   Widget build(BuildContext context) {
@@ -173,7 +182,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey, width: 1)),
+                          borderSide: BorderSide(
+                            color: Colors.grey,
+                            width: 1,
+                          ),
+                        ),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         labelText: 'Me:',
                         labelStyle: TextStyle(
@@ -238,7 +251,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     backgroundColor: _appBarColor,
                                     title: Center(
                                       child: Text(
-                                        'Heyyyyyy Flutter!     We can change this AppBar! ($_appBarText)',
+                                        _appBarText,
                                         style: const TextStyle(
                                           color: Color(0xFFFFFFFF),
                                         ),
@@ -255,7 +268,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   _changeAppBarText();
                                 } else if (name == "_toggleAppBar") {
                                   _toggleAppBar();
-                                } else if (name == "_swapColor") {
+                                } else if (name == "_changeAppBarColor") {
                                   _changeAppBarColor();
                                 }
                               },
@@ -277,7 +290,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     // SECTION: The most recent message from the model, displayed in selectable text.
                     return SizedBox(
                       width: double.infinity,
-                      height: 100.0,
+                      height: 300.0,
                       child: DecoratedBox(
                         decoration: BoxDecoration(
                           border: Border.all(
