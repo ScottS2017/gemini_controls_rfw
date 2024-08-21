@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final DynamicContent _data = DynamicContent();
 
   // An individual chat instance. Having more than one is possible, but beyond the scope of this talk.
-  late LocalChat _gemini;
+  late GeminiChat _gemini;
 
   // The [GeminiService] singleton provided via the context.
   late GeminiService _geminiService;
@@ -72,16 +72,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   // FIXME Undo needs re-implemented.
-  void _undoToLastWidget() {
-    setState(() {
-      // Process the prompt.
-      _futureResponse = _geminiService.handleSubmit(
-          userInput: _geminiService.undoWidget, gemini: _gemini, geminiService: _geminiService);
-      // Set focus back to the input field for the next input, then clear the text.
-      _inputFieldFocusNode.requestFocus();
-      _inputController.clear();
-    });
-  }
+  // void _undoToLastWidget() {
+  //   setState(() {
+  //     // Process the prompt.
+  //     _futureResponse = _geminiService.handleSubmit(
+  //         userInput: _geminiService.undoWidget, gemini: _gemini, geminiService: _geminiService);
+  //     // Set focus back to the input field for the next input, then clear the text.
+  //     _inputFieldFocusNode.requestFocus();
+  //     _inputController.clear();
+  //   });
+  // }
 
   // Handles changing the widgets.
   void _update() {
@@ -107,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _gemini = App.providedLocalChatOf(context);
+    _gemini = App.providedGeminiChatOf(context);
     _geminiService = App.providedGeminiServiceOf(context);
     _gemini.initChat();
   }
@@ -200,7 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   // SECTION: Undo Button.
                   ElevatedButton(
                     onPressed: () {
-                      _undoToLastWidget();
+                      //_undoToLastWidget();
                     },
                     child: const SizedBox(
                       height: 50.0,

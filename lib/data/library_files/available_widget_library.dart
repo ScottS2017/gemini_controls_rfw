@@ -65,23 +65,6 @@ class AvailableWidgetLibraries {
           ),
         );
       },
-      'HiJill': (BuildContext context, DataSource source) {
-        return DecoratedBox(
-          decoration: BoxDecoration(
-            border: Border.all(
-              width: 10.0,
-              color: Colors.green.shade600,
-            ),
-            borderRadius: BorderRadius.circular(40.0),
-          ),
-          child: Center(
-            child: Text(
-              'HiJill, ${source.v<String>(<Object>["name"])}!',
-              style: TextStyle(color: Colors.grey.shade900, fontWeight: FontWeight.w700),
-            ),
-          ),
-        );
-      },
     });
   }
 }

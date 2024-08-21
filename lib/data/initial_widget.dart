@@ -1,12 +1,6 @@
 /// The widgets shown on startup.
 const initializingRfwWidget = '''
 Center (
-  child: ClipRRect(
-    borderRadius:
-      [
-        {x: 20.0, y: 20.0},
-      ],
-    clipBehavior: "none",
   child: Container(
     width: 360.0,
     height: 720.0,
@@ -39,8 +33,6 @@ Center (
             Expanded(
               child:GestureDetector(
                 onTap: event "_toggleAppBar"  { arguments: [] },
-                onTapDown: set state.down = true,
-                onTapUp: set state.down = false,
                 child: Container(
                   height: 650.0,
                   alignment:  {x: 0.0, y:0.0},
@@ -173,6 +165,5 @@ Center (
         ),
       ),
     ),
-  ),
   ),
 )''';

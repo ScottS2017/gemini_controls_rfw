@@ -11,15 +11,12 @@ class GeminiService {
   /// a response to the previous message has been received.
   bool awaitingResponse = false;
 
-  /// String used to store the most recent widget, to allow undo capability.
-  String undoWidget = '';
-
   /// The most recent text response from the model. Used to display the most recent response in the large font, [SelectableText] in the middle of the screen.
   final ValueNotifier<String> _latestResponseFromModel = ValueNotifier<String>('');
   ValueNotifier<String> get latestResponseFromModel => _latestResponseFromModel;
 
   /// An instance of the gemini-pro model.
-  final model = GenerativeModel(
+  final _model = GenerativeModel(
     model: 'gemini-pro',
     apiKey: apiKey,
     generationConfig: GenerationConfig(
@@ -42,19 +39,19 @@ class GeminiService {
   /// Processes submission.
   Future<void> handleSubmit({
     required String userInput,
-    required LocalChat gemini,
+    required GeminiChat gemini,
     required GeminiService geminiService,
   }) {
     awaitingResponse = true;
     Future<void>? result;
-    result = processSend(gemini: gemini, prompt: userInput, geminiService: geminiService);
+    result = _processSend(gemini: gemini, prompt: userInput, geminiService: geminiService);
     awaitingResponse = false;
     return result;
   }
 
   /// Processes the outgoing messages.
-  Future<void> processSend({
-    required LocalChat gemini,
+  Future<void> _processSend({
+    required GeminiChat gemini,
     required String prompt,
     required GeminiService geminiService,
   }) async {
@@ -68,16 +65,16 @@ class GeminiService {
     // Declare a response object.
     GenerateContentResponse response;
     try {
-      response = await model.generateContent(content);
-      processReceive(gemini: gemini, response: response);
+      response = await _model.generateContent(content);
+      _processReceive(gemini: gemini, response: response);
     } catch (e) {
       debugPrint(e.toString());
     }
   }
 
   /// Processes the incoming messages.
-  void processReceive({
-    required LocalChat gemini,
+  void _processReceive({
+    required GeminiChat gemini,
     required GenerateContentResponse response,
   }) {
     debugPrint('_processReceive() called LocalChat line 151');
@@ -88,31 +85,30 @@ class GeminiService {
 
     // Add the response message from the user to the list of the google_generative_ai [Content] objects.
     gemini.updateChatHistory(who: 'model', latestMessage: responseText);
-    latestResponseFromModel.value = responseText;
+    _latestResponseFromModel.value = responseText;
     debugPrint('Response was: $responseText');
     // Does the message start with the code for an RFW Command?
     if (responseText.contains('RFWEXEC')) {
       debugPrint('Processed as RFW command');
-      processRFW(gemini: gemini, response: responseText);
+      _processRFW(gemini: gemini, response: responseText);
     } else {
       debugPrint('Should be displaying text');
       // Display this text in the box that shows the latest message from Gemini.
-      latestResponseFromModel.value = responseText;
+      _latestResponseFromModel.value = responseText;
     }
   }
 
   /// Process a Remote Flutter Widgets command
-  void processRFW({
-    required LocalChat gemini,
+  void _processRFW({
+    required GeminiChat gemini,
     required String response,
   }) {
-    // Stash the current widget to allow for undo.
-    undoWidget = 'There was a problem in a previous session and we need to restart. Show me this widget: ${_rfwString.value}';
     // Remove "RFWEXEC: From the front of the text string.
     var result = '';
     final execLocation = response.indexOf('RFWEXEC');
     final cutOutTo = execLocation + 8;
     final frontTrimmed = response.replaceRange(0, cutOutTo, '');
+    // Sometimes Gemini adds code ticks (```). Remove them if necessary.
     if(frontTrimmed.contains('```')) {
       final ticksLocation = frontTrimmed.indexOf('```');
       result = frontTrimmed.replaceRange(ticksLocation, frontTrimmed.length, '');

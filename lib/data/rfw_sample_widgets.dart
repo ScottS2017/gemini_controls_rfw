@@ -1158,20 +1158,3 @@ Text(
     return result;
   }
 }
-
-String geminisFeedbackSuggestions = '''
-**Enums:** Enums are represented as strings with the unqualified name of the value. For example, `MainAxisAlignment.start` is represented as the string `"start"`.
-**Types that have multiple subclasses (or multiple very unrelated constructors, like `ColorFilter`):** These are represented as maps where the `type` key specifies the type. Typically these have an extension mechanism.
-**Matrices:** Matrices are represented as **column-major** flattened arrays. `Matrix4` values must have exactly 16 doubles in the array.
-**`AlignmentGeometry` values:** These can be represented either as `{x: ..., y: ...}` for a non-directional variant or `{start: ..., y: ...}` for a directional variant.
-**`BoxBorder` instances:** These are defined as arrays of `BorderSide` maps. If the array has length 1, then that value is used for all four sides. Two values become the horizontal and vertical sides respectively. Three values become the start, top-and-bottom, and end respectively. Four values become the start, top, end, and bottom respectively.
-**`BorderRadiusGeometry` values:** These work similarly to `BoxBorder`, as an array of `Radius` values. If the array has one value, it's used for all corners. With two values, the first becomes the `topStart` and `bottomStart` corners and the second the `topEnd` and `bottomEnd`. With three, the values are used for `topStart`, `topEnd`-and-`bottomEnd`, and `bottomStart` respectively. Four values map to the `topStart`, `topEnd`, `bottomStart`, and `bottomEnd` respectively. Note the horizontal and vertical components of any given corner do not have to be the same. The corner can have different radii for horizontal and vertical sides. The x is always the horizontal part and the y is always the vertical part.
-**`Color` values:** These are represented as integers. The hex literal values are most convenient for this, the alpha, red, green, and blue channels map to the 32 bit hex integer as 0xAARRGGBB. EG: Solid green is:
-''';
-
-String testString = '''
-Create a container 360 by 720 with a one pixel wide black border around it, and a drop shadow. Inside of the container place A scaffold that has an app bar that is purple with centered white letters saying hello there. Capitalize the H and the T in hello there . No matter what you are told to put in the scaffold, we must keep the outer container because it is providing the only constraints for the scaffold.
-
-Inside of the scaffold center a container that is 200 by 100 with a 1 pixel black border a corner radius of 50, And put the test image in it 
-
-''';

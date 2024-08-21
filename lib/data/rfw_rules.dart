@@ -57,6 +57,7 @@ class RfwRules {
   ''';
   static const String sizesAreDoubles = "Sizes are always doubles, with the decimal point.";
 
+  // FIXME put this to use.
   static String allRules(){
     const result = '$animationDefaults $argumentDecodersClassInstructions $borderRadius $callbacks $colorsAreNumbers $iconsAreNumbers $paddingListOfDoubles $parametersTakeTheseTypes $sizesAreDoubles';
     return result;

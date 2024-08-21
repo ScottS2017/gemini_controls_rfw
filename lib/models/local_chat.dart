@@ -6,41 +6,22 @@ import 'package:gemini_controls_rfw/models/custom_chat_message.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
 /// An individual chat, with a personality, situation, and chat history.
-class LocalChat {
-  LocalChat({
-    required this.name,
-    required this.personality,
-    required this.situation,
-  });
-
-  /// The name associated with this chat.
-  String name;
-
-  /// The personality characteristics associated with this chat.
-  String personality;
-
-  /// The situation given to this chat. EG: Personal assistant,
-  /// coding partner, etc.
-  String situation;
+class GeminiChat {
 
   /// A list that holds the history of text only messages.
-  final messageHistory = <CustomChatMessage>[];
+  final _messageHistory = <CustomChatMessage>[];
 
   /// The chat history of this chat.
   final chatHistoryContent = <Content>[];
 
   /// Counter to tell when to resend the examples.
-  int messagesSent = 1;
-
+  int _messagesSent = 1;
 
   /// The chat needs to be initialized with one message from each side to get
   /// it kicked off. You provide these, but they don't get displayed.
   void initChat() {
     updateChatHistory(
         who: 'user',
-        // Parking these here to see if we can do without them.
-        // LocalChatParameters.coreWidgetsDocs +
-        // LocalChatParameters.selectedClassesSourceCode +
         latestMessage: LocalChatParameters.introBlurb +
              RfwMasterKey.allWidgets() + LocalChatParameters.rfwExamples + Reminders.allReminders);
     updateChatHistory(who: 'model', latestMessage: "Sounds good. I'll do my best.");
@@ -49,16 +30,16 @@ class LocalChat {
   /// Update the chat history.
   // FIXME find another way to keep the prompt updated with the widget info. This is wasteful.
   void updateChatHistory({required String who, required String latestMessage}) {
-    messagesSent += 1;
+    _messagesSent += 1;
     if (who == 'user') {
-      if(messagesSent % 25 == 0){
+      if(_messagesSent % 25 == 0){
         var messageToSend = LocalChatParameters.introBlurb +
             RfwMasterKey.allWidgets() + LocalChatParameters.rfwExamples + latestMessage + Reminders.allReminders;
         chatHistoryContent.add(Content.text(messageToSend));
-        messageHistory.add(CustomChatMessage(who: 'user', message: messageToSend));
+        _messageHistory.add(CustomChatMessage(who: 'user', message: messageToSend));
       } else {
         chatHistoryContent.add(Content.text(latestMessage));
-        messageHistory.add(CustomChatMessage(who: 'user', message: latestMessage));
+        _messageHistory.add(CustomChatMessage(who: 'user', message: latestMessage));
       }
     } else {
       chatHistoryContent.add(

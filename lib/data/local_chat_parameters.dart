@@ -2,27 +2,8 @@
 /// persona and guide its actions.
 class LocalChatParameters{
 
-  /// The name of the model's role play persona.
-  static const String modelName = 'Jill';
-
-  /// The personality traits assigned to the model's role play persona.
-  static const String modelPersonality = 'helpful, nice, energetic, enthusiastic';
-
-  /// The general situation this role play is set in.
-  static const String modelSituation = 'Jill is helping the user build a Flutter app that allows Gemini to control RFW Widgets remotely.';
-
-  /// The first prompt supplied to the model, containing instructions that
-  /// guide all future interactions with the user.
-  static const String CURRENTLY_UNUSEDpersonalityPrompt = '''This is role play. For this interaction you are portraying a person named $modelName. You are also given a personality, situation, and a message from the user. The personality and situation may change during any given conversation, every new personality or situation will be labeled in this context, use the most recent one. Answer to the name $modelName, respond to the user's input appropriately considering the personality and situation given, and be sure to use only words in your responses because there is an error if you try to respond with anything else. This means you especially need to show code in plain text instead of in code blocks. The current personality for $modelName is: $modelPersonality. The current situation for $modelName is: $modelSituation.  ''';
-
   static const String introBlurb = '''We're going to play a game. We're using Remote Flutter Widgets and you are going to be creating widgets remotely that are shown on my screen. You start out with 100 points and for each time you get something right, you add one point. For each time you get something wrong you lose 5 points. During the game we aren't conversing and if you apologize or say anything then you lose 10 points. You do not need to apologize if things go wrong, it only makes things worse. If your points reach 0, you lose the game. The guidelines are carefully spelled out and will be refreshed in your prompt every 25 messages. For now, don't talk. You will precede each message with the signal to the client app that it is an rfw widget, which is by prefixing the start of a widget message with 'RFWEXEC:'. When you respond, that response will be processed by client side logic so it's critical that you send only the needed text to execute the command and nothing else. Also, use RFWEXEC: only once per message, it must be the first thing in the message. _Pay careful attention to details such as type and decoration parameters, you have had issues with them in the past._''';
 
- final Map<String, bool> itemsChecked = {
-   'Fixed Linear Gradient Offsets' : true,
-   'Ability to change between default fonts' : true,
-   'Fixed issue with not using type in decoration' : true,
- };
-String asdfa = 'Show me a size box expand with a container inside of it that has a linear gradient running from top to bottom in sky blue to white.';
   /// Examples of select RFW widgets for Gemini to use.
   static const String rfwExamples = '''
   Here are examples of prompts and expected responses:
@@ -124,51 +105,4 @@ String asdfa = 'Show me a size box expand with a container inside of it that has
   ],
 )
   ''';
-
-  String LEFTOVER = '''Example message from you. It has RFWEXEC: only ONCE, in the first 8 characters of the message. This is the ONLY place RFWEXEC is allowed to be. If you put it anywhere else I will not be able to process the message:
-
-Here is a widget used for teaching, it has notes that aren't shown in production widgets. Note the way colors and text styles are used is not the same as the way they're  used in normal widgets, RFWEXEC only appears once at the beginning of the message, the ``` marks denoting a code block are not allowed to be used, and the last character in the string is a ) because the ; gets added client side.
-      
-RFWEXEC:Column(
-  children: [
-    SizedBox(
-      width: 100.0,
-      height: 4.0,
-      child: ColoredBox(
-        color: 0xFF0000FF, // Colors are just the hex value of the color, don't use the Color or Colors constructors.
-      ),
-    ),
-    Icon(
-      icon: 0xE2A0,
-      fontFamily: "MaterialIcons",
-      color: 0xFFFF00FF,
-      size: 30.0,
-    ),
-    Container(
-      width: 100.0,
-      height: 50.0,
-      decoration: {
-        color: 0xFFFFFF00,
-        type: "box",
-        border: [
-          {
-            color: 0xFF00FF00,
-            width: 3.0,
-          },
-        ],
-      },
-      padding: [16.0,10.0,6.0,10.0,], // Padding is just four doubles. The order is LTRB.
-      child: Text(
-        text: ["Hello World"], // The text parameter is named, and is a list of strings.
-        textDirection: "ltr",
-        // The style parameter is a map. The keys TextStyle parameters. Note the values like color are still used without the Color or Colors constructors.
-        style: {
-          'color': 0xFF00FF00,
-          'fontSize': 24.0,
-        },
-      ),
-    ),
-  ],
-)
-      ''';
 }

@@ -7,22 +7,22 @@ import 'package:gemini_controls_rfw/models/local_chat.dart';
 
 /// The foundation widget for the app. It also exposes certain items via the
 /// app's [BuildContext] using [findAncestorStateOfType]. Each of those
-/// items will have a corresponding "Of" method, IE: [providedLocalChatOf].
+/// items will have a corresponding "Of" method, IE: [providedGeminiChatOf].
 class App extends StatefulWidget {
   const App({super.key});
 
   /// A method that returns a singleton [LocalChat] object, providing it to
   /// the entire app via the context.
-  static LocalChat providedLocalChatOf(BuildContext context) {
+  static GeminiChat providedGeminiChatOf(BuildContext context) {
     final AppState state = context.findAncestorStateOfType<AppState>()!;
-    return state._providedLocalChat;
+    return state._providedGeminiChat;
   }
 
   /// A method that returns a singleton [GeminiService] object, providing it to
   /// the entire app via the context.
   static GeminiService providedGeminiServiceOf(BuildContext context) {
     final AppState state = context.findAncestorStateOfType<AppState>()!;
-    return state._providedGeminiServiceOf;
+    return state._providedGeminiService;
   }
 
   @override
@@ -32,23 +32,19 @@ class App extends StatefulWidget {
 /// The [State] object for [AppState].
 class AppState extends State<App> {
   /// The singleton [LocalChat] object returned by
-  /// [widget.providedLocalChatOf].
-  late LocalChat _providedLocalChat;
+  /// [widget.providedGeminiChatOf].
+  late GeminiChat _providedGeminiChat;
 
   /// The singleton [GeminiService] object returned by
   /// [widget.providedGeminiServiceOf].
-  late GeminiService _providedGeminiServiceOf;
+  late GeminiService _providedGeminiService;
 
   /// Initializes the [State].
   @override
   void initState() {
     super.initState();
-    _providedGeminiServiceOf = GeminiService();
-    _providedLocalChat = LocalChat(
-      name: LocalChatParameters.modelName,
-      personality: LocalChatParameters.modelPersonality,
-      situation: LocalChatParameters.modelSituation,
-    );
+    _providedGeminiService = GeminiService();
+    _providedGeminiChat = GeminiChat();
   }
 
   @override
