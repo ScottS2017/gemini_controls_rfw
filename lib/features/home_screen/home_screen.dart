@@ -1,6 +1,6 @@
 import 'package:gemini_controls_rfw/backend/gemini_service.dart';
 import 'package:gemini_controls_rfw/features/app/app.dart';
-import 'package:gemini_controls_rfw/models/local_chat.dart';
+import 'package:gemini_controls_rfw/models/gemini_chat.dart';
 import 'package:gemini_controls_rfw/utils/spacing_constants.dart';
 import 'package:rfw/formats.dart' show parseLibraryFile;
 import 'package:rfw/rfw.dart';
@@ -278,9 +278,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       }),
                 ),
               ),
-              const SizedBox(
-                height: 64.0,
-              ),
+              verticalMargin16,
               FutureBuilder<void>(
                 future: _futureResponse,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -288,60 +286,64 @@ class _HomeScreenState extends State<HomeScreen> {
                     return Text('Error: ${snapshot.error}');
                   } else if (snapshot.connectionState == ConnectionState.done) {
                     // SECTION: The most recent message from the model, displayed in selectable text.
-                    return SizedBox(
-                      width: double.infinity,
-                      height: 300.0,
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            width: 1,
-                            color: Colors.grey,
+                    return Expanded(
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Colors.grey,
+                            ),
+                            borderRadius: BorderRadius.circular(4.0),
                           ),
-                          borderRadius: BorderRadius.circular(4.0),
-                        ),
-                        child: FutureBuilder<void>(
-                          future: _futureResponse,
-                          builder: (BuildContext context, AsyncSnapshot snapshot) {
-                            if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            } else if (snapshot.connectionState == ConnectionState.done) {
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-                                child: SingleChildScrollView(
-                                  // Rebuilds on an updated response from the model.
-                                  child: ValueListenableBuilder<String>(
-                                    valueListenable: _geminiService.latestResponseFromModel,
-                                    builder: (BuildContext context, String value, _) {
-                                      return SelectableText(
-                                        _geminiService.latestResponseFromModel.value ?? '',
-                                        maxLines: 1000,
-                                        style: const TextStyle(
-                                          fontSize: 18.0,
-                                        ),
-                                      );
-                                    },
+                          child: FutureBuilder<void>(
+                            future: _futureResponse,
+                            builder: (BuildContext context, AsyncSnapshot snapshot) {
+                              if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              } else if (snapshot.connectionState == ConnectionState.done) {
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                                  child: SingleChildScrollView(
+                                    // Rebuilds on an updated response from the model.
+                                    child: ValueListenableBuilder<String>(
+                                      valueListenable: _geminiService.latestResponseFromModel,
+                                      builder: (BuildContext context, String value, _) {
+                                        return SelectableText(
+                                          _geminiService.latestResponseFromModel.value ?? '',
+                                          maxLines: 1000,
+                                          style: const TextStyle(
+                                            fontSize: 18.0,
+                                          ),
+                                        );
+                                      },
+                                    ),
                                   ),
-                                ),
-                              );
-                            } else {
-                              return const SizedBox.shrink();
-                            }
-                          },
+                                );
+                              } else {
+                                return const SizedBox.shrink();
+                              }
+                            },
+                          ),
                         ),
                       ),
                     );
                   } else {
                     // TODO: Replace placeholder with something permanent.
-                    return Container(
-                      width: double.infinity,
-                      height: 300.0,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 1,
-                          color: Colors.grey,
+                    return Expanded(
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Colors.grey,
+                            ),
+                            borderRadius: BorderRadius.circular(4.0),
+                          ),
                         ),
-                        borderRadius: BorderRadius.circular(4.0),
                       ),
                     );
                   }
@@ -354,3 +356,17 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+const String instructions = '''
+1) Show me a center and inside of it place a container that is 360 by 720 with a black border of one pixel. 
+
+2) Inside of this container place a scaffold with a purple app bar . In the title of the app bar place a center and inside of that center place white text that says hello Flutter. Capitalize the H in hello and the F in flutter and put an exclamation point on the end . 
+
+3) For the body of this scaffold I want you to use a center and then inside of that place a column. We will have two children in this column and the top one will be a container that is 300 by 300 with the corners rounded by 50 and a black border of one. Give that container a drop shadow and in its decoration place a decoration image that is the first test image. For the second child I want you to create a container that is the same except the image should be the 3rd test image . 
+
+4) Set the column's main access alignment to space around 
+
+5) I want you to place each one of these containers inside of a gesture detector because we're going to turn them into buttons.  For the events on each I want you to use these events :. Neither gets any arguments.
+
+6) I want to be able to use this in a regular flutter app that will be run on an Android device. To do that I need you to give me all of this code in a format that can be used by a regular flutter application. Remember that the rules are going to be different. Text has to be done in a different way as do colors , borders , padding , and corner radii. Also, remember that decorations don't take a type in a regular flutter widget. Name the widget experiment.
+''';

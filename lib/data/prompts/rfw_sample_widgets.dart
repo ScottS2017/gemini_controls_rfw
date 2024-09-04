@@ -182,11 +182,21 @@ a default of 200ms and [Curves.fastOutSlowIn] is used.
   // TODO MATERIAL: AboutListTile P3.
   static const String align = '''
   // The easiest way to use an align is with x, y like this:
+   ```
   Align(
     // Alignment top center:
     alignment: {x: 0.0, y:-1.0},
     child: Placeholder(),
-  ),          
+  ),
+  ```
+  or
+  ```
+   Align(
+    // Alignment top center:
+    alignment: {x: 0.5, y:0.5},
+    child: Container(),
+  ),
+  ```
   ''';
   static const String alignment = '''
   // ALL Alignments must be maps with keys x and y. This value is center left:
@@ -241,11 +251,30 @@ AppBar(
        width: 5.0,
      },
    ],```
+   or 
+   ```border: [
+     {
+       color: 0xFF00FF92,
+       width: 2.0,
+     },
+     {
+       color: 0xFF99FF92,
+       width: 1.0,
+     },
+     {
+       color: 0xFF00FF92,
+       width: 5.0,
+     },
+     {
+       color: 0xFFCCFF92,
+       width: 1.0,
+     },
+   ],```
     ''';
   static const String borderRadius = '''
-   // borderRadius is a list is a list of values as interpreted by [radius]. An
+   // borderRadius is a list of maps. An
   empty or missing list results in a null return value. The list should have one
-  through four items. Extra items are ignored. The values are interpreted
+  or four items, if only one is present then it will be applied to all four corners. The values are interpreted
   as follows:
     * topStart: first value.
     * topEnd: second value, defaulting to same as topStart.
@@ -260,9 +289,18 @@ AppBar(
        {x: 30.0, y: 30.0},
        {x: 30.0, y: 30.0},
      ],```
+     This will be 10 on all four corners:
+     ```
+     [
+       {x: 10.0, y: 10.0}
+     ],
     ''';
   // TODO MATERIAL: ButtonBar / OverflowBar P3.
   // TODO add shape to card.
+  static const String callbacks = '''
+  // RFW handles callbacks differently. The method is located in the page that hosts the RFW text widget tree, and therefore has to be referred to during an event. Arguments may be passed to the event handler by adding the arg to the list of arguments. arguments is a required parameter, if there are no args then pass in an empty list. The syntax for handling a method is 'event "METHOD NAME" { arguments: [ARGS HERE IF ANY]}'. The following example calls a method named testPrint, and that method has to be in the page that displays the RFW widget tree:
+  onPressed: event "testPrint"  { arguments: ["Print these words"] },
+  ''';
   static const String card = '''
   Card(
     color: 0xFFFF00FF,
@@ -310,7 +348,8 @@ AppBar(
   ''';
   static const String color = '''
       // All Colors are just hex literal integers, formatted ARGB:
-  ```color: 0xFFFF00FF,```''';
+ ```color: 0xFFFF00FF,``` or ```color: 0xF7FF3645,```
+  ''';
   static const String column = '''
 Column(
   // Use enums by putting the name of the desired value in quotes, like this:
@@ -366,8 +405,9 @@ but never both.
     // Returns a [Curve] from the specified string. Choices are linear, decelerate, fastLinearToSlowEaseIn, ease, easeIn, easeInToLinear, easeInSine, easeInQuad, easeInCubic, easeInQuart, easeInQuint, easeInExpo, easeInCirc, easeInBack, easeOut, linearToEaseOut, easeOutSine, easeOutQuad, easeOutCubic, easeOutQuart, easeOutQuint, easeOutExpo, easeOutCirc, easeOutBack, easeInOut, easeInOutSine, easeInOutQuad, easeInOutCubic, easeInOutCubicEmphasized, easeInOutQuart, easeInOutQuint, easeInOutExpo, easeInOutCirc, easeInOutBack, fastOutSlowIn, slowMiddle, bounceIn, bounceOut, bounceInOut, elasticIn, elasticOut, and elasticInOut.
     ```curve: "linear",```
     ''';
-  static const String decoration = '''
-  decoration is a map describing a BoxDecoration. There are only three types supported
+  static const String decoration = ''' DO NOT remind me to use a decoration, EVER.
+  
+  decoration is a map describing a BoxDecoration. It is only needed when you are asked to use containers for things that need decorations. Don't use it any other times. There are only three types supported
   for [Decoration]: `box` for [BoxDecoration], `flutterLogo` for
   [FlutterLogoDecoration], and `shape` for [ShapeDecoration]. These are the ONLY valid choices, you will lose 10 points for trying to use anything else.
   ```decoration: {
@@ -403,7 +443,7 @@ but never both.
      source: "https://assets3.thrillist.com/v1/image/3082123/792x446/scale;webp=auto;jpeg_quality=60;progressive.jpg",
      fit: "cover",
    },
-   // **Make sure to include the type parameter, the app will crash without it. Choices are box (most often used), shape, and flutterLogo.
+   // **Make sure to include the type parameter if using decorations, but don't use them if not using decorations. Choices are box (most often used), shape, and flutterLogo.
    type: "box",
  },```
   ''';
@@ -794,11 +834,12 @@ Icon(
 ),
     ```''';
   static const String padding = '''
-  Padding(
+  Padding is just a list of four doubles.
+  ``` Padding(
     // Padding is Left, Top, Right, Bottom
     padding: [10.0,20.0,30.0,40.0,],
     child: Placeholder(),
-  ),    
+  ),```
   ''';
   static const String placeholder = '''
   Placeholder(
@@ -1089,7 +1130,8 @@ Text(
     $backgroundColor 
     $borderOnForeground 
     $border 
-    $borderRadius 
+    $borderRadius
+    $callbacks
     $card 
     $centerSlice 
     $circularProgressIndicator 

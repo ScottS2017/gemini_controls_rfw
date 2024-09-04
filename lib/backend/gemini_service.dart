@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart' show ValueNotifier, debugPrint;
 import 'package:gemini_controls_rfw/backend/api_key.dart';
 import 'package:gemini_controls_rfw/data/initial_widget.dart';
-import 'package:gemini_controls_rfw/models/local_chat.dart';
+import 'package:gemini_controls_rfw/models/gemini_chat.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
 /// Handles communication with Gemini and processes results.
@@ -103,19 +103,30 @@ class GeminiService {
     required GeminiChat gemini,
     required String response,
   }) {
+    debugPrint('_processRFW input string:\n$response\n\n');
     // Remove "RFWEXEC: From the front of the text string.
     var result = '';
-    final execLocation = response.indexOf('RFWEXEC');
-    final cutOutTo = execLocation + 8;
-    final frontTrimmed = response.replaceRange(0, cutOutTo, '');
+    int cutLocation = response.indexOf('RFWEXEC');
+    int cutOutTo = cutLocation + 8;
+    String frontTrimmed = response.replaceRange(0, cutOutTo, '');
+    debugPrint('frontTrimmed string is:\n$frontTrimmed\n\n');
     // Sometimes Gemini adds code ticks (```). Remove them if necessary.
     if(frontTrimmed.contains('```')) {
-      final ticksLocation = frontTrimmed.indexOf('```');
-      result = frontTrimmed.replaceRange(ticksLocation, frontTrimmed.length, '');
+      cutLocation = frontTrimmed.indexOf('```');
+      debugPrint('FIRST ``` IS AT $cutLocation');
+      // TODO regex with global search
+      cutOutTo = cutLocation + 4;
+      String frontTicksRemoved = frontTrimmed.replaceRange(0, cutLocation + 4, '');
+      debugPrint('Front ticks were removed:\n$frontTicksRemoved\n\n');
+      cutLocation = frontTicksRemoved.indexOf('```');
+      debugPrint('SECOND ``` IS AT $cutLocation');
+      String backTicksRemoved = frontTicksRemoved.replaceRange(frontTicksRemoved.length - 4, frontTicksRemoved.length, '');
+      debugPrint('Back ticks were removed:\n$backTicksRemoved\n\n');
+      result = backTicksRemoved;
     } else {
       result = frontTrimmed;
     }
-    debugPrint('processRFW called with\n$result');
+    debugPrint('processRFW changed _rfwString.value to\n$result\n\n');
     _rfwString.value = result;
   }
 }

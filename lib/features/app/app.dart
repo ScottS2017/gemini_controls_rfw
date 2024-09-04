@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gemini_controls_rfw/backend/gemini_service.dart';
-import 'package:gemini_controls_rfw/data/local_chat_parameters.dart';
+import 'package:gemini_controls_rfw/data/prompts/local_chat_parameters.dart';
 import 'package:gemini_controls_rfw/experiments/brainstorming_experiments.dart';
 import 'package:gemini_controls_rfw/features/home_screen/home_screen.dart';
-import 'package:gemini_controls_rfw/models/local_chat.dart';
+import 'package:gemini_controls_rfw/models/gemini_chat.dart';
 
 /// The foundation widget for the app. It also exposes certain items via the
 /// app's [BuildContext] using [findAncestorStateOfType]. Each of those
@@ -57,8 +57,8 @@ class AppState extends State<App> {
         ),
         useMaterial3: true,
       ),
-      home: const HomeScreen(title: 'Gemini Controls RFW'),
-      // home: const Material(child: Experiments()),
+      // home: const HomeScreen(title: 'Gemini Controls RFW'),
+      home: const Material(child: Experiment()),
     );
   }
 }
