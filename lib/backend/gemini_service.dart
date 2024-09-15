@@ -1,6 +1,9 @@
 import 'package:flutter/foundation.dart' show ValueNotifier, debugPrint;
 import 'package:gemini_controls_rfw/backend/api_key.dart';
 import 'package:gemini_controls_rfw/data/initial_widget.dart';
+import 'package:gemini_controls_rfw/data/prompts/local_chat_parameters.dart';
+import 'package:gemini_controls_rfw/data/prompts/reminders.dart';
+import 'package:gemini_controls_rfw/data/prompts/rfw_sample_widgets.dart';
 import 'package:gemini_controls_rfw/models/gemini_chat.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
@@ -55,17 +58,20 @@ class GeminiService {
     required String prompt,
     required GeminiService geminiService,
   }) async {
-    // FIXME undo not working.
     // Workaround for the fact that the LLM keeps forgetting to use a type parameter in decorations.
     const dontForgetType = "When using a decoration, make sure to include the type parameter.";
+    var messageToSend = LocalChatParameters.introBlurb +
+        RfwMasterKey.allWidgets() + Reminders.allReminders + dontForgetType;
     // Add the current chat message from the user to the list of the google_generative_ai [Content] objects.
     gemini.updateChatHistory(who: 'user', latestMessage: prompt + dontForgetType );
     // Create a list of [Content] with current active chat history and all messages before it.
-    List<Content> content = gemini.chatHistoryContent;
+    List<Content> content = [Content.text(messageToSend)] + gemini.chatHistoryContent;
     // Declare a response object.
     GenerateContentResponse response;
     try {
+      // Get the response.
       response = await _model.generateContent(content);
+      // Send the response to be processed.
       _processReceive(gemini: gemini, response: response);
     } catch (e) {
       debugPrint(e.toString());

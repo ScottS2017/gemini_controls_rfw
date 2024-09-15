@@ -366,7 +366,9 @@ const String instructions = '''
 
 4) Set the column's main access alignment to space around 
 
-5) I want you to place each one of these containers inside of a gesture detector because we're going to turn them into buttons.  For the events on each I want you to use these events :. Neither gets any arguments.
+5) I want you to place each one of these containers inside of a gesture detector because we're going to turn them into buttons.  For the events on each I want you to use these events :
+_changeAppBarText and _changeAppBarColor
+ Neither gets any arguments.
 
 6) I want to be able to use this in a regular flutter app that will be run on an Android device. To do that I need you to give me all of this code in a format that can be used by a regular flutter application. Remember that the rules are going to be different. Text has to be done in a different way as do colors , borders , padding , and corner radii. Also, remember that decorations don't take a type in a regular flutter widget. Name the widget experiment.
 ''';

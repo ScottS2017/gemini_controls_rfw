@@ -29,19 +29,11 @@ class GeminiChat {
   }
 
   /// Update the chat history.
-  // FIXME find another way to keep the prompt updated with the widget info. This is wasteful.
   void updateChatHistory({required String who, required String latestMessage}) {
-    _messagesSent += 1;
     if (who == 'user') {
-      if(_messagesSent % 25 == 0){
-        var messageToSend = LocalChatParameters.introBlurb +
-            RfwMasterKey.allWidgets() + latestMessage + Reminders.allReminders;
-        chatHistoryContent.add(Content.text(messageToSend));
-        _messageHistory.add(CustomChatMessage(who: 'user', message: messageToSend));
-      } else {
         chatHistoryContent.add(Content.text(latestMessage));
         _messageHistory.add(CustomChatMessage(who: 'user', message: latestMessage));
-      }
+
     } else {
       chatHistoryContent.add(
         Content.model([TextPart(latestMessage)]),
